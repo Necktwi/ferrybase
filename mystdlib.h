@@ -28,6 +28,7 @@ std::string inputPass();
 std::string inputText();
 std::string getStdoutFromCommand(std::string cmd);
 std::string getTime();
+std::string getuTime();
 std::string get_command_line(pid_t pid);
 int poke(std::string ip);
 int getIp();

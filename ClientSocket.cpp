@@ -31,14 +31,14 @@ void ClientSocket::asyncsend(std::string* payload, AftermathObj* aftermath_obj) 
     pthread_create(&aftermath_obj->t, NULL, (void*(*)(void*)) & ClientSocket::socsend, aftermath_obj);
 }
 
-const ClientSocket& ClientSocket::operator <<(const std::string& s) const {
+const ClientSocket& ClientSocket::operator<<(const std::string& s) const {
     if (!this->send(s)) {
         throw SocketException("Could not write to socket.");
     }
     return *this;
 }
 
-const ClientSocket& ClientSocket::operator >>(std::string& s) const {
+const ClientSocket& ClientSocket::operator>>(std::string& s) const {
     if (!this->recv(s)) {
         throw SocketException("Could not read from socket.");
     }
@@ -92,5 +92,17 @@ void ClientSocket::reconnect() {
 
     if (!this->connect(host, port)) {
         throw SocketException("Could not bind to port.");
+    }
+}
+
+/**
+ * Disconnects from the host:port
+ * @return void
+ */
+void ClientSocket::disconnect() {
+    if (is_valid())::close(m_sock);
+    if (socketType == SOCKET_TYPE::TLS1_1) {
+        ShutdownSSL(cSSL);
+        DestroySSL();
     }
 }

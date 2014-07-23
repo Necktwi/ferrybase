@@ -32,6 +32,7 @@
 #include <ext/stdio_filebuf.h>
 #include <signal.h>
 #include <list>
+#include <map>
 
 #ifdef WINDOWS
 #include <direct.h>
@@ -40,6 +41,9 @@
 #include <unistd.h>
 #define GetCurrentDir getcwd
 #endif
+
+std::map<pid_t, spawn*> processMap;
+
 static struct termios old, mnew;
 
 /* Initialize new terminal i/o settings */
@@ -405,6 +409,18 @@ std::string getTime() {
     timeinfo = localtime(&ct);
     strftime(tb, 20, "%Y-%m-%d %H:%M:%S", timeinfo);
     return std::string(tb);
+}
+
+std::string getuTime() {
+    char tb[20];
+    char buf[23];
+    struct tm ti;
+    struct timespec t = {0, 0};
+    clock_gettime(CLOCK_REALTIME, &t);
+    localtime_r(&t.tv_sec, &ti);
+    strftime(tb, 20, "%d%b%H:%M:%S", &ti);
+    sprintf(buf, "%s.%09ld", tb, t.tv_nsec);
+    return std::string(buf);
 }
 
 std::string get_command_line(pid_t pid) {

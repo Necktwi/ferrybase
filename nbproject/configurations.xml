@@ -60,6 +60,9 @@
           <incDir>
             <pElem>/usr/include/libxml2</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>_DEBUG</Elem>
+          </preprocessorList>
         </ccTool>
         <linkerTool>
           <linkerLibItems>

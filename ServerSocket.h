@@ -5,6 +5,7 @@
 
 #include "Socket.h"
 #include "SocketException.h"
+#include "myconverters.h"
 #include <arpa/inet.h>
 #include <errno.h>
 #include <openssl/ossl_typ.h>
@@ -33,15 +34,15 @@ public:
             close(this->m_sock);
         }
 
-        bool operator <<(const std::string& s) const {
+        bool operator<<(const std::string& s) const {
             if (!send(s)) {
                 throw SocketException("Could not write to socket.");
             }
             return true;
         };
 
-        bool operator >>(std::string& s) const {
-            if ((int)this->recv(s,this->MAXRECV)<=0) {
+        bool operator>>(std::string& s) const {
+            if ((int) this->recv(s, this->MAXRECV) <= 0) {
                 throw SocketException("Could not read from socket.");
             }
             return true;
@@ -64,7 +65,8 @@ public:
         }
 
         std::string getSourcePort() {
-            return "";
+            int port = getPort(connectionDescriptor);
+            return std::string(itoa(port));
         }
     private:
         int connectionDescriptor = -1;

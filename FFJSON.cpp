@@ -37,6 +37,7 @@ FFJSON::FFJSON(std::string& ffjson) {
         bool object = false;
         bool ffescstr = false;
         bool success = false;
+        bool str = false;
         int recursiveObjectCount = 0;
         int recursiveArrayCount = 0;
         this->val.pairs = new std::map<std::string, FFJSON*>();
@@ -50,27 +51,28 @@ oloopbegining:
                     propset = true;
                     j = i;
                 } else if (ffjson[i] == ',' || ffjson[i] == '\\' || ffjson[i] == '.') {
-                    throw Exception("unexpected character in property at " + std::string(itoa(i)));
+                    int k = 0;
+                    throw Exception("unexpected character '" + std::string(1, (char) ffjson[i]) + "' in property at " + std::string(itoa(i)) + " in ''..." + std::string((char*) (ffjson.c_str() + (i > 10 ? i - 10 : i)), ((k = (ffjson.length() - i)) >= 10 ? 20 : k)) + "...'");
                 }
             } else {
-                if (ffjson[i] == '\\' && !ffescstr) {
+                if (ffjson[i] == '\\' && !ffescstr && !str) {
                     i++;
-                } else if (ffjson[i] == '{' && !array&& !ffescstr) {
+                } else if (ffjson[i] == '{' && !array&& !ffescstr && !str) {
                     object = true;
                     recursiveObjectCount++;
-                } else if (ffjson[i] == '}' && !array&& !ffescstr && object) {
+                } else if (ffjson[i] == '}' && !array&& !ffescstr && object && !str) {
                     recursiveObjectCount--;
                     if (recursiveObjectCount == 0) {
                         object = false;
                     }
-                } else if (ffjson[i] == '[' && !object && !ffescstr) {
+                } else if (ffjson[i] == '[' && !object && !ffescstr && !str) {
                     recursiveArrayCount++;
                     array = true;
-                } else if (ffjson[i] == ']' && !object&& !ffescstr && array) {
+                } else if (ffjson[i] == ']' && !object&& !ffescstr && array && !str) {
                     recursiveArrayCount--;
                     if (recursiveArrayCount == 0)
                         array = false;
-                } else if ((ffjson[i] == ',' || ffjson[i] == '}')&&!array&&!object && !ffescstr) {
+                } else if ((ffjson[i] == ',' || ffjson[i] == '}')&&!array&&!object && !ffescstr && !str) {
                     FFJSON* f = new FFJSON(value);
                     propset = false;
                     j = i + 1;
@@ -78,7 +80,9 @@ oloopbegining:
                     if (ffjson[i] == '}')success = true;
                     value = "";
                     valset = true;
-                } else if (ffjson[i] == 'F') {
+                } else if (ffjson[i] == '"' && !ffescstr) {
+                    str = !str;
+                } else if (ffjson[i] == 'F' && !str) {
                     if (ffjson[i + 1] == 'F') {
                         if (ffjson[i + 2] == 'E') {
                             if (ffjson[i + 3] == 'S') {
@@ -123,6 +127,7 @@ oloopbegining:
         bool array = false;
         bool object = false;
         bool ffescstr = false;
+        bool str = false;
         int recursiveObjectCount = 0;
         int recursiveArrayCount = 0;
         int elementCount = 0;
@@ -130,24 +135,24 @@ oloopbegining:
         bool success = false;
         while (i < l) {
 aloopbegining:
-            if (ffjson[i] == '\\' && !ffescstr) {
+            if (ffjson[i] == '\\' && !ffescstr && !str) {
                 i++;
-            } else if (ffjson[i] == '{' && !array&& !ffescstr) {
+            } else if (ffjson[i] == '{' && !array&& !ffescstr && !str) {
                 object = true;
                 recursiveObjectCount++;
-            } else if (ffjson[i] == '}' && !array&& !ffescstr && object) {
+            } else if (ffjson[i] == '}' && !array&& !ffescstr && object && !str) {
                 recursiveObjectCount--;
                 if (recursiveObjectCount == 0) {
                     object = false;
                 }
-            } else if (ffjson[i] == '[' && !object && !ffescstr) {
+            } else if (ffjson[i] == '[' && !object && !ffescstr && !str) {
                 recursiveArrayCount++;
                 array = true;
-            } else if (ffjson[i] == ']' && !object&& !ffescstr && array) {
+            } else if (ffjson[i] == ']' && !object&& !ffescstr && array && !str) {
                 recursiveArrayCount--;
                 if (recursiveArrayCount == 0)
                     array = false;
-            } else if ((ffjson[i] == ',' || ffjson[i] == ']')&&!array&&!object && !ffescstr) {
+            } else if ((ffjson[i] == ',' || ffjson[i] == ']') && !array && !object && !ffescstr && !str) {
                 FFJSON* f = new FFJSON(value);
                 propset = false;
                 j = i + 1;
@@ -156,7 +161,9 @@ aloopbegining:
                 if (ffjson[i] == ']')success = true;
                 value = "";
                 valset = true;
-            } else if (ffjson[i] == 'F') {
+            } else if (ffjson[i] == '"' && !ffescstr) {
+                str = !str;
+            } else if (ffjson[i] == 'F' && !str) {
                 if (ffjson[i + 1] == 'F') {
                     if (ffjson[i + 2] == 'E') {
                         if (ffjson[i + 3] == 'S') {
@@ -256,14 +263,15 @@ void FFJSON::trimWhites(std::string& s) {
 
 void FFJSON::trimQuotes(std::string& s) {
     int i = 0;
-    int j = s.length();
+    int j = s.length() - 1;
     if (s[0] == '"') {
-        i = 1;
+        i++;
     }
-    if (s[s.length() - 1] == '"') {
+    if (s[j] == '"') {
         j--;
     }
-    s = s.substr(i, j);
+    j++;
+    s = s.substr(i, j - i);
 }
 
 FFJSON::FFJSON_OBJ_TYPE FFJSON::objectType(std::string ffjson) {
@@ -273,9 +281,15 @@ FFJSON::FFJSON_OBJ_TYPE FFJSON::objectType(std::string ffjson) {
         return FFJSON_OBJ_TYPE::STRING;
     } else if (ffjson[0] == '[' && ffjson[ffjson.length() - 1] == ']') {
         return FFJSON_OBJ_TYPE::ARRAY;
+    } else if (ffjson.compare("true") == 0 || ffjson.compare("false") == 0) {
+        return FFJSON_OBJ_TYPE::BOOL;
     } else {
         return FFJSON_OBJ_TYPE::UNRECOGNIZED;
     }
+}
+
+FFJSON& FFJSON::operator[](const char* prop) {
+    return (*this)[std::string(prop)];
 }
 
 FFJSON& FFJSON::operator[](std::string prop) {
@@ -287,7 +301,7 @@ FFJSON& FFJSON::operator[](std::string prop) {
                 throw Exception("NULL");
             }
         } else {
-            throw Exception("Key not defined");
+            throw Exception("Key \"" + prop + "\" not defined");
         }
     } else {
         throw Exception("NON OBJECT TYPE");
@@ -367,4 +381,26 @@ std::string FFJSON::stringify() {
         this->ffjson[this->ffjson.length() - 1] = ']';
         return this->ffjson;
     }
+}
+
+/**
+ */
+FFJSON::operator const char*() {
+    return this->ffjson.c_str();
+}
+
+FFJSON::operator double() {
+    return this->val.number;
+}
+
+FFJSON::operator bool() {
+    return this->val.boolean;
+}
+
+FFJSON::operator int() {
+    return (int) this->val.number;
+}
+
+FFJSON::operator unsigned int() {
+    return (unsigned int) this->val.number;
 }

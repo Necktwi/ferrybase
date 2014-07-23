@@ -45,7 +45,9 @@ public:
     static void InitializeSSL();
     static void DestroySSL();
     static void ShutdownSSL(SSL* ssl);
-
+    static std::string getIpAddr(int fd);
+    static int getPort(int fd);
+    
 protected:
     int m_sock = -1;
     sockaddr_in m_addr;

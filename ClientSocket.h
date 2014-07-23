@@ -31,6 +31,7 @@ public:
     std::string host;
     int port;
     void reconnect();
+    void disconnect();
     bool send(const std::string s, int __flags) const;
     bool send(const std::string* s, int __flags) const;
     bool send(const std::string s) const;
