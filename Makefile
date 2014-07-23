@@ -126,3 +126,19 @@ include nbproject/Makefile-impl.mk
 
 # include project make variables
 include nbproject/Makefile-variables.mk
+
+#install:
+#	test -d "$(DESTDIR)/usr/local/" || mkdir -p "$(DESTDIR)/usr/local/" && cp -R ffmpeg_build $(DESTDIR)/usr/local/
+#	cp -R ffmpeg_build/bin $(DESTDIR)/usr/local/
+#	install -d $(DESTDIR)/var/${APPNAME}records
+#	install -D config.xml $(DESTDIR)/etc/${APPNAME}.conf.xml
+#	install -D devices.rules $(DESTDIR)/etc/udev/rules.d/${APPNAME}.rules
+#	install -D error.log $(DESTDIR)/var/log/${APPNAME}.log
+#	install -D init.conf $(DESTDIR)/etc/init/${APPNAME}.conf
+#	install -D init.override $(DESTDIR)/etc/init/${APPNAME}.override
+#	install -D init.d $(DESTDIR)/etc/init.d/${APPNAME}
+#	install -D certs/ferryfair.cert $(DESTDIR)/etc/ssl/certs/ferryfair.cert
+#	install -D certs/ferryport.ferryfair.cert $(DESTDIR)/etc/ssl/certs/${CND_ARTIFACT_NAME_${CONF}}.ferryfair.cert
+#	install -D certs/ferryport.ferryfair.key $(DESTDIR)/etc/ssl/certs/${CND_ARTIFACT_NAME_${CONF}}.ferryfair.key
+#	install -D ttyO1_armhf.com-00A0.dtbo $(DESTDIR)/lib/firmware/ttyO1_armhf.com-00A0.dtbo
+#	install -m755 -D ${CND_ARTIFACT_PATH_${CONF}} $(DESTDIR)/usr/bin/${APPNAME}
