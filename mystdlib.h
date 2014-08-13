@@ -39,7 +39,8 @@ char const * sperm(__mode_t mode);
 /*Corrected on system time change*/
 class FerryTimeStamp {
 public:
-    time_t t;
+    timespec ts = {0, 0};
+    time_t& t = (time_t&) ts.tv_sec;
     FerryTimeStamp();
     ~FerryTimeStamp();
     static std::list<time_t*> ferryTimesList;

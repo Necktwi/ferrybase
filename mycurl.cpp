@@ -64,7 +64,7 @@ string SOAPReq(string hostname, string port, string requestPath, string SOAPActi
                 try {
                     client_socket >> resbuf;
                     response += resbuf;
-                    if (!s) {
+                    if (!s && resbuf.length() > 0) {
                         int si = (int) response.find("Content-Length: ", 0) + 16;
                         l = (int) response.find("\r\n", si) - si;
                         string len = response.substr(si, l);
@@ -86,9 +86,11 @@ string SOAPReq(string hostname, string port, string requestPath, string SOAPActi
 
 
     int si = (int) response.find("Content-Length: ", 0) + 16;
+    if (si <= 15)return "CONNECTION ERROR";
     int l = (int) response.find("\r\n", si) - si;
     string len = response.substr(si, l);
     l = atoi(len.c_str());
+    if (l < 1)return "CONNECTION ERROR";
     si = (int) response.find("\r\n\r\n", 0) + 4;
     string res2 = response.substr(si, l);
     return res2;

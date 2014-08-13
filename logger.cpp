@@ -56,7 +56,7 @@ static const char * const log_type_names[] = {
 };*/
 
 int _ff_log(const char* func, _ff_log_type t, unsigned int l, const char* format, ...) {
-    char buf[300];
+    char buf[1000];
     unsigned int nnl = 1 << 31;
     bool no_new_line = (l & nnl) == nnl;
     l &= ~nnl;
@@ -91,7 +91,7 @@ int _ff_log(const char* func, _ff_log_type t, unsigned int l, const char* format
 };
 
 int _ff_log(_ff_log_type t, unsigned int l, const char* func, const char* file_name, int line_no, const char* format, ...) {
-    char buf[300];
+    char buf[1000];
     unsigned int nnl = 1 << 31;
     bool no_new_line = (l & nnl) == nnl;
     l &= ~nnl;
@@ -127,7 +127,7 @@ int _ff_log(_ff_log_type t, unsigned int l, const char* func, const char* file_n
 };
 
 int _ff_log_contnu(_ff_log_type t, unsigned int l, const char* format, ...) {
-    char buf[300];
+    char buf[1000];
     unsigned int nnl = 1 << 31;
     bool no_new_line = (l & nnl) == nnl;
     l &= ~nnl;
@@ -141,11 +141,6 @@ int _ff_log_contnu(_ff_log_type t, unsigned int l, const char* format, ...) {
     buf[sizeof (buf) - 1] = '\0';
     va_end(ap);
 
-    char buf2[300];
-    unsigned long long now;
-    int n;
-
-    buf2[0] = '\0';
     if (no_new_line) {
         fprintf(stderr, "%s", buf);
     } else {

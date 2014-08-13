@@ -592,9 +592,10 @@ FerryTimeStamp::~FerryTimeStamp() {
     i = ferryTimesList.begin();
     while (i != ferryTimesList.end()) {
         if (*i == &this->t) {
-            ferryTimesList.erase(i);
+            i = ferryTimesList.erase(i);
             break;
         }
+        i++;
     }
 };
 

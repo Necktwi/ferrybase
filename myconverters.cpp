@@ -43,7 +43,7 @@
     return num;
 }*/
 
-char* itoa(int i, int size) {
+std::string itoa(int i, int size) {
     std::stringstream ss;
     std::string out;
     ss << i;
@@ -56,7 +56,7 @@ char* itoa(int i, int size) {
             additionalZeroes--;
         }
     }
-    return (char*) out.c_str();
+    return out;
 }
 
 std::string implode(const std::string glue, const std::vector<std::string> &pieces) {
