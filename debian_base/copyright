@@ -1,0 +1,29 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: base
+Source: https://github.com/necktwi/base
+
+Files: *
+Copyright: 2013 Satya Gowtham Kudupudi (satyagowtham.k@gmail.com)
+License: Artist
+ Who ever copies the code without crediting the author properly will
+ be declared as dick heads :p
+ a base shared library for apps by ferryfair.com 
+ .
+ It got multipurpose functions like sockets, logger, etc.
+
+# If you want to use GPL v2 or later for the /debian/* files use 
+# the following clauses, or change it to suit. Delete these two lines
+Files: debian/*
+Copyright: 2014 Satya Gowtham Kudupudi <satyagowtham.k@gmail.com>
+License: Artist
+ Who ever copies the code without crediting the author properly will
+ be declared as dick heads :p
+ a base shared library for apps by ferryfair.com
+ .
+ It got multipurpose functions like sockets, logger, etc.
+
+# Please also look if there are files or directories which have a
+# different copyright/license attached and list them here.
+# Please avoid to pick license terms that are more restrictive than the
+# packaged work, as it may make Debian's contributions unacceptable upstream.
+
