@@ -103,6 +103,7 @@
           <linkerLibItems>
             <linkerOptionItem>-lxml2 -lpthread -lssl -lcrypto -lz -ludev</linkerOptionItem>
           </linkerLibItems>
+          <commandLine>-Wl,-soname,lib${APPNAME}.so.${MAJOR_VERSION}</commandLine>
         </linkerTool>
       </compileType>
       <packaging>
