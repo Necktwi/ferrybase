@@ -7,22 +7,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/FFJSON.cpp</file>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/mystdlib.h</file>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/Socket.cpp</file>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/JPEGImage.cpp</file>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/ClientSocket.cpp</file>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/logger.cpp</file>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/logger.h</file>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/ClientSocket.h</file>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/ServerSocket.h</file>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/Socket.h</file>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/mycurl.cpp</file>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/ServerSocket.cpp</file>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/myconverters.cpp</file>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/FFJSON.h</file>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/mystdlib.cpp</file>
-            <file>rfs://gowtham@newmek7.newmeksolutions.com:22/home/gowtham/NetBeansProjects/base/myconverters.h</file>
+            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/Makefile</file>
+            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/FFJSON.h</file>
+            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/myconverters.h</file>
+            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/FFJSON.cpp</file>
+            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/mystdlib.h</file>
+            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/mystdlib.cpp</file>
+            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/logger.cpp</file>
         </group>
     </open-files>
 </project-private>

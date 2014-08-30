@@ -6,22 +6,22 @@
 CND_BASEDIR=`pwd`
 CND_BUILDDIR=build
 CND_DISTDIR=dist
-# Debug configuration
-CND_PLATFORM_Debug=GNU-Linux-x86
-CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux-x86
-CND_ARTIFACT_NAME_Debug=libbase.so
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux-x86/libbase.so
-CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux-x86/package
-CND_PACKAGE_NAME_Debug=libbase.so.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux-x86/package/libbase.so.tar
-# Release configuration
-CND_PLATFORM_Release=GNU-Linux-x86
-CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux-x86
-CND_ARTIFACT_NAME_Release=libbase.so
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux-x86/libbase.so
-CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux-x86/package
-CND_PACKAGE_NAME_Release=libbase.so.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux-x86/package/libbase.so.tar
+# DebugDynamic configuration
+CND_PLATFORM_DebugDynamic=GNU-Linux-x86
+CND_ARTIFACT_DIR_DebugDynamic=dist/DebugDynamic/GNU-Linux-x86
+CND_ARTIFACT_NAME_DebugDynamic=lib${APPNAME}.so.${MAJOR_VERSION}.${MINOR_VERSION}
+CND_ARTIFACT_PATH_DebugDynamic=dist/DebugDynamic/GNU-Linux-x86/lib${APPNAME}.so.${MAJOR_VERSION}.${MINOR_VERSION}
+CND_PACKAGE_DIR_DebugDynamic=dist/DebugDynamic/GNU-Linux-x86/package
+CND_PACKAGE_NAME_DebugDynamic=libbase.deb
+CND_PACKAGE_PATH_DebugDynamic=dist/DebugDynamic/GNU-Linux-x86/package/libbase.deb
+# DebugStatic configuration
+CND_PLATFORM_DebugStatic=GNU-Linux-x86
+CND_ARTIFACT_DIR_DebugStatic=dist/DebugStatic/GNU-Linux-x86
+CND_ARTIFACT_NAME_DebugStatic=lib${APPNAME}.a
+CND_ARTIFACT_PATH_DebugStatic=dist/DebugStatic/GNU-Linux-x86/lib${APPNAME}.a
+CND_PACKAGE_DIR_DebugStatic=dist/DebugStatic/GNU-Linux-x86/package
+CND_PACKAGE_NAME_DebugStatic=base.tar
+CND_PACKAGE_PATH_DebugStatic=dist/DebugStatic/GNU-Linux-x86/package/base.tar
 #
 # include compiler specific variables
 #

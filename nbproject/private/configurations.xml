@@ -2,7 +2,7 @@
 <configurationDescriptor version="94">
   <projectmakefile>Makefile</projectmakefile>
   <confs>
-    <conf name="Debug" type="2">
+    <conf name="DebugDynamic" type="2">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <platform>2</platform>
@@ -35,7 +35,7 @@
         </environment>
       </runprofile>
     </conf>
-    <conf name="Release" type="2">
+    <conf name="DebugStatic" type="3">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <platform>2</platform>

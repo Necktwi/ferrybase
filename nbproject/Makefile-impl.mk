@@ -27,11 +27,11 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=base
 
 # Active Configuration
-DEFAULTCONF=Debug
+DEFAULTCONF=DebugDynamic
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=Debug Release 
+ALLCONFS=DebugDynamic DebugStatic 
 
 
 # build
