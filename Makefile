@@ -134,8 +134,8 @@ install:
 	test -d "$(DESTDIR)/usr/lib" || mkdir -p "$(DESTDIR)/usr/lib" && test -d "$(DESTDIR)/usr/lib/ferryfair" || mkdir -p "$(DESTDIR)/usr/lib/ferryfair"
 	#install -D ${CND_ARTIFACT_PATH_${CONF}} $(DESTDIR)/usr/lib/ferryfair/${CND_ARTIFACT_NAME_${CONF}}.$(version).0.0
 	#install -D ${CND_ARTIFACT_PATH_DebugStatic} $(DESTDIR)/usr/lib/ferryfair/${CND_ARTIFACT_NAME_DebugStatic}
-	install -m=644 -D ${CND_ARTIFACT_PATH_DebugStatic} $(DESTDIR)/usr/lib/${CND_ARTIFACT_NAME_DebugStatic}
-	install -m=644 -D ${CND_ARTIFACT_PATH_${CONF}} $(DESTDIR)/usr/lib/${CND_ARTIFACT_NAME_${CONF}}
+	install -D ${CND_ARTIFACT_PATH_DebugStatic} $(DESTDIR)/usr/lib/${CND_ARTIFACT_NAME_DebugStatic}
+	install -D ${CND_ARTIFACT_PATH_${CONF}} $(DESTDIR)/usr/lib/${CND_ARTIFACT_NAME_${CONF}}
 	cd $(DESTDIR)/usr/lib/
 	ln -s ${CND_ARTIFACT_NAME_${CONF}} $(DESTDIR)/usr/lib/lib${APPNAME}.so.${MAJOR_VERSION}
 	ln -s lib${APPNAME}.so.${MAJOR_VERSION} $(DESTDIR)/usr/lib/lib${APPNAME}.so
