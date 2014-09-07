@@ -1,4 +1,11 @@
-base (1.0-1) unstable; urgency=low
+base (1.1-1ubuntu1) UNRELEASED; urgency=low
+
+  * Initial release (Closes: #1)
+   - very good package
+
+ -- Satya Gowtham Kudupudi <satyagowtham.k@gmail.com>  Sat, 06 Sep 2014 20:43:07 +0530
+
+base (1.1-1) unstable; urgency=low
 
   * Initial release (Closes: #1)
    - very good package
