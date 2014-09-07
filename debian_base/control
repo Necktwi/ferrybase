@@ -11,11 +11,11 @@ Vcs-Browser: https://github.com/necktwi/base
 Package: base-dev
 Section: non-free/libdevel
 Architecture: i386
-Depends: libbase1 (= ${binary:Version}), openssl, libxml2, bluez
+Depends: base1 (= ${binary:Version}), openssl, libxml2, bluez
 Description: Base shared library for apps by ferryfair.com
  It got multipurpose funtions like sockets, logger, etc.
 
-Package: libbase1
+Package: base1
 Section: non-free/libs
 Architecture: i386
 Depends: ${shlibs:Depends}, ${misc:Depends},  openssl, libxml2, bluez
