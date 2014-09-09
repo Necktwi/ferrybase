@@ -22,6 +22,14 @@ CND_ARTIFACT_PATH_DebugStatic=dist/DebugStatic/GNU-Linux-x86/lib${APPNAME}.a
 CND_PACKAGE_DIR_DebugStatic=dist/DebugStatic/GNU-Linux-x86/package
 CND_PACKAGE_NAME_DebugStatic=base.tar
 CND_PACKAGE_PATH_DebugStatic=dist/DebugStatic/GNU-Linux-x86/package/base.tar
+# armhfDebugDynamic configuration
+CND_PLATFORM_armhfDebugDynamic=arm-linux-gnueabihf-Linux-x86
+CND_ARTIFACT_DIR_armhfDebugDynamic=dist/armhfDebugDynamic/arm-linux-gnueabihf-Linux-x86
+CND_ARTIFACT_NAME_armhfDebugDynamic=lib${APPNAME}.so.${MAJOR_VERSION}.${MINOR_VERSION}
+CND_ARTIFACT_PATH_armhfDebugDynamic=dist/armhfDebugDynamic/arm-linux-gnueabihf-Linux-x86/lib${APPNAME}.so.${MAJOR_VERSION}.${MINOR_VERSION}
+CND_PACKAGE_DIR_armhfDebugDynamic=dist/armhfDebugDynamic/arm-linux-gnueabihf-Linux-x86/package
+CND_PACKAGE_NAME_armhfDebugDynamic=libbase.deb
+CND_PACKAGE_PATH_armhfDebugDynamic=dist/armhfDebugDynamic/arm-linux-gnueabihf-Linux-x86/package/libbase.deb
 #
 # include compiler specific variables
 #
