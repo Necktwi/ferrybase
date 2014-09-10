@@ -109,7 +109,11 @@
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.${CND_DLIB_EXT}.${MAJOR_VERSION}.${MINOR_VERSION}</output>
           <commandlineTool>g++</commandlineTool>
           <linkerLibItems>
-            <linkerOptionItem>-lxml2 -lpthread -lssl -lcrypto -lz -ludev</linkerOptionItem>
+            <linkerOptionItem>-lxml2</linkerOptionItem>
+            <linkerOptionItem>-lpthread</linkerOptionItem>
+            <linkerOptionItem>-lssl</linkerOptionItem>
+            <linkerOptionItem>-lcrypto</linkerOptionItem>
+            <linkerOptionItem>-lz</linkerOptionItem>
           </linkerLibItems>
           <commandLine>-Wl,-soname,lib${APPNAME}.so.${MAJOR_VERSION}</commandLine>
         </linkerTool>
