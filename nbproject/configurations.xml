@@ -88,9 +88,13 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <cTool>
+          <commandlineTool>gcc</commandlineTool>
+        </cTool>
         <ccTool>
           <developmentMode>0</developmentMode>
           <standard>8</standard>
+          <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>/usr/include/libxml2</pElem>
           </incDir>
@@ -98,10 +102,18 @@
             <Elem>_DEBUG</Elem>
           </preprocessorList>
         </ccTool>
+        <asmTool>
+          <commandlineTool>as</commandlineTool>
+        </asmTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.${CND_DLIB_EXT}.${MAJOR_VERSION}.${MINOR_VERSION}</output>
+          <commandlineTool>g++</commandlineTool>
           <linkerLibItems>
-            <linkerOptionItem>-lxml2 -lpthread -lssl -lcrypto -lz -ludev</linkerOptionItem>
+            <linkerOptionItem>-lxml2</linkerOptionItem>
+            <linkerOptionItem>-lpthread</linkerOptionItem>
+            <linkerOptionItem>-lssl</linkerOptionItem>
+            <linkerOptionItem>-lcrypto</linkerOptionItem>
+            <linkerOptionItem>-lz</linkerOptionItem>
           </linkerLibItems>
           <commandLine>-Wl,-soname,lib${APPNAME}.so.${MAJOR_VERSION}</commandLine>
         </linkerTool>
@@ -266,9 +278,13 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <cTool>
+          <commandlineTool>gcc</commandlineTool>
+        </cTool>
         <ccTool>
           <developmentMode>0</developmentMode>
           <standard>8</standard>
+          <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>/usr/include/libxml2</pElem>
           </incDir>
@@ -276,10 +292,203 @@
             <Elem>_DEBUG</Elem>
           </preprocessorList>
         </ccTool>
+        <asmTool>
+          <commandlineTool>as</commandlineTool>
+        </asmTool>
         <archiverTool>
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.a</output>
         </archiverTool>
       </compileType>
+      <item path="/home/gowtham/Projects/base/base.pc"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/gowtham/Projects/base/nbproject/Makefile-DebugDynamic.mk"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/gowtham/Projects/base/nbproject/Makefile-DebugStatic.mk"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/gowtham/Projects/base/nbproject/Makefile-impl.mk"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/gowtham/Projects/base/nbproject/Makefile-variables.mk"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/gowtham/Projects/base/nbproject/Package-DebugDynamic.bash"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/gowtham/Projects/base/nbproject/Package-DebugStatic.bash"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/gowtham/Projects/base/nbproject/configurations.xml"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/gowtham/Projects/base/nbproject/private/Makefile-variables.mk"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/gowtham/Projects/base/nbproject/private/configurations.xml"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/gowtham/Projects/base/nbproject/private/downloads-newmek7.newmeksolutions.com-gowtham-22"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/gowtham/Projects/base/nbproject/private/launcher.properties"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/gowtham/Projects/base/nbproject/private/private.xml"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/gowtham/Projects/base/nbproject/private/timestamps-newmek7.newmeksolutions.com-gowtham-22"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/gowtham/Projects/base/nbproject/project.xml"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="ClientSocket.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="ClientSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FFJSON.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="FFJSON.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="JPEGImage.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="JPEGImage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ServerSocket.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="ServerSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Socket.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="Socket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SocketException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian_base/changelog" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian_base/control" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian_base/copyright" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian_base/rules" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian_base/source/format" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian_base/source/include-binaries"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="logger.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="myconverters.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="myconverters.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="mycurl.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="mycurl.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="mystdlib.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="mystdlib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="myxml.cpp" ex="false" tool="1" flavor2="8">
+      </item>
+      <item path="myxml.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+    <conf name="armhfDebugDynamic" type="2">
+      <toolsSet>
+        <compilerSet>arm-linux-gnueabihf|Unknown</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <commandlineTool>arm-linux-gnueabihf-gcc</commandlineTool>
+          <incDir>
+            <pElem>/usr/include</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <developmentMode>0</developmentMode>
+          <standard>8</standard>
+          <commandlineTool>arm-linux-gnueabihf-g++</commandlineTool>
+          <incDir>
+            <pElem>/usr/include/libxml2</pElem>
+            <pElem>/usr/include</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>_DEBUG</Elem>
+          </preprocessorList>
+        </ccTool>
+        <asmTool>
+          <commandlineTool>arm-linux-gnueabihf-as</commandlineTool>
+        </asmTool>
+        <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.${CND_DLIB_EXT}.${MAJOR_VERSION}.${MINOR_VERSION}</output>
+          <commandlineTool>arm-linux-gnueabihf-g++</commandlineTool>
+          <linkerLibItems>
+            <linkerOptionItem>-lxml2 -lpthread -lssl -lcrypto -lz -ludev</linkerOptionItem>
+          </linkerLibItems>
+          <commandLine>-Wl,-soname,lib${APPNAME}.so.${MAJOR_VERSION}</commandLine>
+        </linkerTool>
+      </compileType>
+      <packaging>
+        <packType>Debian</packType>
+        <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/libbase.deb</output>
+        <commandlineTool>dpkg-deb</commandlineTool>
+        <packFileList>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}lib/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+        </packFileList>
+        <packInfoList>
+          <packInfoListElem name="Package" value="libbase.so" mandatory="true"/>
+          <packInfoListElem name="Version" value="1.0" mandatory="true"/>
+          <packInfoListElem name="Architecture" value="i386" mandatory="false"/>
+          <packInfoListElem name="Maintainer" value="Gowtham" mandatory="false"/>
+          <packInfoListElem name="Description" value="..." mandatory="false"/>
+        </packInfoList>
+      </packaging>
       <item path="/home/gowtham/Projects/base/base.pc"
             ex="false"
             tool="3"

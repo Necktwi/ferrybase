@@ -61,7 +61,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-lxml2 -lpthread -lssl -lcrypto -lz -ludev
+LDLIBSOPTIONS=-lxml2 -lpthread -lssl -lcrypto -lz
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -69,7 +69,7 @@ LDLIBSOPTIONS=-lxml2 -lpthread -lssl -lcrypto -lz -ludev
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.${CND_DLIB_EXT}.${MAJOR_VERSION}.${MINOR_VERSION}: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.${CND_DLIB_EXT}.${MAJOR_VERSION}.${MINOR_VERSION} ${OBJECTFILES} ${LDLIBSOPTIONS} -Wl,-soname,lib${APPNAME}.so.${MAJOR_VERSION} -shared -fPIC
+	g++ -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.${CND_DLIB_EXT}.${MAJOR_VERSION}.${MINOR_VERSION} ${OBJECTFILES} ${LDLIBSOPTIONS} -Wl,-soname,lib${APPNAME}.so.${MAJOR_VERSION} -shared -fPIC
 
 ${OBJECTDIR}/ClientSocket.o: ClientSocket.cpp 
 	${MKDIR} -p ${OBJECTDIR}

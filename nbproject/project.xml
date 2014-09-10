@@ -22,6 +22,10 @@
                     <name>DebugStatic</name>
                     <type>3</type>
                 </confElem>
+                <confElem>
+                    <name>armhfDebugDynamic</name>
+                    <type>2</type>
+                </confElem>
             </confList>
             <formatting>
                 <project-formatting-style>false</project-formatting-style>
