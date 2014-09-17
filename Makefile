@@ -136,13 +136,13 @@ install:
 	#install -D ${CND_ARTIFACT_PATH_DebugStatic} $(DESTDIR)/usr/lib/ferryfair/${CND_ARTIFACT_NAME_DebugStatic}
 	install -D ${CND_ARTIFACT_PATH_DebugStatic} $(DESTDIR)/usr/lib/${CND_ARTIFACT_NAME_DebugStatic}
 	install -D ${CND_ARTIFACT_PATH_${CONF}} $(DESTDIR)/usr/lib/${CND_ARTIFACT_NAME_${CONF}}
-	cd $(DESTDIR)/usr/lib/
-	ln -s ${CND_ARTIFACT_NAME_${CONF}} $(DESTDIR)/usr/lib/lib${APPNAME}.so.${MAJOR_VERSION}
-	ln -s lib${APPNAME}.so.${MAJOR_VERSION} $(DESTDIR)/usr/lib/lib${APPNAME}.so
-	#ln -s ./ferryfair/${CND_ARTIFACT_NAME_DebugStatic} $(DESTDIR)/usr/lib/${CND_ARTIFACT_NAME_DebugStatic}
-	cd $(pwd_var)
-	test -d "$(DESTDIR)/usr/include/ferryfair" || mkdir -p "$(DESTDIR)/usr/include/ferryfair" && mkdir -p "$(DESTDIR)/usr/include/ferryfair/base"
+	cd ${DESTDIR}/usr/lib/
+	ln -s ${CND_ARTIFACT_NAME_${CONF}} ${DESTDIR}/usr/lib/lib${APPNAME}.so.${MAJOR_VERSION}
+	ln -s lib${APPNAME}.so.${MAJOR_VERSION} ${DESTDIR}/usr/lib/lib${APPNAME}.so
+	#ln -s ./ferryfair/${CND_ARTIFACT_NAME_DebugStatic} ${DESTDIR}/usr/lib/${CND_ARTIFACT_NAME_DebugStatic}
+	cd ${pwd_var}
+	test -d "$(DESTDIR)/usr/include/ferryfair" || mkdir -p "${DESTDIR}/usr/include/ferryfair" && mkdir -p "${DESTDIR}/usr/include/ferryfair/base"
 	install -D *.h $(DESTDIR)/usr/include/ferryfair/base
 	test -d "$(DESTDIR)/usr/lib/pkgconfig/" || mkdir -p "$(DESTDIR)/usr/lib/pkgconfig/"
-	install -m=644 -D "${APPNAME}.pc" $(DESTDIR)/usr/lib/pkgconfig/lib$(APPNAME).pc
-	install -m=644 -D "${APPNAME}.pc" $(DESTDIR)/usr/share/pkgconfig/lib$(APPNAME).pc
+	install -m=644 -D "${APPNAME}.pc" $(DESTDIR)/usr/lib/pkgconfig/lib${APPNAME}.pc
+	install -m=644 -D "${APPNAME}.pc" $(DESTDIR)/usr/share/pkgconfig/lib${APPNAME}.pc
