@@ -1,0 +1,10 @@
+prefix=/usr
+exec_prefix=${prefix}
+includedir=${prefix}/include/ferryfair
+libdir=${exec_prefix}/lib
+
+Name: base
+Description: The base library for ferryfair apps
+Version: 1.0.0
+Cflags: -I${includedir}/base
+Libs: -L${libdir} -lbase
