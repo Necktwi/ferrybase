@@ -54,7 +54,7 @@ TESTFILES= \
 	${TESTDIR}/TestFiles/f1
 
 # C Compiler Flags
-CFLAGS=
+CFLAGS=-O0
 
 # CC Compiler Flags
 CCFLAGS=-g -O0

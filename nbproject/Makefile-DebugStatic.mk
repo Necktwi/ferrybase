@@ -46,15 +46,12 @@ OBJECTFILES= \
 	${OBJECTDIR}/mystdlib.o \
 	${OBJECTDIR}/myxml.o
 
-<<<<<<< HEAD
 # Test Directory
 TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 
 # Test Files
 TESTFILES= \
 	${TESTDIR}/TestFiles/f1
-=======
->>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
 
 # C Compiler Flags
 CFLAGS=

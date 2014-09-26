@@ -95,6 +95,7 @@
       <compileType>
         <cTool>
           <commandlineTool>gcc</commandlineTool>
+          <commandLine>-O0</commandLine>
         </cTool>
         <ccTool>
           <developmentMode>0</developmentMode>
@@ -246,6 +247,7 @@
             tool="3"
             flavor2="0">
       </item>
+      <folder path="TestFiles/f1">
         <cTool>
           <incDir>
             <pElem>.</pElem>
