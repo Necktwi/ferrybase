@@ -1,6 +1,6 @@
 /* 
  * File:   mycurl.h
- * Author: newmek7
+ * Author: Satya Gowtham Kudupudi
  *
  * Created on 20 March, 2013, 2:53 PM
  */
