@@ -7,7 +7,6 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
             <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/debian_base/rules</file>
             <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/myconverters.h</file>
             <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/mycurl.h</file>
@@ -30,8 +29,6 @@
             <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/mystdlib.h</file>
             <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/nbproject/private/configurations.xml</file>
             <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/ClientSocket.h</file>
-=======
->>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
             <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/nbproject/Makefile-variables.mk</file>
         </group>
     </open-files>

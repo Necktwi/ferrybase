@@ -1,9 +1,7 @@
 /* 
  * File:   myxml.h
-<<<<<<< HEAD
  * Author: Satya Gowtham Kudupudi
 =======
->>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
  *
  * Created on 19 March, 2013, 10:52 AM
  */

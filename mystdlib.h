@@ -1,9 +1,6 @@
 /* 
  * File:   mystdlib.h
-<<<<<<< HEAD
  * Author: Satya Gowtham Kudupudi
-=======
->>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
  *
  * Created on 26 March, 2013, 10:25 AM
  */
