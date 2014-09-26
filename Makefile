@@ -136,6 +136,7 @@ install:
 	#install -D ${CND_ARTIFACT_PATH_DebugStatic} $(DESTDIR)/usr/lib/ferryfair/${CND_ARTIFACT_NAME_DebugStatic}
 	install -D ${CND_ARTIFACT_PATH_DebugStatic} $(DESTDIR)/usr/lib/${CND_ARTIFACT_NAME_DebugStatic}
 	install -D ${CND_ARTIFACT_PATH_${CONF}} $(DESTDIR)/usr/lib/${CND_ARTIFACT_NAME_${CONF}}
+<<<<<<< HEAD
 	cd $(DESTDIR)/usr/lib/
 	ln -s ${CND_ARTIFACT_NAME_${CONF}} $(DESTDIR)/usr/lib/lib${APPNAME}.so.${MAJOR_VERSION}
 	ln -s lib${APPNAME}.so.${MAJOR_VERSION} $(DESTDIR)/usr/lib/lib${APPNAME}.so
@@ -146,3 +147,5 @@ install:
 	test -d "$(DESTDIR)/usr/lib/pkgconfig/" || mkdir -p "$(DESTDIR)/usr/lib/pkgconfig/"
 	install -m=644 -D "${APPNAME}.pc" $(DESTDIR)/usr/lib/pkgconfig/lib$(APPNAME).pc
 	install -m=644 -D "${APPNAME}.pc" $(DESTDIR)/usr/share/pkgconfig/lib$(APPNAME).pc
+=======
+>>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3

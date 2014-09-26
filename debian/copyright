@@ -1,6 +1,6 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: base
-Source: https://github.com/necktwi/base
+Upstream-Name: ferryport
+Source: https://github.com/necktwi/ferryport
 
 Files: *
 Copyright: 2013 Satya Gowtham Kudupudi (satyagowtham.k@gmail.com)
@@ -10,9 +10,9 @@ License: Artist
  Mr. Wolf of little red riding hood or the Chamataka the fox on ferryfair
  website based on the deed :p
  .
- a base shared library for apps by ferryfair.com 
+ Its an attempt to push various sensor data to a remote server
  .
- It got multipurpose functions like sockets, logger, etc.
+ For now it pushes video, audio and gps.
 
 Files: debian/*
 Copyright: 2014 Satya Gowtham Kudupudi <satyagowtham.k@gmail.com>
@@ -22,7 +22,12 @@ License: Artist
  Mr. Wolf of little red riding hood or the Chamataka the fox on ferryfair
  website based on the deed :p
  .
- a base shared library for apps by ferryfair.com
+ Its an attempt to push various sensor data to a remote server
  .
- It got multipurpose functions like sockets, logger, etc.
+ For now it pushes video, audio and gps.
 
+Files: ffmpeg_source/*
+Copyright: 2014 Satya Gowtham Kudupudi <satyagowtham.k@gmail.com>
+License: replicate
+ All the files that are used to build ffmpeg impose their corresponding
+ copyrights.

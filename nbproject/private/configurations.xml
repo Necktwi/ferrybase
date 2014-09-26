@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <configurationDescriptor version="95">
+=======
+>>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="DebugDynamic" type="2">

@@ -33,6 +33,7 @@ public:
         std::string identifier;
     };
     FFJSON();
+<<<<<<< HEAD
     FFJSON(std::string& ffjson, int* ci = NULL);
     virtual ~FFJSON();
 
@@ -42,6 +43,8 @@ public:
 
     char FFJSON_OBJ_STR[7][15] = {
         "STRING", "NUMBER", "OBJECT", "ARRAY", "BOOL", "XML", "UNRECOGNIZED"
+=======
+>>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
     };
 
     /**
@@ -62,7 +65,10 @@ public:
     FFJSON_OBJ_TYPE type;
     std::string ffjson;
     int length = 0;
+<<<<<<< HEAD
     int size = 0;
+=======
+>>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
     //const char FFESCSTR[9] = "FFESCSTR";
     static void trimWhites(std::string& s);
     static void trimQuotes(std::string& s);
@@ -71,7 +77,10 @@ public:
     FFJSON& operator[](std::string prop);
     FFJSON& operator[](int index);
     std::string stringify();
+<<<<<<< HEAD
     std::string prettyString(int indent = 0);
+=======
+>>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
 
     union FFValue {
         char * string;

@@ -15,11 +15,15 @@
 #include "FFJSON.h"
 #include "mystdlib.h"
 #include "myconverters.h"
+<<<<<<< HEAD
 #include "logger.h"
+=======
+>>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
 
 FFJSON::FFJSON() {
 }
 
+<<<<<<< HEAD
 FFJSON::FFJSON(std::string& ffjson, int* ci) {
     int i = (ci == NULL) ? 0 : *ci;
     int j = ffjson.length();
@@ -157,6 +161,8 @@ FFJSON::FFJSON(std::string& ffjson, int* ci) {
     if (ci != NULL)*ci = i;
     ffl_debug(1, "FFJSON Object %s\t%p created", FFJSON_OBJ_STR[this->type],
             this);
+=======
+>>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
 }
 
 FFJSON::~FFJSON() {
@@ -171,11 +177,15 @@ FFJSON::~FFJSON() {
         delete this->val.pairs;
     } else if (this->type == FFJSON_OBJ_TYPE::ARRAY) {
         int i = this->val.array->size() - 1;
+<<<<<<< HEAD
         while (i >= 0) {
+=======
+>>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
             delete (*this->val.array)[i];
             i--;
         }
         delete this->val.array;
+<<<<<<< HEAD
     } else if (this->type == FFJSON_OBJ_TYPE::STRING ||
             this->type == FFJSON_OBJ_TYPE::UNRECOGNIZED
             || this->type == FFJSON_OBJ_TYPE::XML) {
@@ -185,6 +195,8 @@ FFJSON::~FFJSON() {
 }
 
 void FFJSON::trimWhites(std::string & s) {
+======
+>>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
     int i = 0;
     int j = s.length() - 1;
     while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t') {
@@ -197,7 +209,10 @@ void FFJSON::trimWhites(std::string & s) {
     s = s.substr(i, j - i);
 }
 
+<<<<<<< HEAD
 void FFJSON::trimQuotes(std::string & s) {
+=======
+>>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
     int i = 0;
     int j = s.length() - 1;
     if (s[0] == '"') {
@@ -224,11 +239,14 @@ FFJSON::FFJSON_OBJ_TYPE FFJSON::objectType(std::string ffjson) {
     }
 }
 
+<<<<<<< HEAD
 FFJSON & FFJSON::operator[](const char* prop) {
     return (*this)[std::string(prop)];
 }
 
 FFJSON & FFJSON::operator[](std::string prop) {
+=======
+>>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
     if (this->type == FFJSON_OBJ_TYPE::OBJECT) {
         if ((*this->val.pairs).find(prop) != (*this->val.pairs).end()) {
             if ((*this->val.pairs)[prop] != NULL) {
@@ -244,7 +262,10 @@ FFJSON & FFJSON::operator[](std::string prop) {
     }
 }
 
+<<<<<<< HEAD
 FFJSON & FFJSON::operator[](int index) {
+=======
+>>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
     if (this->type == FFJSON_OBJ_TYPE::ARRAY) {
         if ((*this->val.array)[index] != NULL) {
             return *((*this->val.array)[index]);
@@ -319,6 +340,7 @@ std::string FFJSON::stringify() {
     }
 }
 
+<<<<<<< HEAD
 std::string FFJSON::prettyString(int indent) {
     if (this->type == FFJSON_OBJ_TYPE::STRING) {
         std::string ps = "\"";
@@ -392,6 +414,8 @@ std::string FFJSON::prettyString(int indent) {
  */
 FFJSON::operator const char*() {
     return this->val.string;
+=======
+>>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
 }
 
 FFJSON::operator double() {

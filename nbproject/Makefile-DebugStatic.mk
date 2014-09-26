@@ -46,12 +46,15 @@ OBJECTFILES= \
 	${OBJECTDIR}/mystdlib.o \
 	${OBJECTDIR}/myxml.o
 
+<<<<<<< HEAD
 # Test Directory
 TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 
 # Test Files
 TESTFILES= \
 	${TESTDIR}/TestFiles/f1
+=======
+>>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
 
 # C Compiler Flags
 CFLAGS=
@@ -132,6 +135,7 @@ ${OBJECTDIR}/myxml.o: myxml.cpp
 # Subprojects
 .build-subprojects:
 
+<<<<<<< HEAD
 # Build Test Targets
 .build-tests-conf: .build-conf ${TESTFILES}
 ${TESTDIR}/TestFiles/f1: ${TESTDIR}/nbproject/tests/ffjsonTest.o ${OBJECTFILES:%.o=%_nomain.o}
@@ -284,6 +288,8 @@ ${OBJECTDIR}/myxml_nomain.o: ${OBJECTDIR}/myxml.o myxml.cpp
 	    ./${TEST} || true; \
 	fi
 
+=======
+>>>>>>> 8fe40f3504389521f8093183796f838f2fc8f9a3
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}

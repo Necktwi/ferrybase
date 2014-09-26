@@ -1,4 +1,0 @@
-debian/base/usr/share/doc/base/changelog.Debian.gz
-debian/base-dev/usr/share/doc/base-dev/changelog.Debian.gz
-dist/DebugDynamic/GNU-Linux-x86/libbase.so
-dist/DebugStatic/GNU-Linux-x86/libbase.a
