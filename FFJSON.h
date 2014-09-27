@@ -33,11 +33,15 @@ public:
         std::string identifier;
     };
     FFJSON();
-    FFJSON(std::string& ffjson);
+    FFJSON(std::string& ffjson, int* ci = NULL);
     virtual ~FFJSON();
 
     enum FFJSON_OBJ_TYPE {
-        STRING, NUMBER, OBJECT, ARRAY, BOOL, UNRECOGNIZED
+        STRING, NUMBER, OBJECT, ARRAY, BOOL, XML, UNRECOGNIZED
+    };
+
+    char FFJSON_OBJ_STR[7][15] = {
+        "STRING", "NUMBER", "OBJECT", "ARRAY", "BOOL", "XML", "UNRECOGNIZED"
     };
 
     /**
@@ -58,6 +62,7 @@ public:
     FFJSON_OBJ_TYPE type;
     std::string ffjson;
     int length = 0;
+    int size = 0;
     //const char FFESCSTR[9] = "FFESCSTR";
     static void trimWhites(std::string& s);
     static void trimQuotes(std::string& s);
@@ -66,6 +71,7 @@ public:
     FFJSON& operator[](std::string prop);
     FFJSON& operator[](int index);
     std::string stringify();
+    std::string prettyString(int indent = 0);
 
     union FFValue {
         char * string;

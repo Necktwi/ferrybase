@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="94">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="debian_base" displayName="debian_base" projectFiles="true">
       <logicalFolder name="source" displayName="source" projectFiles="true">
@@ -30,10 +30,8 @@
       <logicalFolder name="private" displayName="private" projectFiles="true">
         <itemPath>/home/gowtham/Projects/base/nbproject/private/Makefile-variables.mk</itemPath>
         <itemPath>/home/gowtham/Projects/base/nbproject/private/configurations.xml</itemPath>
-        <itemPath>/home/gowtham/Projects/base/nbproject/private/downloads-newmek7.newmeksolutions.com-gowtham-22</itemPath>
         <itemPath>/home/gowtham/Projects/base/nbproject/private/launcher.properties</itemPath>
         <itemPath>/home/gowtham/Projects/base/nbproject/private/private.xml</itemPath>
-        <itemPath>/home/gowtham/Projects/base/nbproject/private/timestamps-newmek7.newmeksolutions.com-gowtham-22</itemPath>
       </logicalFolder>
       <itemPath>/home/gowtham/Projects/base/nbproject/Makefile-DebugDynamic.mk</itemPath>
       <itemPath>/home/gowtham/Projects/base/nbproject/Makefile-DebugStatic.mk</itemPath>
@@ -66,6 +64,12 @@
                    displayName="Test Files"
                    projectFiles="false"
                    kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f1"
+                     displayName="ffjsonTest"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>nbproject/tests/ffjsonTest.cpp</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -74,6 +78,7 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
     <itemPath>/home/gowtham/Projects/base/base.pc</itemPath>
+    <itemPath>sample.ffjson</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>/home/gowtham/Projects/base/nbproject</Elem>
@@ -90,6 +95,7 @@
       <compileType>
         <cTool>
           <commandlineTool>gcc</commandlineTool>
+          <commandLine>-O0</commandLine>
         </cTool>
         <ccTool>
           <developmentMode>0</developmentMode>
@@ -98,6 +104,7 @@
           <incDir>
             <pElem>/usr/include/libxml2</pElem>
           </incDir>
+          <commandLine>-g -O0</commandLine>
           <preprocessorList>
             <Elem>_DEBUG</Elem>
           </preprocessorList>
@@ -188,22 +195,12 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/downloads-newmek7.newmeksolutions.com-gowtham-22"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="/home/gowtham/Projects/base/nbproject/private/launcher.properties"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
       <item path="/home/gowtham/Projects/base/nbproject/private/private.xml"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/timestamps-newmek7.newmeksolutions.com-gowtham-22"
             ex="false"
             tool="3"
             flavor2="0">
@@ -250,6 +247,21 @@
             tool="3"
             flavor2="0">
       </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+        </linkerTool>
+      </folder>
       <item path="logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="logger.h" ex="false" tool="3" flavor2="0">
@@ -269,6 +281,10 @@
       <item path="myxml.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="myxml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/tests/ffjsonTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sample.ffjson" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="DebugStatic" type="3">
@@ -349,22 +365,12 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/downloads-newmek7.newmeksolutions.com-gowtham-22"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="/home/gowtham/Projects/base/nbproject/private/launcher.properties"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
       <item path="/home/gowtham/Projects/base/nbproject/private/private.xml"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/timestamps-newmek7.newmeksolutions.com-gowtham-22"
             ex="false"
             tool="3"
             flavor2="0">
@@ -411,6 +417,21 @@
             tool="3"
             flavor2="0">
       </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+        </linkerTool>
+      </folder>
       <item path="logger.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="logger.h" ex="false" tool="3" flavor2="0">
@@ -430,6 +451,10 @@
       <item path="myxml.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="myxml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/tests/ffjsonTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sample.ffjson" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="armhfDebugDynamic" type="2">
@@ -539,22 +564,12 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/downloads-newmek7.newmeksolutions.com-gowtham-22"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="/home/gowtham/Projects/base/nbproject/private/launcher.properties"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
       <item path="/home/gowtham/Projects/base/nbproject/private/private.xml"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/timestamps-newmek7.newmeksolutions.com-gowtham-22"
             ex="false"
             tool="3"
             flavor2="0">
@@ -601,6 +616,21 @@
             tool="3"
             flavor2="0">
       </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+        </linkerTool>
+      </folder>
       <item path="logger.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="logger.h" ex="false" tool="3" flavor2="0">
@@ -620,6 +650,10 @@
       <item path="myxml.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="myxml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/tests/ffjsonTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sample.ffjson" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

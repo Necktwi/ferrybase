@@ -1,6 +1,7 @@
 /* 
  * File:   myxml.h
- * Author: newmek7
+ * Author: Satya Gowtham Kudupudi
+=======
  *
  * Created on 19 March, 2013, 10:52 AM
  */

@@ -1,6 +1,6 @@
 /* 
  * File:   mystdlib.h
- * Author: newmek7
+ * Author: Satya Gowtham Kudupudi
  *
  * Created on 26 March, 2013, 10:25 AM
  */
