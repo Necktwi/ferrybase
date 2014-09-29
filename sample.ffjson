@@ -4,7 +4,7 @@
     amphibians: {
         frogs:  ["cheeky","creeky"],
         snakes: ["naga","gaga"],
-        genome: <FFESCSTR>a;ldkjfoea'"`jkjkljkltgmldsd][12348900-=`~!@#$%^&*()_+QWERTYUIOP{}|qwertyuiop[]\ASDFGHJKL:"asdfghjkl;'ZXCVBNM<>?zxcvbnm,./</FFESCSTR>
+        genome: [<FFESCSTR>a;ldkjfoea'"`jkjkljkltgmldsd][12348900-=`~!@#$%^&*()_+QWERTYUIOP{}|qwertyuiop[]\ASDFGHJKL:"asdfghjkl;'ZXCVBNM<>?zxcvbnm,./</FFESCSTR>,<BINARY><FFESCSTR>a;ldkjfoea'"`jkjkljkltgmldsd][12348900-=`~!@#$%^&*()_+QWERTYUIOP{}|qwertyuiop[]\ASDFGHJKL:"asdfghjkl;'ZXCVBNM<>?zxcvbnm,./</FFESCSTR></BINARY>]
     }
     
 }

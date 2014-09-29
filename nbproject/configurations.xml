@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
-    <logicalFolder name="debian_base" displayName="debian_base" projectFiles="true">
+    <logicalFolder name="debian" displayName="debian" projectFiles="true">
       <logicalFolder name="source" displayName="source" projectFiles="true">
-        <itemPath>debian_base/source/format</itemPath>
-        <itemPath>debian_base/source/include-binaries</itemPath>
+        <itemPath>debian/source/format</itemPath>
       </logicalFolder>
-      <itemPath>debian_base/changelog</itemPath>
-      <itemPath>debian_base/control</itemPath>
-      <itemPath>debian_base/copyright</itemPath>
-      <itemPath>debian_base/rules</itemPath>
+      <itemPath>debian/README.Debian</itemPath>
+      <itemPath>debian/README.source</itemPath>
+      <itemPath>debian/base-dev.dirs</itemPath>
+      <itemPath>debian/base-dev.install</itemPath>
+      <itemPath>debian/base1.dirs</itemPath>
+      <itemPath>debian/base1.install</itemPath>
+      <itemPath>debian/changelog</itemPath>
+      <itemPath>debian/compat</itemPath>
+      <itemPath>debian/control</itemPath>
+      <itemPath>debian/copyright</itemPath>
+      <itemPath>debian/docs</itemPath>
+      <itemPath>debian/rules</itemPath>
     </logicalFolder>
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -81,8 +88,8 @@
     <itemPath>sample.ffjson</itemPath>
   </logicalFolder>
   <sourceRootList>
-    <Elem>/home/gowtham/Projects/base/nbproject</Elem>
-    <Elem>/home/gowtham/Packages/debian_base</Elem>
+    <Elem>../../Projects/base/nbproject</Elem>
+    <Elem>debian</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -232,20 +239,31 @@
       </item>
       <item path="SocketException.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/changelog" ex="false" tool="3" flavor2="0">
+      <item path="debian/README.Debian" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/control" ex="false" tool="3" flavor2="0">
+      <item path="debian/README.source" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/copyright" ex="false" tool="3" flavor2="0">
+      <item path="debian/base-dev.dirs" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/rules" ex="false" tool="3" flavor2="0">
+      <item path="debian/base-dev.install" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/source/format" ex="false" tool="3" flavor2="0">
+      <item path="debian/base1.dirs" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/source/include-binaries"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="debian/base1.install" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/changelog" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/compat" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/control" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/copyright" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/docs" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/rules" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/source/format" ex="false" tool="3" flavor2="0">
       </item>
       <folder path="TestFiles/f1">
         <cTool>
@@ -402,20 +420,31 @@
       </item>
       <item path="SocketException.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/changelog" ex="false" tool="3" flavor2="0">
+      <item path="debian/README.Debian" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/control" ex="false" tool="3" flavor2="0">
+      <item path="debian/README.source" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/copyright" ex="false" tool="3" flavor2="0">
+      <item path="debian/base-dev.dirs" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/rules" ex="false" tool="3" flavor2="0">
+      <item path="debian/base-dev.install" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/source/format" ex="false" tool="3" flavor2="0">
+      <item path="debian/base1.dirs" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/source/include-binaries"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="debian/base1.install" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/changelog" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/compat" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/control" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/copyright" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/docs" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/rules" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/source/format" ex="false" tool="3" flavor2="0">
       </item>
       <folder path="TestFiles/f1">
         <cTool>
@@ -601,20 +630,31 @@
       </item>
       <item path="SocketException.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/changelog" ex="false" tool="3" flavor2="0">
+      <item path="debian/README.Debian" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/control" ex="false" tool="3" flavor2="0">
+      <item path="debian/README.source" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/copyright" ex="false" tool="3" flavor2="0">
+      <item path="debian/base-dev.dirs" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/rules" ex="false" tool="3" flavor2="0">
+      <item path="debian/base-dev.install" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/source/format" ex="false" tool="3" flavor2="0">
+      <item path="debian/base1.dirs" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="debian_base/source/include-binaries"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="debian/base1.install" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/changelog" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/compat" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/control" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/copyright" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/docs" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/rules" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debian/source/format" ex="false" tool="3" flavor2="0">
       </item>
       <folder path="TestFiles/f1">
         <cTool>

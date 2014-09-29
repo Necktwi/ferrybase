@@ -7,29 +7,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/myconverters.h</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/logger.cpp</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/mystdlib.cpp</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/mystdlib.h</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/FFJSON.cpp</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/FFJSON.h</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/Makefile</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/nbproject/Makefile-variables.mk</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/nbproject/private/Makefile-variables.mk</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/nbproject/configurations.xml</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/nbproject/private/launcher.properties</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/nbproject/private/configurations.xml</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/Socket.h</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/ClientSocket.h</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/mycurl.h</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/myxml.h</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/nbproject/tests/ffjsonTest.cpp</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/sample.ffjson</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/logger.h</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/ClientSocket.cpp</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/nbproject/private/private.xml</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/nbproject/Makefile-DebugStatic.mk</file>
-            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Projects/base/nbproject/Makefile-DebugDynamic.mk</file>
+            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Packages/base/FFJSON.h</file>
+            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Packages/base/FFJSON.cpp</file>
+            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Packages/base/nbproject/tests/ffjsonTest.cpp</file>
+            <file>rfs://gowtham@vbubu.ferryfair.com:22/home/gowtham/Packages/base/sample.ffjson</file>
         </group>
     </open-files>
 </project-private>

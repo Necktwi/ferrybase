@@ -10,8 +10,8 @@
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>
-                <sourceRootElem>/home/gowtham/Projects/base/nbproject</sourceRootElem>
-                <sourceRootElem>/home/gowtham/Packages/debian_base</sourceRootElem>
+                <sourceRootElem>../../Projects/base/nbproject</sourceRootElem>
+                <sourceRootElem>debian</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

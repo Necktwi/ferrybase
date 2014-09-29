@@ -32,9 +32,6 @@ public:
     private:
         std::string identifier;
     };
-    FFJSON();
-    FFJSON(std::string& ffjson, int* ci = NULL);
-    virtual ~FFJSON();
 
     enum FFJSON_OBJ_TYPE {
         STRING, NUMBER, OBJECT, ARRAY, BOOL, XML, UNRECOGNIZED
@@ -44,26 +41,30 @@ public:
         "STRING", "NUMBER", "OBJECT", "ARRAY", "BOOL", "XML", "UNRECOGNIZED"
     };
 
+    FFJSON();
+    FFJSON(std::string& ffjson, int* ci = NULL);
+    virtual ~FFJSON();
+
+
     /**
      * when set the FFJSON object is base64 encoded during stringification.
      */
     bool base64encode = false;
 
     /**
-     * when set the FFJSON object's children inherit base64encode and base64encodeChildren properties
+     * when set the FFJSON object's children inherit base64encode and 
+     * base64encodeChildren properties
      */
     bool base64encodeChildren = false;
 
     /**
-     * when set the FFJSON object don't inherit base64encode or base54encodeChildren properties
+     * when set the FFJSON object don't inherit base64encode or 
+     * base54encodeChildren properties
      */
     bool base64encodeStopChain = false;
 
     FFJSON_OBJ_TYPE type;
-    std::string ffjson;
-    int length = 0;
-    int size = 0;
-    //const char FFESCSTR[9] = "FFESCSTR";
+    unsigned int size = 0;
     static void trimWhites(std::string& s);
     static void trimQuotes(std::string& s);
     FFJSON_OBJ_TYPE objectType(std::string ffjson);

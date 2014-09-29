@@ -42,7 +42,8 @@ void test1() {
     cCurrentPath[sizeof (cCurrentPath) - 1] = '\0'; /* not really required */
     ffl_info(1, "The current working directory is %s", cCurrentPath);
     fflush(stdout);
-    string fn = "sample.ffjson";
+    //string fn = "sample.ffjson";
+    string fn = "/home/gowtham/Projects/ferrymediaserver/output.ffjson";
     ifstream ifs(fn.c_str(), ios::in | ios::ate);
     string ffjsonStr;
     ifs.seekg(0, std::ios::end);
@@ -51,11 +52,14 @@ void test1() {
     ffjsonStr.assign((std::istreambuf_iterator<char>(ifs)),
             std::istreambuf_iterator<char>());
     FFJSON ffo(ffjsonStr);
-    std::string ps = ffo.prettyString();
-    cout << ps << endl;
+    std::string ps = ffo.stringify();
+    //cout << ps << endl;
     FFJSON ffo2(ps);
+    //ffo2["amphibians"]["genome"].base64encode = true;
     std::string ps2 = ffo2.prettyString();
-    cout << ps2 << endl;
+    //cout << ps2 << endl;
+    std::cout << ffo2["framesizes"].prettyString() << endl;
+    std::cout << ffo2["ferryframes"].prettyString() << endl;
     return;
 }
 

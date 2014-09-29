@@ -56,6 +56,7 @@ FFJSON::FFJSON(std::string& ffjson, int* ci) {
             break;
         } else if (ffjson[i] == '[') {
             this->type = ARRAY;
+            this->size = 0;
             this->val.array = new std::vector<FFJSON*>();
             i++;
             int objNail = i;
@@ -63,9 +64,11 @@ FFJSON::FFJSON(std::string& ffjson, int* ci) {
                 try {
                     FFJSON* obj = new FFJSON(ffjson, &i);
                     this->val.array->push_back(obj);
+                    this->size++;
                 } catch (Exception e) {
 
                 }
+                while (ffjson[i] != ',' && ffjson[i] != ']')i++;
                 if (ffjson[i] == ',') {
                     i++;
                     objNail = i;
@@ -99,13 +102,44 @@ FFJSON::FFJSON(std::string& ffjson, int* ci) {
             i++;
             int xmlNail = i;
             std::string xmlTag;
+            int length = -1;
+            bool tagset = false;
             while (ffjson[i] != '>' && i < j) {
-                xmlTag += ffjson[i];
+                if (ffjson[i] == ' ') {
+                    tagset = true;
+                    if (ffjson[i + 1] == 'l' &&
+                            ffjson[i + 2] == 'e' &&
+                            ffjson[i + 3] == 'n' &&
+                            ffjson[i + 4] == 'g' &&
+                            ffjson[i + 5] == 't' &&
+                            ffjson[i + 6] == 'h') {
+                        i += 7;
+                        while (ffjson[i] != '=' && i < j) {
+                            i++;
+                        }
+                        i++;
+                        while (ffjson[i] != '"' && i < j) {
+                            i++;
+                        }
+                        i++;
+                        std::string lengthstr;
+                        while (ffjson[i] != '"' && i < j) {
+                            lengthstr += ffjson[i];
+                            i++;
+                        }
+                        length = std::stoi(lengthstr);
+                    }
+                } else if (!tagset) {
+                    xmlTag += ffjson[i];
+                }
                 i++;
             }
             this->type = XML;
             i++;
             xmlNail = i;
+            if (length>-1 && length < (j - i)) {
+                i += length;
+            }
             while (i < j) {
                 if (ffjson[i] == '<' &&
                         ffjson[i + 1] == '/') {
@@ -139,14 +173,14 @@ FFJSON::FFJSON(std::string& ffjson, int* ci) {
             this->val.boolean = true;
             i += 5;
             break;
-        } else if ((ffjson[i] >= '0' && ffjson[i] <= '9')) {
+        } else if ((ffjson[i] >= '0' && ffjson[i] <= '9') || ffjson[i] == '-' || ffjson[i] == '+') {
             int numNail = i;
             i++;
             while ((ffjson[i] >= '0' && ffjson[i] <= '9') || ffjson[i] == '.')
                 i++;
             this->size = i - numNail;
             std::string num = ffjson.substr(numNail, i - numNail);
-            this->val.number = atof(num.c_str());
+            this->val.number = std::stod(num);
             this->type = FFJSON_OBJ_TYPE::NUMBER;
             break;
         } else if (ffjson[i] == ',' || ffjson[i] == '}' || ffjson[i] == ']') {
@@ -155,8 +189,6 @@ FFJSON::FFJSON(std::string& ffjson, int* ci) {
         i++;
     }
     if (ci != NULL)*ci = i;
-    ffl_debug(1, "FFJSON Object %s\t%p created", FFJSON_OBJ_STR[this->type],
-            this);
 }
 
 FFJSON::~FFJSON() {
@@ -181,7 +213,6 @@ FFJSON::~FFJSON() {
             || this->type == FFJSON_OBJ_TYPE::XML) {
         free(this->val.string);
     }
-    ffl_debug(1, "FFJSON Object %p destroyed", this);
 }
 
 void FFJSON::trimWhites(std::string & s) {
@@ -263,59 +294,60 @@ FFJSON & FFJSON::operator[](int index) {
  */
 std::string FFJSON::stringify() {
     if (this->type == FFJSON_OBJ_TYPE::STRING) {
-        this->ffjson = "\"" + std::string(this->val.string, this->length) + "\"";
-        return this->ffjson;
+        return ("\"" + std::string(this->val.string, this->size) + "\"");
     } else if (this->type == FFJSON_OBJ_TYPE::NUMBER) {
-        return (this->ffjson = std::string(std::to_string(this->val.number)));
-    } else if (this->type == FFJSON_OBJ_TYPE::UNRECOGNIZED) {
+        return (std::string(std::to_string(this->val.number)));
+    } else if (this->type == FFJSON_OBJ_TYPE::XML) {
         if (this->base64encode) {
             int output_length = 0;
-            char * b64_char = base64_encode((const unsigned char*) this->val.string, this->length, (size_t*) & output_length);
+            char * b64_char = base64_encode((const unsigned char*) this->val.string, this->size, (size_t*) & output_length);
             std::string b64_str(b64_char, output_length);
-            return (this->ffjson = "\"" + b64_str + "\"");
+            return ("\"" + b64_str + "\"");
         } else {
-            return (this->ffjson = "\"" + std::string(this->val.string) + "\"");
+            return ("<xml length=\"" + std::to_string(this->size) + "\">" + std::string(this->val.string, this->size) + "</xml>");
         }
     } else if (this->type == FFJSON_OBJ_TYPE::BOOL) {
         if (this->val.boolean) {
-            return (this->ffjson = "true");
+            return ("true");
         } else {
-            return (this->ffjson = "false");
+            return ("false");
         }
     } else if (this->type == FFJSON_OBJ_TYPE::OBJECT) {
+        std::string ffs;
         std::map<std::string, FFJSON*>& objmap = *(this->val.pairs);
-        this->ffjson = "{";
+        ffs = "{";
         std::map<std::string, FFJSON*>::iterator i;
         i = objmap.begin();
         while (i != objmap.end()) {
             if (this->base64encode)i->second->base64encode = true;
             if (this->base64encodeChildren&&!this->base64encodeStopChain)i->second->base64encodeChildren = true;
-            this->ffjson.append("\"" + i->first + "\":");
-            this->ffjson.append(i->second->stringify());
-            this->ffjson.append(",");
+            ffs.append("\"" + i->first + "\":");
+            ffs.append(i->second->stringify());
+            ffs.append(",");
             i++;
         }
         if (objmap.size() == 0) {
-            this->ffjson += ',';
+            ffs += ',';
         }
-        this->ffjson[this->ffjson.length() - 1] = '}';
-        return this->ffjson;
+        ffs[ffs.length() - 1] = '}';
+        return ffs;
     } else if (this->type == FFJSON_OBJ_TYPE::ARRAY) {
+        std::string ffs;
         std::vector<FFJSON*>& objarr = *(this->val.array);
-        this->ffjson = "[";
+        ffs = "[";
         int i = 0;
         while (i < objarr.size()) {
             if (this->base64encode)objarr[i]->base64encode = true;
             if (this->base64encodeChildren&&!this->base64encodeStopChain)objarr[i]->base64encodeChildren = true;
-            this->ffjson.append(objarr[i]->stringify());
-            this->ffjson.append(",");
+            ffs.append(objarr[i]->stringify());
+            ffs.append(",");
             i++;
         }
         if (objarr.size() == 0) {
-            this->ffjson += ',';
+            ffs += ',';
         }
-        this->ffjson[this->ffjson.length() - 1] = ']';
-        return this->ffjson;
+        ffs[ffs.length() - 1] = ']';
+        return ffs;
     }
 }
 
@@ -336,17 +368,16 @@ std::string FFJSON::prettyString(int indent) {
         return ps;
     } else if (this->type == FFJSON_OBJ_TYPE::NUMBER) {
         return (std::string(std::to_string(this->val.number)));
-    } else if (this->type == FFJSON_OBJ_TYPE::UNRECOGNIZED ||
-            this->type == FFJSON_OBJ_TYPE::XML) {
+    } else if (this->type == FFJSON_OBJ_TYPE::XML) {
         if (this->base64encode) {
             int output_length = 0;
             char * b64_char = base64_encode(
                     (const unsigned char*) this->val.string,
-                    this->length, (size_t*) & output_length);
+                    this->size, (size_t*) & output_length);
             std::string b64_str(b64_char, output_length);
-            return ("<xml>" + b64_str + "</xml>");
+            return ("\"" + b64_str + "\"");
         } else {
-            return ("<xml>" + std::string(this->val.string, this->size) + "</xml>");
+            return ("<xml length = \"" + std::to_string(this->size) + "\" >" + std::string(this->val.string, this->size) + "</xml>");
         }
     } else if (this->type == FFJSON_OBJ_TYPE::BOOL) {
         if (this->val.boolean) {
