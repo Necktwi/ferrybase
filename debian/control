@@ -1,0 +1,24 @@
+Source: base
+Priority: optional
+Maintainer: Satya Gowtham Kudupudi <satyagowtham.k@gmail.com>
+Build-Depends: debhelper (>= 9), libssl-dev, libxml2-dev, bluez, zlib1g-dev
+Standards-Version: 3.9.5
+Section: non-free/libs
+Homepage: https://github.com/necktwi/base
+Vcs-Git: https://github.com/necktwi/base.git
+Vcs-Browser: https://github.com/necktwi/base
+
+Package: base-dev
+Section: non-free/libdevel
+Architecture: any
+Depends: base1 (= ${binary:Version}), ${misc:Depends}, openssl, libxml2, bluez
+Description: Base shared library for apps by ferryfair.com
+ It got multipurpose funtions like sockets, logger, etc.
+
+Package: base1
+Section: non-free/libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},  openssl, libxml2, bluez
+Description: Base shared library for apps by ferryfair.com
+ It got multipurpose funtions like sockets, logger, etc.
+

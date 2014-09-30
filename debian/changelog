@@ -1,0 +1,7 @@
+base (1.1-0ubuntu4) trusty; urgency=low
+
+  * FFJSON made robust (Closes: #1)
+   - array size fixed.
+   - number rightly parsed to double
+
+ -- Satya Gowtham Kudupudi (necktwi) <satyagowtham.k@gmail.com>  Mon, 29 Sept 2014 12:53:07 +0530
