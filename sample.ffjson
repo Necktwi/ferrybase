@@ -1,10 +1,38 @@
 {
-    animals:    ["cow", "buffalo", "ox"],
-    birds:      ["parrot", "pigeon", "crow", "macaw"],
-    amphibians: {
-        frogs:  ["cheeky","creeky"],
-        snakes: ["naga","gaga"],
-        genome: [<FFESCSTR>a;ldkjfoea'"`jkjkljkltgmldsd][12348900-=`~!@#$%^&*()_+QWERTYUIOP{}|qwertyuiop[]\ASDFGHJKL:"asdfghjkl;'ZXCVBNM<>?zxcvbnm,./</FFESCSTR>,<BINARY><FFESCSTR>a;ldkjfoea'"`jkjkljkltgmldsd][12348900-=`~!@#$%^&*()_+QWERTYUIOP{}|qwertyuiop[]\ASDFGHJKL:"asdfghjkl;'ZXCVBNM<>?zxcvbnm,./</FFESCSTR></BINARY>]
-    }
-    
+	animals: [
+		"cow",
+		"buffalo",
+		"ox"
+	],
+	birds: [
+		"parrot",
+		"pigeon",
+		"crow",
+		"macaw"
+	],
+	amphibians: {
+		frogs: [
+			"cheeky",
+			"creeky"
+		],
+		snakes: [
+			"naga",
+			"gaga"
+		],
+		genome: [
+			<FFESCSTR>a;ldkjfoea'"`jkjkljkltgmldsd][12348900-=`~!@#$%^&*()_+QWERTYUIOP{}|qwertyuiop[]\ASDFGHJKL:"asdfghjkl;'ZXCVBNM<>?zxcvbnm,./</FFESCSTR>,
+			<BINARY><FFESCSTR>a;ldkjfoea'"`jkjkljkltgmldsd][12348900-=`~!@#$%^&*()_+QWERTYUIOP{}|qwertyuiop[]\ASDFGHJKL:"asdfghjkl;'ZXCVBNM<>?zxcvbnm,./</FFESCSTR></BINARY>
+		]
+	},
+	animalCount: [
+		3,
+		500,
+		6,
+		7
+	],
+	donkeys: 3,
+	monkeys: 500,
+	jackals: 6,
+	cows: 7,
+	summary: "This is a sample experimental FFJSON data representation."
 }
