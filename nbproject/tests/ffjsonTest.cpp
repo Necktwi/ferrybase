@@ -40,6 +40,8 @@ void test1() {
 	}
 
 	cCurrentPath[sizeof (cCurrentPath) - 1] = '\0'; /* not really required */
+	char c = '\r';
+	ffl_info(1, "\\r=%d", (int) c);
 	ffl_info(1, "The current working directory is %s", cCurrentPath);
 	fflush(stdout);
 	string fn = "sample.ffjson";
@@ -104,7 +106,7 @@ void test1() {
 	cout << ffo2a << endl;
 	ffo2a = ffo2ao.prettyString();
 	cout << ffo2a << endl;
-
+	delete ao;
 	return;
 }
 

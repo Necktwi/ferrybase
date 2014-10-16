@@ -217,6 +217,7 @@ public:
 		std::map<std::string, FFJSON*>* pairs;
 		double number;
 		bool boolean;
+		FFJSON** fpptr;
 	} val;
 
 	FFJSON& operator[](const char* prop);
@@ -229,6 +230,8 @@ public:
 	FFJSON& operator=(const float& f);
 	FFJSON& operator=(const short& s);
 	FFJSON& operator=(const long& l);
+	FFJSON& operator=(const FFJSON& f);
+	FFJSON& operator=(const FFJSON* f);
 	operator const char*();
 	operator double();
 	operator float();
@@ -244,7 +247,7 @@ private:
 	uint8_t type = UNDEFINED;
 	uint8_t qtype;
 	uint8_t etype;
-
+	void copy(const FFJSON& orig, COPY_FLAGS cf = COPY_NONE);
 };
 
 #endif	/* FFJSON_H */

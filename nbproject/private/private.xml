@@ -7,10 +7,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>rfs://gowtham@ubuntuvm.ferryfair.com:22/home/gowtham/Projects/base/logger.cpp</file>
+            <file>rfs://gowtham@ubuntuvm.ferryfair.com:22/home/gowtham/Projects/base/ClientSocket.cpp</file>
             <file>rfs://gowtham@ubuntuvm.ferryfair.com:22/home/gowtham/Projects/base/sample.ffjson</file>
+            <file>rfs://gowtham@ubuntuvm.ferryfair.com:22/home/gowtham/Projects/base/mycurl.cpp</file>
             <file>rfs://gowtham@ubuntuvm.ferryfair.com:22/home/gowtham/Projects/base/FFJSON.h</file>
             <file>rfs://gowtham@ubuntuvm.ferryfair.com:22/home/gowtham/Projects/base/nbproject/tests/ffjsonTest.cpp</file>
             <file>rfs://gowtham@ubuntuvm.ferryfair.com:22/home/gowtham/Projects/base/Socket.cpp</file>
+            <file>rfs://gowtham@ubuntuvm.ferryfair.com:22/home/gowtham/Projects/base/Socket.h</file>
             <file>rfs://gowtham@ubuntuvm.ferryfair.com:22/home/gowtham/Projects/base/FFJSON.cpp</file>
             <file>rfs://gowtham@ubuntuvm.ferryfair.com:22/home/gowtham/Projects/base/Makefile</file>
         </group>
