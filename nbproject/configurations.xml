@@ -77,6 +77,9 @@
                      kind="TEST">
         <itemPath>nbproject/tests/ffjsonTest.cpp</itemPath>
       </logicalFolder>
+      <logicalFolder name="f2" displayName="mycurl" projectFiles="true" kind="TEST">
+        <itemPath>nbproject/tests/mycurl.cpp</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -84,7 +87,7 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
-    <itemPath>/home/gowtham/Projects/base/base.pc</itemPath>
+    <itemPath>base.pc</itemPath>
     <itemPath>sample.ffjson</itemPath>
   </logicalFolder>
   <sourceRootList>
@@ -152,11 +155,6 @@
           <packInfoListElem name="Description" value="..." mandatory="false"/>
         </packInfoList>
       </packaging>
-      <item path="/home/gowtham/Projects/base/base.pc"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="/home/gowtham/Projects/base/nbproject/Makefile-DebugDynamic.mk"
             ex="false"
             tool="3"
@@ -239,6 +237,8 @@
       </item>
       <item path="SocketException.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="base.pc" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="debian/README.Debian" ex="false" tool="3" flavor2="0">
       </item>
       <item path="debian/README.source" ex="false" tool="3" flavor2="0">
@@ -280,6 +280,21 @@
           <output>${TESTDIR}/TestFiles/f1</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f2">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+        </linkerTool>
+      </folder>
       <item path="logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="logger.h" ex="false" tool="3" flavor2="0">
@@ -301,6 +316,8 @@
       <item path="myxml.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="nbproject/tests/ffjsonTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="nbproject/tests/mycurl.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sample.ffjson" ex="false" tool="3" flavor2="0">
       </item>
@@ -333,11 +350,6 @@
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.a</output>
         </archiverTool>
       </compileType>
-      <item path="/home/gowtham/Projects/base/base.pc"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="/home/gowtham/Projects/base/nbproject/Makefile-DebugDynamic.mk"
             ex="false"
             tool="3"
@@ -420,6 +432,8 @@
       </item>
       <item path="SocketException.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="base.pc" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="debian/README.Debian" ex="false" tool="3" flavor2="0">
       </item>
       <item path="debian/README.source" ex="false" tool="3" flavor2="0">
@@ -461,6 +475,21 @@
           <output>${TESTDIR}/TestFiles/f1</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f2">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+        </linkerTool>
+      </folder>
       <item path="logger.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="logger.h" ex="false" tool="3" flavor2="0">
@@ -482,6 +511,8 @@
       <item path="myxml.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="nbproject/tests/ffjsonTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="nbproject/tests/mycurl.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sample.ffjson" ex="false" tool="3" flavor2="0">
       </item>
@@ -543,11 +574,6 @@
           <packInfoListElem name="Description" value="..." mandatory="false"/>
         </packInfoList>
       </packaging>
-      <item path="/home/gowtham/Projects/base/base.pc"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="/home/gowtham/Projects/base/nbproject/Makefile-DebugDynamic.mk"
             ex="false"
             tool="3"
@@ -630,6 +656,8 @@
       </item>
       <item path="SocketException.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="base.pc" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="debian/README.Debian" ex="false" tool="3" flavor2="0">
       </item>
       <item path="debian/README.source" ex="false" tool="3" flavor2="0">
@@ -671,6 +699,21 @@
           <output>${TESTDIR}/TestFiles/f1</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f2">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+        </linkerTool>
+      </folder>
       <item path="logger.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="logger.h" ex="false" tool="3" flavor2="0">
@@ -692,6 +735,8 @@
       <item path="myxml.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="nbproject/tests/ffjsonTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="nbproject/tests/mycurl.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sample.ffjson" ex="false" tool="3" flavor2="0">
       </item>

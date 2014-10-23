@@ -190,7 +190,7 @@ int Socket::recv(std::string& s, int size) const {
 
 	memset(buf, 0, size + 1);
 
-	int status;
+	int status = 0;
 	if (socketType != DEFAULT) {
 		status = SSL_read(cSSL, (char *) buf, size);
 	} else {
