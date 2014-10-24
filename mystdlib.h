@@ -39,46 +39,48 @@ char const * sperm(__mode_t mode);
 /*Corrected on system time change*/
 class FerryTimeStamp {
 public:
-    timespec ts = {0, 0};
-    time_t& t = (time_t&) ts.tv_sec;
-    FerryTimeStamp();
-    ~FerryTimeStamp();
-    static std::list<time_t*> ferryTimesList;
+	timespec ts = {0, 0};
+	time_t& t = (time_t&) ts.tv_sec;
+	FerryTimeStamp();
+	~FerryTimeStamp();
+	static timespec sub(timespec a, timespec b);
+	static timespec add(timespec a, timespec b);
+	static std::list<time_t*> ferryTimesList;
 };
 
 extern int child_exit_status;
 
 class spawn {
 private:
-    int cpstdinp[2];
-    int cpstdoutp[2];
-    int cpstderrp[2];
+	int cpstdinp[2];
+	int cpstdoutp[2];
+	int cpstderrp[2];
 
 public:
-    static bool processCleaned;
-    static void defaultOnStopHandler(spawn* process);
-    pid_t cpid = 0;
-    int cpstdin = -1;
-    int cpstdout = -1;
-    int cpstderr = -1;
-    int childExitStatus = 0;
-    std::string cmd = "";
-    std::string cmdName = "";
-    void (*onStopHandler)(spawn*);
+	static bool processCleaned;
+	static void defaultOnStopHandler(spawn* process);
+	pid_t cpid = 0;
+	int cpstdin = -1;
+	int cpstdout = -1;
+	int cpstderr = -1;
+	int childExitStatus = 0;
+	std::string cmd = "";
+	std::string cmdName = "";
+	void (*onStopHandler)(spawn*);
 
-    spawn();
-    spawn(std::string command, bool daemon = false, void (*onStopHandler)(spawn*) = NULL, bool freeChild = false, bool block = false);
-    int getChildExitStatus();
-    int pkill(int signal = SIGTERM);
+	spawn();
+	spawn(std::string command, bool daemon = false, void (*onStopHandler)(spawn*) = NULL, bool freeChild = false, bool block = false);
+	int getChildExitStatus();
+	int pkill(int signal = SIGTERM);
 };
 extern std::map<pid_t, spawn*> processMap;
 
 char *base64_encode(const unsigned char *data,
-        size_t input_length,
-        size_t *output_length);
+		size_t input_length,
+		size_t *output_length);
 unsigned char *base64_decode(const char *data,
-        size_t input_length,
-        size_t *output_length);
+		size_t input_length,
+		size_t *output_length);
 void base64_cleanup();
 void build_decoding_table();
 #endif	/* MYSTDLIB_H */

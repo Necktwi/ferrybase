@@ -54,6 +54,13 @@ void test1() {
 	ffjsonStr.assign((std::istreambuf_iterator<char>(ifs)),
 			std::istreambuf_iterator<char>());
 	FFJSON ffo(ffjsonStr);
+	cout << "amphibians: ";
+	FFJSON::Iterator i = ffo["amphibians"].begin(); //["amphibians"]
+	while ((i != ffo["amphibians"].end())) {
+		cout << string(i) << ":" << i->stringify() << endl;
+		++i;
+	}
+	cout << endl;
 	std::string ps = ffo.stringify();
 	cout << ps << endl;
 	FFJSON ffo2(ps);

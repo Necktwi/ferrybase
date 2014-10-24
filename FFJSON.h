@@ -71,6 +71,34 @@ public:
 
 	static const char OBJ_STR[8][15];
 
+	class Iterator {
+	public:
+		Iterator();
+		Iterator(const Iterator& orig);
+		Iterator(const FFJSON& orig, bool end = false);
+		virtual ~Iterator();
+		void init(const FFJSON& orig, bool end = false);
+		Iterator& operator++();
+		Iterator operator++(int);
+		Iterator& operator--();
+		Iterator operator--(int);
+		Iterator& operator=(const Iterator& i);
+		bool operator==(const Iterator& i);
+		bool operator!=(const Iterator& i);
+		FFJSON* operator->();
+		FFJSON& operator*();
+		operator const char*();
+
+	private:
+		uint8_t type;
+		void copy(const Iterator& i);
+
+		union {
+			std::map<std::string, FFJSON*>::iterator* pi;
+			std::vector<FFJSON*>::iterator* ai;
+		} ui;
+	};
+
 	/**
 	 * creates an UNRECOGNIZED FFJSON object. Any FFJSON object can be
 	 * assigned any other type of FFJSON object.
@@ -210,6 +238,16 @@ public:
 	FFJSON* answerString(FFJSON& queryObject);
 
 	FFJSON* answerObject(FFJSON* queryObject);
+
+	void erase(std::string name);
+
+	void erase(int index);
+
+	void erase(FFJSON* value);
+
+	Iterator begin();
+
+	Iterator end();
 
 	union FFValue {
 		char * string;

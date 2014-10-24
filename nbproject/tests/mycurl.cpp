@@ -22,7 +22,7 @@ void test1() {
 	std::cout << "mycurl test 1" << std::endl;
 	std::string content =
 			"{UbuntuVM:{cameras:{video0:{state:\"Stopped\",newState:?}}}}";
-	std::string res = HTTPReq("www.google.com", "/", "80");
+	std::string res = HTTPReq("fairplay.ferryfair.com", "/", "17291", content);
 	std::cout << res << std::endl;
 }
 
