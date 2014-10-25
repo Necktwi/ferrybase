@@ -201,7 +201,7 @@ public:
 	 * Converts FFJSON object into FFJSON string.
 	 * @return FFJSON string.
 	 */
-	std::string stringify();
+	std::string stringify(bool json = false);
 
 	/**
 	 * Converts FFJSON object into FFJSON pretty string that has indents where

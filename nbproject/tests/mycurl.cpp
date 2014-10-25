@@ -21,7 +21,7 @@ int child_exit_status = 0;
 void test1() {
 	std::cout << "mycurl test 1" << std::endl;
 	std::string content =
-			"{UbuntuVM:{cameras:{video0:{state:\"Stopped\",newState:?}}}}";
+			"{UbuntuVM:{cameras:{video0:{state:\"CAM_STOP\"}}}}";
 	std::string res = HTTPReq("fairplay.ferryfair.com", "/", "17291", content);
 	std::cout << res << std::endl;
 }

@@ -478,7 +478,7 @@ FFJSON & FFJSON::operator[](int index) {
  * @param encode_to_base64 if true then the binary data is base64 encoded
  * @return json string of this FFJSON object
  */
-string FFJSON::stringify() {
+string FFJSON::stringify(bool json) {
 	if (isType(OBJ_TYPE::STRING)) {
 		return ("\"" + string(val.string, size) + "\"");
 	} else if (isType(OBJ_TYPE::NUMBER)) {
@@ -517,7 +517,9 @@ string FFJSON::stringify() {
 				}
 				ffs.append("\"" + i->first + "\":");
 				if (t != NUL) {
-					ffs.append(i->second->stringify());
+					ffs.append(i->second->stringify(json));
+				} else if (json) {
+					ffs.append("null");
 				}
 			}
 			if (++i != objmap.end())if (t != UNDEFINED)ffs.append(",");
@@ -531,11 +533,15 @@ string FFJSON::stringify() {
 		int i = 0;
 		while (i < objarr.size()) {
 			int t = objarr[i] ? objarr[i]->type : NUL;
-			if (t != UNDEFINED && t != NUL) {
+			if (t == NUL) {
+				if (json) {
+					ffs.append("null");
+				}
+			} else if (t != UNDEFINED) {
 				if (isType(B64ENCODE))objarr[i]->setType(B64ENCODE);
 				if ((isType(B64ENCODE_CHILDREN))&&!isType(B64ENCODE_STOP))
 					objarr[i]->setType(B64ENCODE_CHILDREN);
-				ffs.append(objarr[i]->stringify());
+				ffs.append(objarr[i]->stringify(json));
 			}
 			if (++i != objarr.size()) {
 				if (objarr[i] && objarr[i]->type != UNDEFINED) {
@@ -556,7 +562,6 @@ string FFJSON::stringify() {
 			return "";
 		}
 	} else {
-		return "";
 	}
 }
 

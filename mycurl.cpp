@@ -66,9 +66,13 @@ string SOAPReq(string hostname, string port, string requestPath, string SOAPActi
 					response += resbuf;
 					if (!s && resbuf.length() > 0) {
 						int si = (int) response.find("Content-Length: ", 0) + 16;
-						l = (int) response.find("\r\n", si) - si;
-						string len = response.substr(si, l);
-						l = atoi(len.c_str())+(int) response.find("\r\n\r\n") + 4;
+						int startofbody = (int) response.find("\r\n\r\n") + 4;
+						if (si > 0) {
+							l = (int) response.find("\r\n", si) - si;
+							string len = response.substr(si, l);
+							l = atoi(len.c_str());
+						}
+						l = l + startofbody;
 						s = true;
 					}
 				} catch (SocketException&) {
