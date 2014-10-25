@@ -348,6 +348,13 @@ void FFJSON::init(const std::string& ffjson, int* ci) {
 			setQType(DELETE);
 			i += 6;
 			break;
+		} else if (ffjson[i] == 'n' &&
+				ffjson[i + 1] == 'u' &&
+				ffjson[i + 2] == 'l' &&
+				ffjson[i + 3] == 'l') {
+			setType(NUL);
+			i += 4;
+			break;
 		} else if (ffjson[i] == ',' || ffjson[i] == '}' || ffjson[i] == ']') {
 			setType(NUL);
 			size = 0;
