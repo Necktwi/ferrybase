@@ -5,6 +5,10 @@
  * Created on November 29, 2013, 4:29 PM
  */
 
+/*
+ * To do:
+ * 1. remove escape characters from string
+ */
 #include <string>
 #include <malloc.h>
 #include <math.h>
@@ -201,25 +205,21 @@ void FFJSON::init(const std::string& ffjson, int* ci) {
 			i++;
 			int objNail = i;
 			while (i < j) {
-				try {
-					FFJSON* obj = new FFJSON(ffjson, &i);
-					if (obj->isType(NUL) && ffjson[i] == ']' && size == 0) {
+				FFJSON* obj = new FFJSON(ffjson, &i);
+				if (obj->isType(NUL) && ffjson[i] == ']' && size == 0) {
+					delete obj;
+					obj = NULL;
+				} else {
+					if ((obj->isType(NUL) || obj->isType(UNDEFINED)) &&
+							obj->isQType(NONE)) {
 						delete obj;
-						obj = NULL;
+						val.array->push_back(NULL);
 					} else {
-						if ((obj->isType(NUL) || obj->isType(UNDEFINED)) &&
-								obj->isQType(NONE)) {
-							delete obj;
-							val.array->push_back(NULL);
-						} else {
-							val.array->push_back(obj);
-						}
-						size++;
+						val.array->push_back(obj);
 					}
-				} catch (Exception e) {
-
+					size++;
 				}
-				while (ffjson[i] != ',' && ffjson[i] != ']')i++;
+				while (ffjson[i] != ',' && ffjson[i] != ']' && i < j)i++;
 				if (ffjson[i] == ',') {
 					i++;
 					objNail = i;
@@ -235,6 +235,7 @@ void FFJSON::init(const std::string& ffjson, int* ci) {
 			i++;
 			int strNail = i;
 			setType(STRING);
+			val.string = NULL;
 			while (i < j) {
 				if (ffjson[i] == '"' && ffjson[i - 1] != '\\') {
 					size = i - strNail;
@@ -248,6 +249,7 @@ void FFJSON::init(const std::string& ffjson, int* ci) {
 					i++;
 				}
 			}
+			if (val.string == NULL)setType(NUL);
 			break;
 		} else if (ffjson[i] == '<') {
 			i++;
@@ -285,6 +287,7 @@ void FFJSON::init(const std::string& ffjson, int* ci) {
 				}
 				i++;
 			}
+			val.string = NULL;
 			setType(XML);
 			i++;
 			xmlNail = i;
@@ -306,6 +309,7 @@ void FFJSON::init(const std::string& ffjson, int* ci) {
 				}
 				i++;
 			}
+			if (val.string == NULL)setType(NUL);
 			break;
 		} else if (ffjson[i] == 't' &&
 				ffjson[i + 1] == 'r' &&
@@ -491,7 +495,7 @@ string FFJSON::stringify(bool json) {
 	} else if (isType(OBJ_TYPE::NUMBER)) {
 		return to_string(val.number);
 	} else if (isType(OBJ_TYPE::XML)) {
-		if (isType(B64ENCODE)) {
+		if (isEFlagSet(B64ENCODE)) {
 			int output_length = 0;
 			char * b64_char = base64_encode((const unsigned char*) val.string,
 					size, (size_t*) & output_length);
@@ -518,9 +522,9 @@ string FFJSON::stringify(bool json) {
 			int t = i->second ? i->second->type : NUL;
 			if (t != UNDEFINED) {
 				if (t != NUL) {
-					if (isType(B64ENCODE))i->second->setType(B64ENCODE);
-					if ((isType(B64ENCODE_CHILDREN))&&!isType(B64ENCODE_STOP))
-						i->second->type |= B64ENCODE_CHILDREN;
+					if (isEFlagSet(B64ENCODE))i->second->setEFlag(B64ENCODE);
+					if ((isEFlagSet(B64ENCODE_CHILDREN))&&!isEFlagSet(B64ENCODE_STOP))
+						i->second->setEFlag(B64ENCODE_CHILDREN);
 				}
 				ffs.append("\"" + i->first + "\":");
 				if (t != NUL) {
@@ -545,9 +549,9 @@ string FFJSON::stringify(bool json) {
 					ffs.append("null");
 				}
 			} else if (t != UNDEFINED) {
-				if (isType(B64ENCODE))objarr[i]->setType(B64ENCODE);
-				if ((isType(B64ENCODE_CHILDREN))&&!isType(B64ENCODE_STOP))
-					objarr[i]->setType(B64ENCODE_CHILDREN);
+				if (isEFlagSet(B64ENCODE))objarr[i]->setEFlag(B64ENCODE);
+				if ((isEFlagSet(B64ENCODE_CHILDREN))&&!isEFlagSet(B64ENCODE_STOP))
+					objarr[i]->setEFlag(B64ENCODE_CHILDREN);
 				ffs.append(objarr[i]->stringify(json));
 			}
 			if (++i != objarr.size()) {
@@ -590,7 +594,7 @@ string FFJSON::prettyString(unsigned int indent) {
 	} else if (isType(OBJ_TYPE::NUMBER)) {
 		return to_string(val.number);
 	} else if (isType(OBJ_TYPE::XML)) {
-		if (isType(B64ENCODE)) {
+		if (isEFlagSet(B64ENCODE)) {
 			int output_length = 0;
 			char * b64_char = base64_encode(
 					(const unsigned char*) val.string,
@@ -616,9 +620,9 @@ string FFJSON::prettyString(unsigned int indent) {
 		while (i != objmap.end()) {
 			uint8_t t = i->second ? i->second->type : NUL;
 			if (t != UNDEFINED && t != NUL) {
-				if (isType(B64ENCODE))i->second->setType(B64ENCODE);
-				if ((isType(B64ENCODE_CHILDREN))&&!isType(B64ENCODE_STOP))
-					i->second->type |= B64ENCODE_CHILDREN;
+				if (isEFlagSet(B64ENCODE))i->second->setEFlag(B64ENCODE);
+				if ((isEFlagSet(B64ENCODE_CHILDREN))&&!isEFlagSet(B64ENCODE_STOP))
+					i->second->setEFlag(B64ENCODE_CHILDREN);
 				ps.append(indent + 1, '\t');
 				ps.append("\"" + i->first + "\": ");
 				ps.append(i->second->prettyString(indent + 1));
@@ -642,9 +646,9 @@ string FFJSON::prettyString(unsigned int indent) {
 		while (i < objarr.size()) {
 			uint8_t t = objarr[i] ? objarr[i]->type : NUL;
 			if (t != UNDEFINED && t != NUL) {
-				if (isType(B64ENCODE))objarr[i]->setType(B64ENCODE);
-				if ((isType(B64ENCODE_CHILDREN))&&!isType(B64ENCODE_STOP))
-					objarr[i]->setType(B64ENCODE_CHILDREN);
+				if (isEFlagSet(B64ENCODE))objarr[i]->setEFlag(B64ENCODE);
+				if ((isEFlagSet(B64ENCODE_CHILDREN))&&!isEFlagSet(B64ENCODE_STOP))
+					objarr[i]->setEFlag(B64ENCODE_CHILDREN);
 				ps.append(indent + 1, '\t');
 				ps.append(objarr[i]->prettyString(indent + 1));
 			} else if (t == NUL) {
@@ -885,7 +889,7 @@ string FFJSON::queryString() {
 		}
 	} else if (isType(OBJ_TYPE::XML)) {
 		if (isQType(SET)) {
-			if (isType(B64ENCODE)) {
+			if (isEFlagSet(B64ENCODE)) {
 				int output_length = 0;
 				char * b64_char = base64_encode((const unsigned char*) val.string,
 						size, (size_t*) & output_length);
@@ -934,9 +938,9 @@ string FFJSON::queryString() {
 				uint8_t t = (i->second != NULL) ? i->second->type : NUL;
 				if (t != UNDEFINED || (t != NUL&&!i->second->isQType(NONE))) {
 					if (t != NUL) {
-						if (isType(B64ENCODE))i->second->setType(B64ENCODE);
-						if ((isType(B64ENCODE_CHILDREN))&&!isType(B64ENCODE_STOP))
-							i->second->type |= B64ENCODE_CHILDREN;
+						if (isEFlagSet(B64ENCODE))i->second->setEFlag(B64ENCODE);
+						if ((isEFlagSet(B64ENCODE_CHILDREN))&&!isEFlagSet(B64ENCODE_STOP))
+							i->second->setEFlag(B64ENCODE_CHILDREN);
 						ffjsonStr = i->second->queryString();
 					}
 					if (ffjsonStr.length() > 0) {
@@ -972,9 +976,9 @@ string FFJSON::queryString() {
 				unsigned int t = objarr[i] != NULL ? objarr[i]->type : NUL;
 				if (t != UNDEFINED || (t != NUL&&!objarr[i]->isQType(NONE))) {
 					if (t != NUL) {
-						if (isType(B64ENCODE))objarr[i]->setType(B64ENCODE);
-						if ((isType(B64ENCODE_CHILDREN))&&!isType(B64ENCODE_STOP))
-							objarr[i]->setType(B64ENCODE_CHILDREN);
+						if (isEFlagSet(B64ENCODE))objarr[i]->setEFlag(B64ENCODE);
+						if ((isEFlagSet(B64ENCODE_CHILDREN))&&!isEFlagSet(B64ENCODE_STOP))
+							objarr[i]->setEFlag(B64ENCODE_CHILDREN);
 						ffjsonstr = objarr[i]->queryString();
 					} else {
 						ffjsonstr = "";

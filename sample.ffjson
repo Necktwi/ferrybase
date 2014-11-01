@@ -21,7 +21,13 @@
 		],
 		genome: [
 			<FFESCSTR>a;ldkjfoea'"`jkjkljkltgmldsd][12348900-=`~!@#$%^&*()_+QWERTYUIOP{}|qwertyuiop[]\ASDFGHJKL:"asdfghjkl;'ZXCVBNM<>?zxcvbnm,./</FFESCSTR>,
-			<BINARY><FFESCSTR>a;ldkjfoea'"`jkjkljkltgmldsd][12348900-=`~!@#$%^&*()_+QWERTYUIOP{}|qwertyuiop[]\ASDFGHJKL:"asdfghjkl;'ZXCVBNM<>?zxcvbnm,./</FFESCSTR></BINARY>
+			<BINARY><FFESCSTR>a;ldkjfoea'"`jkjkljkltgmldsd][12348900-=`~!@#$%^&*()_+QWERTYUIOP{}|qwertyuiop[]\ASDFGHJKL:"asdfghjkl;'ZXCVBNM<>?zxcvbnm,./</FFESCSTR></BINARY>,
+			{
+				moreBinaryChildren: {
+					gene1: <BINARY>I am gene one</BINARY>,
+					gene2: <BINARY>I am gene two</BINARY>
+				}
+			}
 		]
 	},
 	animalCount: [

@@ -18,6 +18,7 @@
 #define GetCurrentDir _getcwd
 #else
 #include <unistd.h>
+#include <list>
 #define GetCurrentDir getcwd
 #endif
 
@@ -119,7 +120,24 @@ void test1() {
 
 void test2() {
 	std::cout << "ffjsonTest test 2" << std::endl;
-	std::cout << "%TEST_FAILED% time=0 testname=test2 (ffjsonTest) message=error message sample" << std::endl;
+	string fn = "/home/gowtham/Projects/ferrymediaserver/offpmpack.json";
+	ifstream ifs(fn.c_str(), ios::in | ios::ate);
+	string ffjsonStr;
+	ifs.seekg(0, std::ios::end);
+	ffjsonStr.reserve(ifs.tellg());
+	ifs.seekg(0, std::ios::beg);
+	ffjsonStr.assign((std::istreambuf_iterator<char>(ifs)),
+			std::istreambuf_iterator<char>());
+	FFJSON ffo(ffjsonStr);
+	ffo["ferryframes"].setEFlag(FFJSON::B64ENCODE);
+	string* s = new string(ffo.stringify(true));
+	cout << *s << endl;
+	s->append(":)");
+	std::map<int, string*>* ss = new std::map<int, string*>();
+	(*ss)[0] = s;
+	delete (*ss)[0];
+	delete ss;
+	cout << "%TEST_PASSED%" << endl;
 }
 
 int main(int argc, char** argv) {

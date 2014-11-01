@@ -52,7 +52,8 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 # Test Files
 TESTFILES= \
 	${TESTDIR}/TestFiles/f1 \
-	${TESTDIR}/TestFiles/f2
+	${TESTDIR}/TestFiles/f2 \
+	${TESTDIR}/TestFiles/f3
 
 # C Compiler Flags
 CFLAGS=-O0
@@ -141,6 +142,10 @@ ${TESTDIR}/TestFiles/f2: ${TESTDIR}/nbproject/tests/mycurl.o ${OBJECTFILES:%.o=%
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} 
 
+${TESTDIR}/TestFiles/f3: ${TESTDIR}/tests/threadTest.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.cc}   -o ${TESTDIR}/TestFiles/f3 $^ ${LDLIBSOPTIONS} 
+
 
 ${TESTDIR}/nbproject/tests/ffjsonTest.o: nbproject/tests/ffjsonTest.cpp 
 	${MKDIR} -p ${TESTDIR}/nbproject/tests
@@ -152,6 +157,12 @@ ${TESTDIR}/nbproject/tests/mycurl.o: nbproject/tests/mycurl.cpp
 	${MKDIR} -p ${TESTDIR}/nbproject/tests
 	${RM} "$@.d"
 	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${TESTDIR}/nbproject/tests/mycurl.o nbproject/tests/mycurl.cpp
+
+
+${TESTDIR}/tests/threadTest.o: tests/threadTest.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/threadTest.o tests/threadTest.cpp
 
 
 ${OBJECTDIR}/ClientSocket_nomain.o: ${OBJECTDIR}/ClientSocket.o ClientSocket.cpp 
@@ -290,6 +301,7 @@ ${OBJECTDIR}/myxml_nomain.o: ${OBJECTDIR}/myxml.o myxml.cpp
 	then  \
 	    ${TESTDIR}/TestFiles/f1 || true; \
 	    ${TESTDIR}/TestFiles/f2 || true; \
+	    ${TESTDIR}/TestFiles/f3 || true; \
 	else  \
 	    ./${TEST} || true; \
 	fi
