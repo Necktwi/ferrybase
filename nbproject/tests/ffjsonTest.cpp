@@ -118,6 +118,10 @@ void test1() {
 	return;
 }
 
+struct testStruct {
+	string* s;
+};
+
 void test2() {
 	std::cout << "ffjsonTest test 2" << std::endl;
 	string fn = "/home/gowtham/Projects/ferrymediaserver/offpmpack.json";
@@ -133,10 +137,9 @@ void test2() {
 	string* s = new string(ffo.stringify(true));
 	cout << *s << endl;
 	s->append(":)");
-	std::map<int, string*>* ss = new std::map<int, string*>();
-	(*ss)[0] = s;
-	delete (*ss)[0];
-	delete ss;
+	testStruct ts;
+	ts.s = s;
+	delete ts.s;
 	cout << "%TEST_PASSED%" << endl;
 }
 

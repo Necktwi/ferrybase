@@ -325,14 +325,15 @@ void FFJSON::init(const std::string& ffjson, int* ci) {
 				ffjson[i + 3] == 's' &&
 				ffjson[i + 4] == 'e') {
 			setType(BOOL);
-			val.boolean = true;
+			val.boolean = false;
 			i += 5;
 			break;
 		} else if ((ffjson[i] >= '0' && ffjson[i] <= '9') || ffjson[i] == '-' ||
 				ffjson[i] == '+') {
 			int numNail = i;
 			i++;
-			while ((ffjson[i] >= '0' && ffjson[i] <= '9') || ffjson[i] == '.')
+			while ((ffjson[i] >= '0' && ffjson[i] <= '9') ||
+					(ffjson[i] == '.' && (ffjson[i + 1] >= '0' && ffjson[i + 1] <= '9')))
 				i++;
 			size = i - numNail;
 			string num = ffjson.substr(numNail, i - numNail);
