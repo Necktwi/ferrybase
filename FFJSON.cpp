@@ -77,8 +77,6 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf) {
 	setType(orig.getType());
 	size = orig.size;
 	type = orig.type;
-	qtype = NONE;
-	etype = ENONE;
 	if (isType(NUMBER)) {
 		val.number = orig.val.number;
 	} else if (isType(STRING)) {
