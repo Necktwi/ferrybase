@@ -17,6 +17,7 @@
 #include <openssl/evp.h>
 #include <iostream>
 #include <cstdlib>
+#include <fstream>
 
 #include "FFJSON.h"
 #include "mystdlib.h"
@@ -28,6 +29,8 @@ using namespace std;
 const char FFJSON::OBJ_STR[8][15] = {
 	"UNDEFINED", "STRING", "XML", "NUMBER", "BOOL", "OBJECT", "ARRAY", "NUL"
 };
+
+std::map<std::string, uint8_t> FFJSON::STR_OBJ;
 
 FFJSON::FFJSON() {
 	type = UNDEFINED;
@@ -154,11 +157,11 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf) {
 	}
 }
 
-FFJSON::FFJSON(const string& ffjson, int* ci) {
-	init(ffjson, ci);
+FFJSON::FFJSON(const string& ffjson, int* ci, int indent) {
+	init(ffjson, ci, indent);
 }
 
-void FFJSON::init(const std::string& ffjson, int* ci) {
+void FFJSON::init(const std::string& ffjson, int* ci, int indent) {
 	int i = (ci == NULL) ? 0 : *ci;
 	int j = ffjson.length();
 	type = UNDEFINED;
@@ -172,6 +175,7 @@ void FFJSON::init(const std::string& ffjson, int* ci) {
 			i++;
 			int objIdNail = i;
 			string objId;
+			int nind = getIndent(ffjson.c_str(), &i, indent);
 			while (i < j) {
 				if (ffjson[i] == ':') {
 					i++;
@@ -179,11 +183,11 @@ void FFJSON::init(const std::string& ffjson, int* ci) {
 						objId = ffjson.substr(objIdNail, i - objIdNail - 1);
 						trimWhites(objId);
 						trimQuotes(objId);
-						FFJSON* obj = new FFJSON(ffjson, &i);
+						FFJSON* obj = new FFJSON(ffjson, &i, nind);
 						(*val.pairs)[objId] = obj;
 						size++;
 					} catch (Exception e) {
-
+						cout << "some Exception is thrown here" << endl;
 					}
 				} else if (ffjson[i] == ',') {
 					i++;
@@ -202,8 +206,9 @@ void FFJSON::init(const std::string& ffjson, int* ci) {
 			val.array = new vector<FFJSON*>();
 			i++;
 			int objNail = i;
+			int nind = getIndent(ffjson.c_str(), &i, indent);
 			while (i < j) {
-				FFJSON* obj = new FFJSON(ffjson, &i);
+				FFJSON* obj = new FFJSON(ffjson, &i, nind);
 				if (obj->isType(NUL) && ffjson[i] == ']' && size == 0) {
 					delete obj;
 					obj = NULL;
@@ -231,23 +236,86 @@ void FFJSON::init(const std::string& ffjson, int* ci) {
 			break;
 		} else if (ffjson[i] == '"') {
 			i++;
-			int strNail = i;
 			setType(STRING);
 			val.string = NULL;
+			int nind = getIndent(ffjson.c_str(), &i, indent);
+			vector<char*> bufvec;
+			int k = 0;
+			int pi = 0;
+			char* buf = NULL;
 			while (i < j) {
-				if (ffjson[i] == '"' && ffjson[i - 1] != '\\') {
-					size = i - strNail;
-					val.string = (char*) malloc(size + 1);
-					memcpy(val.string, ffjson.c_str() + strNail,
-							size);
-					val.string[size] = '\0';
+				if ((k % 100) == 0 && (pi == 0 || i >= 100 + pi)) {
+					pi = i;
+					buf = (char*) malloc(100);
+					bufvec.push_back(buf);
+					size += 100;
+					k = 0;
+				}
+				if (ffjson[i] == '\\' && nind == indent) {
+					i++;
+					if (ffjson[i] == 'n') {
+						buf[k] = '\n';
+					} else if (ffjson[i] == 'r') {
+						buf[k] = '\r';
+					} else if (ffjson[i] == 't') {
+						buf[k] = '\t';
+					} else {
+						buf[k] = ffjson[i];
+					}
+					i++;
+					k++;
+				} else if (ffjson[i] == '\n') {
+					int ind = ++i;
+					while (ffjson[ind] == '\t' && (ind - i) < nind) {
+						ind++;
+					}
+					if ((ind - i) == nind) {
+						i += nind;
+					} else if (ffjson[ind] == '"' && ((ind - i) == (nind - 1))) {
+						i = ind + 1;
+						break;
+					}
+					if (k != 0) {
+						buf[k] = '\n';
+						k++;
+					}
+				} else if (ffjson[i] == '\r' && ffjson[i + 1] == '\n') {
+					i++;
+					int ind = ++i;
+					while (ffjson[ind] == '\t' && (ind - i) < nind) {
+						ind++;
+					}
+					if ((ind - i) == nind) {
+						i += nind;
+					} else if (ffjson[ind] == '"' && ((ind - i) == (nind - 1))) {
+						i = ind + 1;
+						break;
+					}
+					if (k != 0) {
+						buf[k] = '\n';
+						k++;
+					}
+				} else if (ffjson[i] == '"' && nind == indent) {
 					i++;
 					break;
 				} else {
+					buf[k] = ffjson[i];
+					k++;
 					i++;
 				}
 			}
-			if (val.string == NULL)setType(NUL);
+			buf[k] = '\0';
+			int ii = 0;
+			size += k - 100;
+			val.string = (char*) malloc(size + 1);
+			int iis = bufvec.size() - 1;
+			while (ii < iis) {
+				memcpy(val.string + (100 * ii), bufvec[ii], 100);
+				delete bufvec[ii];
+				ii++;
+			}
+			memcpy(val.string + (100 * ii), bufvec[ii], k + 1);
+			delete bufvec[ii];
 			break;
 		} else if (ffjson[i] == '<') {
 			i++;
@@ -338,6 +406,65 @@ void FFJSON::init(const std::string& ffjson, int* ci) {
 			val.number = stod(num);
 			setType(OBJ_TYPE::NUMBER);
 			break;
+		} else if (ffjson[i] == ':' && ffjson[i + 1] == '/' && ffjson[i + 2] == '/') {
+			if (ffjson[i - 1] == 'e' && ffjson[i - 2] == 'l' &&
+					ffjson[i - 3] == 'i' && ffjson[i - 4] == 'f'
+					&& (ffjson[i - 5] < 'a' || ffjson[i - 5] > 'z')) {
+				i += 3;
+				string path;
+				string objCaster;
+				bool objCastNail = false;
+				int k = 0;
+				while (i < j && ffjson[i] != ',' && ffjson[i] != '}' &&
+						ffjson[i] != ']') {
+					if (ffjson[i] != ' ' && ffjson[i] != '\n' && ffjson[i] != '\r'
+							&& ffjson[i] != '\t') {
+						if (ffjson[i] == '|') {
+							objCastNail = true;
+							k = 0;
+						} else if (objCastNail) {
+							objCaster[k] = ffjson[i];
+							k++;
+						} else {
+							path[k] = ffjson[i];
+							k++;
+						}
+					}
+					i++;
+				}
+				if (path.length() > 0) {
+					ifstream ifs(path.c_str(), ios::in | ios::ate);
+					string ffjsonStr;
+					strObjMapInit();
+					ifs.seekg(0, std::ios::end);
+					uint8_t t = UNDEFINED;
+					if (objCaster.length() > 0) {
+						t = STR_OBJ[objCaster];
+						if (t == STRING || t == OBJECT || t == ARRAY) {
+							ffjsonStr.reserve(ifs.tellg() + 2);
+							if (t == STRING) {
+								ffjsonStr += "\"\n";
+							} else if (t == OBJECT) {
+								ffjsonStr += "{\n";
+							} else if (t == ARRAY) {
+								ffjsonStr += "[\n";
+							} else {
+								t = UNDEFINED;
+							}
+						};
+					} else {
+						ffjsonStr.reserve(ifs.tellg());
+					}
+					ifs.seekg(0, std::ios::beg);
+					ffjsonStr.append((std::istreambuf_iterator<char>(ifs)),
+							std::istreambuf_iterator<char>());
+					if (t) {
+						init(ffjsonStr, 0, -1);
+					} else {
+						init(ffjsonStr);
+					}
+				}
+			}
 		} else if (ffjson[i] == '?') {
 			setQType(QUERY);
 			i++;
@@ -366,6 +493,39 @@ void FFJSON::init(const std::string& ffjson, int* ci) {
 		i++;
 	}
 	if (ci != NULL)*ci = i;
+}
+
+int FFJSON::getIndent(const char* ffjson, int* ci, int indent) {
+	int i = *ci;
+	if (ffjson[i] == '\n') {
+		i++;
+	} else if (ffjson[i] == '\r' && ffjson[i + 1] == '\n') {
+		i += 2;
+	} else {
+		return indent;
+	}
+	int j = i + indent + 1;
+	while (i < j) {
+		if (ffjson[i] != '\t') {
+			return indent;
+		}
+		i++;
+	}
+	return (indent + 1);
+}
+
+void FFJSON::strObjMapInit() {
+	if (STR_OBJ.size() == 0) {
+		STR_OBJ[string("")] = UNDEFINED;
+		STR_OBJ[string("UNDEFINED")] = UNDEFINED;
+		STR_OBJ[string("STRING")] = STRING;
+		STR_OBJ[string("XML")] = XML;
+		STR_OBJ[string("NUMBER")] = NUMBER;
+		STR_OBJ[string("BOOL")] = BOOL;
+		STR_OBJ[string("OBJECT")] = OBJECT;
+		STR_OBJ[string("ARRAY")] = ARRAY;
+		STR_OBJ[string("NUL")] = NUL;
+	}
 }
 
 FFJSON::~FFJSON() {
@@ -490,7 +650,13 @@ FFJSON & FFJSON::operator[](int index) {
  */
 string FFJSON::stringify(bool json) {
 	if (isType(OBJ_TYPE::STRING)) {
-		return ("\"" + string(val.string, size) + "\"");
+		char* s = (char*) malloc(2 * size + 1);
+		s[0] = '"';
+		str_cstrlit(val.string, s + 1, 2 * size);
+		string ss(s);
+		free(s);
+		ss += '"';
+		return ss;
 	} else if (isType(OBJ_TYPE::NUMBER)) {
 		return to_string(val.number);
 	} else if (isType(OBJ_TYPE::XML)) {
@@ -578,16 +744,29 @@ string FFJSON::stringify(bool json) {
 string FFJSON::prettyString(unsigned int indent) {
 	if (isType(OBJ_TYPE::STRING)) {
 		string ps = "\"";
+		bool hasNewLine = (strchr(val.string, '\n') != NULL);
+		if (hasNewLine) {
+			ps += '\n';
+			ps.append(indent + 1, '\t');
+		}
 		int stringNail = 0;
 		int i = 0;
-		for (i = 0; i < size; i++) {
-			if (val.string[i] == '\n') {
-				ps.append(val.string, stringNail, i + 1 - stringNail);
-				ps.append('\t', indent);
-				stringNail = i + 1;
+		if (hasNewLine) {
+			for (i = 0; i < size; i++) {
+				if (val.string[i] == '\n') {
+					ps.append(val.string, stringNail, i + 1 - stringNail);
+					ps.append(indent + 1, '\t');
+					stringNail = i + 1;
+				}
 			}
+		} else {
+			i = size;
 		}
 		ps.append(val.string, stringNail, i - stringNail);
+		if (hasNewLine) {
+			ps += '\n';
+			ps.append(indent, '\t');
+		}
 		ps += "\"";
 		return ps;
 	} else if (isType(OBJ_TYPE::NUMBER)) {

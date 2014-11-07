@@ -1,7 +1,7 @@
-base (1.1-0ubuntu5) trusty; urgency=low
+base (1.1-0ubuntu6) trusty; urgency=low
 
-  * FFJSON made feature rich (Closes: #1)
+  * FFJSON copy corrected (Closes: #1)
    - question n answer implemented.
    - json null implemented
 
- -- Satya Gowtham Kudupudi (necktwi) <satyagowtham.k@gmail.com>  Sat, 1 Nov 2014 19:36:07 +0530
+ -- Satya Gowtham Kudupudi (necktwi) <satyagowtham.k@gmail.com>  Mon, 3 Nov 2014 21:36:07 +0530

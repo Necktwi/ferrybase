@@ -71,6 +71,8 @@ public:
 
 	static const char OBJ_STR[8][15];
 
+	static std::map<std::string, uint8_t> STR_OBJ;
+
 	class Iterator {
 	public:
 		Iterator();
@@ -118,8 +120,8 @@ public:
 	 * @param ci is the offset in FFJSON string to be considered. Its 0 by 
 	 * default.
 	 */
-	FFJSON(const std::string& ffjson, int* ci = NULL);
-	void init(const std::string& ffjson, int* ci = NULL);
+	FFJSON(const std::string& ffjson, int* ci = NULL, int indent = 0);
+	void init(const std::string& ffjson, int* ci = NULL, int indent = 0);
 
 	/**
 	 * Creates an empty FFJSON object of type @param t. It throws an Exception
@@ -286,6 +288,8 @@ private:
 	uint8_t qtype;
 	uint8_t etype;
 	void copy(const FFJSON& orig, COPY_FLAGS cf = COPY_NONE);
+	static int getIndent(const char* ffjson, int* ci, int indent);
+	static void strObjMapInit();
 };
 
 #endif	/* FFJSON_H */

@@ -20,6 +20,6 @@ std::vector<std::string> explode(const std::string delimiter,
         const std::string &str);
 float timeToSec(std::string timestring);
 std::string tolower(std::string s);
-
+void str_cstrlit(const char *str, char *buffer, size_t buflen);
 #endif	/* MYCONVERTERS_H */
 
