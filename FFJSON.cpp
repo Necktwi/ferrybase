@@ -650,13 +650,35 @@ FFJSON & FFJSON::operator[](int index) {
  */
 string FFJSON::stringify(bool json) {
 	if (isType(OBJ_TYPE::STRING)) {
-		char* s = (char*) malloc(2 * size + 1);
-		s[0] = '"';
-		str_cstrlit(val.string, s + 1, 2 * size);
-		string ss(s);
-		free(s);
-		ss += '"';
-		return ss;
+		string s;
+		s.reserve(2*size+2);
+		s += '"';
+		int i=0;
+		while(i<size){
+			switch(val.string[i]){
+				case '"':
+					s += "\\\"";
+					break;
+				case '\n':
+					s += "\\n";
+					break;
+				case '\r':
+					s += "\\r";
+					break;
+				case '\t':
+					s += "\\t";
+					break;
+				case '\r':
+					s += "\\r";
+					break;
+				default :
+					s += val.string[i];
+					break;
+			}
+			i++;
+		}
+		s += '"';
+		return s;
 	} else if (isType(OBJ_TYPE::NUMBER)) {
 		return to_string(val.number);
 	} else if (isType(OBJ_TYPE::XML)) {
