@@ -15,9 +15,12 @@ E.g.:
 -----
 	#include <base/FFJSON.h>
 
-	FFJSON obj("{\"name\":\"Gowtham\",\"id\":1729,\"isProgrammer\":true,\"favLanguages\":[\"C++\",\"javascript\"]}");
+	FFJSON obj("{\"name\":\"Gowtham\",\"id\":1729,\"isProgrammer\":true,"
+		"\"favLanguages\":[\"C++\",\"javascript\"],"
+		"\"address\":{\"town\":\"KAKINADA\",\"country\":\"India\"}}");
 	cout << obj["name"] << endl;
 	cout << (int)obj["id"] << endl;
+	cout << obj["address"]["country"] << endl;
 	if(obj["isProgrammer"])
 		cout << obj["favLanguages"].prettyString() << endl;
 
@@ -25,6 +28,7 @@ output:
 -------
 	Gowtham
 	1729
+	India
 	[
 		"C++",
 		"javascript",
