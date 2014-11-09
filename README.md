@@ -5,9 +5,11 @@ C++ linux library that provides FFJSON parser and contains other common function
 
 FFJSON JSON parser
 ==================
-	I doubt a parser could be any faster!
-	Intention to develop this parser is to provide ability to access name value pairs in a JSON string using '[]' operator in a C++ program.
-	Its a valgrind clean library. One don't have to worry about freeing up parser.
+I doubt a parser could be any faster!
+
+Intention to develop this parser is to provide ability to access name value pairs in a JSON string using '[]' operator in a C++ program.
+
+Its a valgrind clean library. One don't have to worry about freeing up parser.
 
 E.g.:
 -----
@@ -34,7 +36,7 @@ Installation
 	$ cd base
 	$ make
 	$ sudo make install
-	
+
 Linker option
 --------------
 	-lbase
