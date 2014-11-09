@@ -80,12 +80,6 @@
       <logicalFolder name="f2" displayName="mycurl" projectFiles="true" kind="TEST">
         <itemPath>nbproject/tests/mycurl.cpp</itemPath>
       </logicalFolder>
-      <logicalFolder name="f3"
-                     displayName="threadTest"
-                     projectFiles="true"
-                     kind="TEST">
-        <itemPath>tests/threadTest.cpp</itemPath>
-      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -342,8 +336,6 @@
       </item>
       <item path="sample.ffjson" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="tests/threadTest.cpp" ex="false" tool="1" flavor2="0">
-      </item>
     </conf>
     <conf name="DebugStatic" type="3">
       <toolsSet>
@@ -553,8 +545,6 @@
       <item path="nbproject/tests/mycurl.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sample.ffjson" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="tests/threadTest.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
     <conf name="armhfDebugDynamic" type="2">
@@ -794,8 +784,6 @@
       <item path="nbproject/tests/mycurl.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sample.ffjson" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="tests/threadTest.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>

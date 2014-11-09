@@ -423,10 +423,10 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent) {
 							objCastNail = true;
 							k = 0;
 						} else if (objCastNail) {
-							objCaster[k] = ffjson[i];
+							objCaster += ffjson[i];
 							k++;
 						} else {
-							path[k] = ffjson[i];
+							path += ffjson[i];
 							k++;
 						}
 					}
@@ -434,34 +434,36 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent) {
 				}
 				if (path.length() > 0) {
 					ifstream ifs(path.c_str(), ios::in | ios::ate);
-					string ffjsonStr;
-					strObjMapInit();
-					ifs.seekg(0, std::ios::end);
-					uint8_t t = UNDEFINED;
-					if (objCaster.length() > 0) {
-						t = STR_OBJ[objCaster];
-						if (t == STRING || t == OBJECT || t == ARRAY) {
-							ffjsonStr.reserve(ifs.tellg() + 2);
-							if (t == STRING) {
-								ffjsonStr += "\"\n";
-							} else if (t == OBJECT) {
-								ffjsonStr += "{\n";
-							} else if (t == ARRAY) {
-								ffjsonStr += "[\n";
-							} else {
-								t = UNDEFINED;
-							}
-						};
-					} else {
-						ffjsonStr.reserve(ifs.tellg());
-					}
-					ifs.seekg(0, std::ios::beg);
-					ffjsonStr.append((std::istreambuf_iterator<char>(ifs)),
-							std::istreambuf_iterator<char>());
-					if (t) {
-						init(ffjsonStr, 0, -1);
-					} else {
-						init(ffjsonStr);
+					if (ifs.is_open()) {
+						string ffjsonStr;
+						strObjMapInit();
+						ifs.seekg(0, std::ios::end);
+						uint8_t t = UNDEFINED;
+						if (objCaster.length() > 0) {
+							t = STR_OBJ[objCaster];
+							if (t == STRING || t == OBJECT || t == ARRAY) {
+								ffjsonStr.reserve(ifs.tellg() + 2);
+								if (t == STRING) {
+									ffjsonStr += "\"\n";
+								} else if (t == OBJECT) {
+									ffjsonStr += "{\n";
+								} else if (t == ARRAY) {
+									ffjsonStr += "[\n";
+								} else {
+									t = UNDEFINED;
+								}
+							};
+						} else {
+							ffjsonStr.reserve(ifs.tellg());
+						}
+						ifs.seekg(0, std::ios::beg);
+						ffjsonStr.append((std::istreambuf_iterator<char>(ifs)),
+								std::istreambuf_iterator<char>());
+						if (t) {
+							init(ffjsonStr, 0, -1);
+						} else {
+							init(ffjsonStr);
+						}
 					}
 				}
 			}
@@ -651,11 +653,11 @@ FFJSON & FFJSON::operator[](int index) {
 string FFJSON::stringify(bool json) {
 	if (isType(OBJ_TYPE::STRING)) {
 		string s;
-		s.reserve(2*size+2);
+		s.reserve(2 * size + 2);
 		s += '"';
-		int i=0;
-		while(i<size){
-			switch(val.string[i]){
+		int i = 0;
+		while (i < size) {
+			switch (val.string[i]) {
 				case '"':
 					s += "\\\"";
 					break;
@@ -668,10 +670,7 @@ string FFJSON::stringify(bool json) {
 				case '\t':
 					s += "\\t";
 					break;
-				case '\r':
-					s += "\\r";
-					break;
-				default :
+				default:
 					s += val.string[i];
 					break;
 			}

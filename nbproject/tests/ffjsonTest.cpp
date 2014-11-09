@@ -123,19 +123,22 @@ struct testStruct {
 };
 
 void test2() {
-	std::cout << "ffjsonTest test 2" << std::endl;
-	string fn = "/home/gowtham/Projects/ferrymediaserver/offpmpack.json";
-	ifstream ifs(fn.c_str(), ios::in | ios::ate);
-	string ffjsonStr;
-	ifs.seekg(0, std::ios::end);
-	ffjsonStr.reserve(ifs.tellg());
-	ifs.seekg(0, std::ios::beg);
-	ffjsonStr.assign((std::istreambuf_iterator<char>(ifs)),
-			std::istreambuf_iterator<char>());
-	FFJSON ffo(ffjsonStr);
+	//std::cout << "ffjsonTest test 2" << std::endl;
+	//string fn = "file:///home/gowtham/Projects/ferrymediaserver/offpmpack.json";
+	string fn = "file://sample.ffjson";
+	//	ifstream ifs(fn.c_str(), ios::in | ios::ate);
+	//	string ffjsonStr;
+	//	ifs.seekg(0, std::ios::end);
+	//	ffjsonStr.reserve(ifs.tellg());
+	//	ifs.seekg(0, std::ios::beg);
+	//	ffjsonStr.assign((std::istreambuf_iterator<char>(ifs)),
+	//			std::istreambuf_iterator<char>());
+	FFJSON ffo(fn);
 	ffo["ferryframes"].setEFlag(FFJSON::B64ENCODE);
 	string* s = new string(ffo.stringify(true));
 	cout << *s << endl;
+	FFJSON ffo2(fn);
+	cout << ffo2.prettyString() << endl;
 	s->append(":)");
 	testStruct ts;
 	ts.s = s;
