@@ -11,18 +11,20 @@ Intention to develop this parser is to provide ability to access name value pair
 
 Its a valgrind clean library. One don't have to worry about freeing up parser.
 
-E.g.:
------
+code at a glance:
+-----------------
 	#include <base/FFJSON.h>
 
 	FFJSON obj("{\"name\":\"Gowtham\",\"id\":1729,\"isProgrammer\":true,"
 		"\"favLanguages\":[\"C++\",\"javascript\"],"
 		"\"address\":{\"town\":\"KAKINADA\",\"country\":\"India\"}}");
+	
 	cout << obj["name"] << endl;
 	cout << (int)obj["id"] << endl;
 	cout << obj["address"]["country"] << endl;
-	if(obj["isProgrammer"])
+	if(obj["isProgrammer"]){
 		cout << obj["favLanguages"].prettyString() << endl;
+	}
 
 output:
 -------
