@@ -7,9 +7,11 @@ FFJSON JSON parser
 ==================
 I doubt a parser could be any faster!
 
-Intention to develop this parser is to provide ability to access name value pairs in a JSON string using '[]' operator in a C++ program.
+This parser provides ability to access nested name-value pairs in a JSON string using squence of '[]' operators in a C++ program.
 
 Its a valgrind clean library. One don't have to worry about freeing up parser.
+
+I recursively hacked it to extract as many features as I could and I will continue till it can!
 
 code at a glance:
 -----------------
