@@ -13,7 +13,7 @@ Its a valgrind clean library. One don't have to worry about freeing up parser.
 
 E.g.:
 -----
-	#include <base/FFJSON.cpp>
+	#include <base/FFJSON.h>
 
 	FFJSON obj("{\"name\":\"Gowtham\",\"id\":1729,\"isProgrammer\":true,\"favLanguages\":[\"C++\",\"javascript\"]}");
 	cout << obj["name"] << endl;
