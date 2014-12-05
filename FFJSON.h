@@ -60,7 +60,9 @@ public:
 		ENONE = 0,
 		B64ENCODE = 1 << 0,
 		B64ENCODE_CHILDREN = 1 << 1,
-		B64ENCODE_STOP = 1 << 2
+		B64ENCODE_STOP = 1 << 2,
+		IS_COMMENT = 1 << 3,
+		HAS_COMMENT = 1 << 4
 	};
 
 	enum COPY_FLAGS {
@@ -213,7 +215,7 @@ public:
 	 * an idea on what I'm saying, jst try it with non zero positive value.
 	 * @return A pretty string :)
 	 */
-	std::string prettyString(unsigned int indent = 0);
+	std::string prettyString(bool json = false, bool printComments = false, unsigned int indent = 0);
 
 	/**
 	 * Generates a query string which can be used to query a FFJSON tree. Query 

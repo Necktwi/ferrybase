@@ -30,16 +30,22 @@
 			}
 		]
 	},
+	
+	#donkeys: "very useful animals for dobis",
+	donkeys: 4,
+
+	monkeys: 500,
+	jackals: 6,
+	cows: 7,
+
 	animalCount: [
 		3,
 		500,
 		6,
 		7
 	],
-	donkeys: 3,
-	monkeys: 500,
-	jackals: 6,
-	cows: 7,
+
+	#summary: "demonstrating a comment! how coolly it can be neglected",
 	summary: "
 				This is a sample experimental FFJSON data representation.
 		------------------------------------------------------------------------
@@ -54,5 +60,7 @@
 		5.	More protocols like file:// will be added as it progresses.
 		6.	Its ironic that I hated to write string parsing functions and have 
 			written the ultimate parser :)
-	"
+	",
+
+	example: file:///home/gowtham/workspace/base/example.json
 }

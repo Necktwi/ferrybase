@@ -108,7 +108,7 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf) {
 			FFJSON* fo;
 			if (i->second != NULL)
 				fo = new FFJSON(*i->second, cf);
-			if (fo && ((cf == COPY_QUERIES&&!fo->isQType(QUERY_TYPE::NONE))
+			if (fo && ((cf == COPY_QUERIES && !fo->isQType(QUERY_TYPE::NONE))
 					|| !fo->isType(UNDEFINED))) {
 				(*val.pairs)[i->first] = fo;
 			} else {
@@ -129,7 +129,7 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf) {
 			FFJSON * fo = NULL;
 			if ((*orig.val.array)[i] != NULL)
 				fo = new FFJSON(*(*orig.val.array)[i]);
-			if (fo && ((cf == COPY_QUERIES&&!fo->isQType(QUERY_TYPE::NONE))
+			if (fo && ((cf == COPY_QUERIES && !fo->isQType(QUERY_TYPE::NONE))
 					|| !fo->isType(UNDEFINED))) {
 				(*val.array).push_back(fo);
 				matter = true;
@@ -176,6 +176,7 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent) {
 			int objIdNail = i;
 			string objId;
 			int nind = getIndent(ffjson.c_str(), &i, indent);
+			bool comment = false;
 			while (i < j) {
 				if (ffjson[i] == ':') {
 					i++;
@@ -185,7 +186,20 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent) {
 						trimQuotes(objId);
 						FFJSON* obj = new FFJSON(ffjson, &i, nind);
 						(*val.pairs)[objId] = obj;
-						size++;
+						if (comment) {
+							string comment("#");
+							comment += objId;
+							if (val.pairs->find(comment) != val.pairs->end()) {
+								obj->etype |= HAS_COMMENT;
+							}
+						}
+						if (objId[0] == '#') {
+							comment = true;
+							obj->etype |= IS_COMMENT;
+						} else {
+							comment = false;
+						}
+						if (!comment)size++;
 					} catch (Exception e) {
 						cout << "some Exception is thrown here" << endl;
 					}
@@ -253,14 +267,22 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent) {
 				}
 				if (ffjson[i] == '\\' && nind == indent) {
 					i++;
-					if (ffjson[i] == 'n') {
-						buf[k] = '\n';
-					} else if (ffjson[i] == 'r') {
-						buf[k] = '\r';
-					} else if (ffjson[i] == 't') {
-						buf[k] = '\t';
-					} else {
-						buf[k] = ffjson[i];
+					switch (ffjson[i]) {
+						case 'n':
+							buf[k] = '\n';
+							break;
+						case 'r':
+							buf[k] = '\r';
+							break;
+						case 't':
+							buf[k] = '\t';
+							break;
+						case '\\':
+							buf[k] = '\\';
+							break;
+						default:
+							buf[k] = ffjson[i];
+							break;
 					}
 					i++;
 					k++;
@@ -670,6 +692,9 @@ string FFJSON::stringify(bool json) {
 				case '\t':
 					s += "\\t";
 					break;
+				case '\\':
+					s += "\\\\";
+					break;
 				default:
 					s += val.string[i];
 					break;
@@ -706,7 +731,7 @@ string FFJSON::stringify(bool json) {
 		i = objmap.begin();
 		while (i != objmap.end()) {
 			int t = i->second ? i->second->type : NUL;
-			if (t != UNDEFINED) {
+			if (t != UNDEFINED && ((i->second->etype & IS_COMMENT) != IS_COMMENT)) {
 				if (t != NUL) {
 					if (isEFlagSet(B64ENCODE))i->second->setEFlag(B64ENCODE);
 					if ((isEFlagSet(B64ENCODE_CHILDREN))&&!isEFlagSet(B64ENCODE_STOP))
@@ -762,7 +787,7 @@ string FFJSON::stringify(bool json) {
 	}
 }
 
-string FFJSON::prettyString(unsigned int indent) {
+string FFJSON::prettyString(bool json, bool printComments, unsigned int indent) {
 	if (isType(OBJ_TYPE::STRING)) {
 		string ps = "\"";
 		bool hasNewLine = (strchr(val.string, '\n') != NULL);
@@ -816,21 +841,48 @@ string FFJSON::prettyString(unsigned int indent) {
 		string ps = "{\n";
 		map<string, FFJSON*>::iterator i;
 		i = objmap.begin();
+		bool notComment = false;
+		bool hasComment = false;
 		while (i != objmap.end()) {
 			uint8_t t = i->second ? i->second->type : NUL;
-			if (t != UNDEFINED && t != NUL) {
+			notComment = ((i->second->etype & IS_COMMENT) != IS_COMMENT);
+			hasComment = ((i->second->etype & HAS_COMMENT) == HAS_COMMENT);
+			if (t != UNDEFINED && t != NUL && notComment) {
 				if (isEFlagSet(B64ENCODE))i->second->setEFlag(B64ENCODE);
 				if ((isEFlagSet(B64ENCODE_CHILDREN))&&!isEFlagSet(B64ENCODE_STOP))
 					i->second->setEFlag(B64ENCODE_CHILDREN);
+				if (hasComment && !json && printComments) {
+					string name("#");
+					name += i->first;
+					map<string, FFJSON*>::iterator ci = val.pairs->find(name);
+					if (ci != val.pairs->end()) {
+						ps += "\n";
+						ps.append(indent + 1, '\t');
+						ps += name + ": ";
+						ps += ci->second->prettyString(json, printComments, indent + 1);
+						ps += ",\n";
+					}
+				}
 				ps.append(indent + 1, '\t');
-				ps.append("\"" + i->first + "\": ");
-				ps.append(i->second->prettyString(indent + 1));
+				if (json)ps += "\"";
+				ps += i->first;
+				if (json)ps += "\"";
+				ps += ": ";
+				ps.append(i->second->prettyString(json, printComments, indent + 1));
 			} else if (t == NUL) {
 				ps.append(indent + 1, '\t');
-				ps.append("\"" + i->first + "\": ");
+				if (json)ps.append("\"");
+				ps += i->first;
+				if (json)ps += "\"";
+				ps += ": ";
 			}
 			if (++i != objmap.end()) {
-				if (t != UNDEFINED)ps.append(",\n");
+				if (t != UNDEFINED && notComment) {
+					ps.append(",\n");
+					if (hasComment && !json && printComments) {
+						ps += '\n';
+					}
+				}
 			} else {
 				ps.append("\n");
 			}
@@ -849,7 +901,7 @@ string FFJSON::prettyString(unsigned int indent) {
 				if ((isEFlagSet(B64ENCODE_CHILDREN))&&!isEFlagSet(B64ENCODE_STOP))
 					objarr[i]->setEFlag(B64ENCODE_CHILDREN);
 				ps.append(indent + 1, '\t');
-				ps.append(objarr[i]->prettyString(indent + 1));
+				ps.append(objarr[i]->prettyString(json, printComments, indent + 1));
 			} else if (t == NUL) {
 				ps.append(indent + 1, '\t');
 			}
@@ -1435,6 +1487,9 @@ FFJSON* FFJSON::Iterator::operator->() {
 
 FFJSON::Iterator& FFJSON::Iterator::operator++() {
 	if (type == OBJECT) {
+		while (((*ui.pi)->second->etype & IS_COMMENT) == IS_COMMENT) {
+			(*ui.pi)++;
+		}
 		(*ui.pi)++;
 	} else if (type == ARRAY) {
 		(*ui.ai)++;

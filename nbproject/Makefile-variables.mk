@@ -8,9 +8,9 @@ CND_BUILDDIR=build
 CND_DISTDIR=dist
 # DebugDynamic configuration
 CND_PLATFORM_DebugDynamic=GNU-Linux-x86
-CND_ARTIFACT_DIR_DebugDynamic=dist/DebugDynamic/GNU-Linux-x86
-CND_ARTIFACT_NAME_DebugDynamic=lib${APPNAME}.so.${MAJOR_VERSION}.${MINOR_VERSION}
-CND_ARTIFACT_PATH_DebugDynamic=dist/DebugDynamic/GNU-Linux-x86/lib${APPNAME}.so.${MAJOR_VERSION}.${MINOR_VERSION}
+CND_ARTIFACT_DIR_DebugDynamic=build/DebugDynamic/GNU-Linux-x86/tests/TestFiles
+CND_ARTIFACT_NAME_DebugDynamic=f3
+CND_ARTIFACT_PATH_DebugDynamic=build/DebugDynamic/GNU-Linux-x86/tests/TestFiles/f3
 CND_PACKAGE_DIR_DebugDynamic=dist/DebugDynamic/GNU-Linux-x86/package
 CND_PACKAGE_NAME_DebugDynamic=libbase.deb
 CND_PACKAGE_PATH_DebugDynamic=dist/DebugDynamic/GNU-Linux-x86/package/libbase.deb
