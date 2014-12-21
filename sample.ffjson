@@ -44,6 +44,13 @@
 		6,
 		7
 	],
+	countCategories:
+		["animal",	"TotalCount",	"MaleCount",	"FemaleCount",	"BabyCount",	"MotherCount"],
+	categoryCount:[
+		["Buffalo",	3,		5,		10,		15,		16],
+		["Monkeys",	500,		600,		800,		900,		800],
+		["Donkeys",	600,		700,		900,		1000,		10000]
+	],
 
 	#summary: "demonstrating a comment! how coolly it can be neglected",
 	summary: "

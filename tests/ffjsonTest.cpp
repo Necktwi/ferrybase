@@ -93,7 +93,20 @@ void test1() {
 	std::string ps3 = ffo2.prettyString();
 	cout << ps3 << endl;
 	cout << "FFJSON signature size: " << sizeof (ffo2) << endl;
+	
+	std::cout << "sizeInfo test 1" << std::endl;
 
+	std::cout << "size of char: " << sizeof (char) << std::endl;
+	std::cout << "size of short: " << sizeof (short) << std::endl;
+	std::cout << "size of int: " << sizeof (int) << std::endl;
+	std::cout << "size of long: " << sizeof (long) << std::endl;
+	std::cout << "size of long long: " << sizeof (long long) << std::endl;
+
+	std::cout << "size of float: " << sizeof (float) << std::endl;
+	std::cout << "size of double: " << sizeof (double) << std::endl;
+
+	std::cout << "size of pointer: " << sizeof (int *) << std::endl;
+	
 	ffo2["amphibians"]["frogs"].setQType(FFJSON::QUERY_TYPE::QUERY);
 	ffo2["amphibians"]["salamanders"].setQType(FFJSON::QUERY_TYPE::DELETE);
 	ffo2["amphibians"]["genome"].setQType(FFJSON::QUERY_TYPE::SET);

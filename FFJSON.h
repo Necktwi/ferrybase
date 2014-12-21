@@ -8,6 +8,8 @@
 #ifndef FFJSON_H
 #define	FFJSON_H
 
+#include "myconverters.h"
+
 #include <string>
 #include <iostream>
 #include <vector>
@@ -43,6 +45,7 @@ public:
 		BOOL,
 		OBJECT,
 		ARRAY,
+		LINK,
 		NUL
 	};
 
@@ -62,7 +65,8 @@ public:
 		B64ENCODE_CHILDREN = 1 << 1,
 		B64ENCODE_STOP = 1 << 2,
 		IS_COMMENT = 1 << 3,
-		HAS_COMMENT = 1 << 4
+		HAS_COMMENT = 1 << 4,
+		IS_EXTENDED = 1 << 5
 	};
 
 	enum COPY_FLAGS {
@@ -102,6 +106,16 @@ public:
 			std::vector<FFJSON*>::iterator* ai;
 		} ui;
 	};
+	
+	struct FFJSONExt{
+		FFJSON* base = NULL;
+	};
+
+	struct FFJSONPObj {
+		std::string* name;
+		FFJSON* value = NULL;
+		FFJSONPObj* pObj = NULL;
+	};
 
 	/**
 	 * creates an UNRECOGNIZED FFJSON object. Any FFJSON object can be
@@ -122,8 +136,10 @@ public:
 	 * @param ci is the offset in FFJSON string to be considered. Its 0 by 
 	 * default.
 	 */
-	FFJSON(const std::string& ffjson, int* ci = NULL, int indent = 0);
-	void init(const std::string& ffjson, int* ci = NULL, int indent = 0);
+	FFJSON(const std::string& ffjson, int* ci = NULL, int indent = 0,
+			FFJSONPObj* pObj = NULL);
+	void init(const std::string& ffjson, int* ci = NULL, int indent = 0,
+			FFJSONPObj* pObj = NULL);
 
 	/**
 	 * Creates an empty FFJSON object of type @param t. It throws an Exception
@@ -132,7 +148,7 @@ public:
 	 */
 	FFJSON(OBJ_TYPE t);
 
-	virtual ~FFJSON();
+	~FFJSON();
 
 	/**
 	 * Emptys the FFJSON object. For example If you want delete objects in an 
@@ -259,7 +275,7 @@ public:
 		std::map<std::string, FFJSON*>* pairs;
 		double number;
 		bool boolean;
-		FFJSON** fpptr;
+		FFJSON* fptr;
 	} val;
 
 	FFJSON& operator[](const char* prop);
@@ -289,9 +305,13 @@ private:
 	uint8_t type = UNDEFINED;
 	uint8_t qtype;
 	uint8_t etype;
+	void* extPtr;
 	void copy(const FFJSON& orig, COPY_FLAGS cf = COPY_NONE);
 	static int getIndent(const char* ffjson, int* ci, int indent);
 	static void strObjMapInit();
+	static bool inline isWhiteSpace(char c);
+	static bool inline isTerminatingChar(char c);
+	static FFJSON* returnNameIfDeclared(splitstring name, FFJSONPObj* fpo);
 };
 
 #endif	/* FFJSON_H */
