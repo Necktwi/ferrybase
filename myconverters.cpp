@@ -73,8 +73,8 @@ std::string implode(const std::string glue, const std::vector<std::string> &piec
 	}
 	return a;
 }
-	
-vector<string>& splitstring::split(char delim, int rep) {
+
+vector<splitstring>& splitstring::split(char delim, char dum, int rep) {
 	if (!flds.empty()) flds.clear(); // empty vector if necessary
 	string& work = *this;
 	string buf = "";
@@ -98,11 +98,15 @@ vector<string>& splitstring::split(char delim, int rep) {
 
 std::vector<std::string> explode(const std::string delimiter, const std::string &str) {
 	std::vector<std::string> arr;
+	explode(delimiter, str, arr);
+	return arr;
+}
 
+void explode(const std::string delimiter, const std::string &str, std::vector<std::string>& shrapnel) {
 	int strleng = str.length();
 	int delleng = delimiter.length();
 	if (delleng == 0)
-		return arr; //no change
+		return; //no change
 
 	int i = 0;
 	int k = 0;
@@ -112,15 +116,15 @@ std::vector<std::string> explode(const std::string delimiter, const std::string 
 			j++;
 		if (j == delleng)//found delimiter
 		{
-			arr.push_back(str.substr(k, i - k));
+			shrapnel.push_back(str.substr(k, i - k));
 			i += delleng;
 			k = i;
 		} else {
 			i++;
 		}
 	}
-	arr.push_back(str.substr(k, i - k));
-	return arr;
+	shrapnel.push_back(str.substr(k, i - k));
+	return;
 }
 
 float timeToSec(std::string timestring) {

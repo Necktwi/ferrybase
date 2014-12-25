@@ -20,6 +20,8 @@ std::string implode(const std::string glue,
 	const std::vector<std::string> &pieces);
 std::vector<std::string> explode(const std::string delimiter,
 	const std::string &str);
+void explode(const std::string delimiter, const std::string &str,
+	std::vector<std::string>& shrapnel);
 float timeToSec(std::string timestring);
 std::string tolower(std::string s);
 void str_cstrlit(const char *str, char *buffer, size_t buflen);
@@ -28,12 +30,25 @@ class splitstring : public string {
 	std::vector<splitstring> flds;
 public:
 
-	using string::string;
+	splitstring(const string& str) : string(str) {
+	};
+
+	splitstring(const string& str, size_t pos, size_t len = npos) : string(str, pos, len) {
+	};
+
+	splitstring(const char* s) : string(s) {
+	};
+
+	splitstring(const char* s, size_t n) : string(s, n) {
+	};
+
+	splitstring(size_t n, char c) : string(n, c) {
+	};
 
 	/** split: receives a char delimiter; returns a vector of strings
 	 * By default ignores repeated delimiters, unless argument rep == 1.
 	 **/
-	std::vector<string>& split(char delim, int rep = 1);
+	std::vector<splitstring>& split(char delim, char dum, int rep = 1);
 };
 
 

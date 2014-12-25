@@ -106,13 +106,22 @@ public:
 			std::vector<FFJSON*>::iterator* ai;
 		} ui;
 	};
-	
-	struct FFJSONExt{
+
+	union FeaturedMems {
+		std::vector<string>* link;
+	};
+
+	struct FeaturedMem {
+		FeaturedMems fms;
+		FeaturedMem* fm = NULL;
+	};
+
+	struct FFJSONExt {
 		FFJSON* base = NULL;
 	};
 
 	struct FFJSONPObj {
-		std::string* name;
+		const std::string* name;
 		FFJSON* value = NULL;
 		FFJSONPObj* pObj = NULL;
 	};
@@ -137,9 +146,9 @@ public:
 	 * default.
 	 */
 	FFJSON(const std::string& ffjson, int* ci = NULL, int indent = 0,
-			FFJSONPObj* pObj = NULL);
+		FFJSONPObj* pObj = NULL);
 	void init(const std::string& ffjson, int* ci = NULL, int indent = 0,
-			FFJSONPObj* pObj = NULL);
+		FFJSONPObj* pObj = NULL);
 
 	/**
 	 * Creates an empty FFJSON object of type @param t. It throws an Exception
@@ -221,7 +230,7 @@ public:
 	 * Converts FFJSON object into FFJSON string.
 	 * @return FFJSON string.
 	 */
-	std::string stringify(bool json = false);
+	std::string stringify(bool json = false, FFJSONPObj* pObj = NULL);
 
 	/**
 	 * Converts FFJSON object into FFJSON pretty string that has indents where
@@ -231,7 +240,7 @@ public:
 	 * an idea on what I'm saying, jst try it with non zero positive value.
 	 * @return A pretty string :)
 	 */
-	std::string prettyString(bool json = false, bool printComments = false, unsigned int indent = 0);
+	std::string prettyString(bool json = false, bool printComments = false, unsigned int indent = 0, FFJSONPObj* pObj = NULL);
 
 	/**
 	 * Generates a query string which can be used to query a FFJSON tree. Query 
@@ -289,7 +298,7 @@ public:
 	FFJSON& operator=(const short& s);
 	FFJSON& operator=(const long& l);
 	FFJSON& operator=(const FFJSON& f);
-	FFJSON& operator=(const FFJSON* f);
+	FFJSON& operator=(FFJSON* f);
 	operator const char*();
 	operator double();
 	operator float();
@@ -305,13 +314,13 @@ private:
 	uint8_t type = UNDEFINED;
 	uint8_t qtype;
 	uint8_t etype;
-	void* extPtr;
+	FeaturedMem* fMPtr = NULL;
 	void copy(const FFJSON& orig, COPY_FLAGS cf = COPY_NONE);
 	static int getIndent(const char* ffjson, int* ci, int indent);
 	static void strObjMapInit();
 	static bool inline isWhiteSpace(char c);
 	static bool inline isTerminatingChar(char c);
-	static FFJSON* returnNameIfDeclared(splitstring name, FFJSONPObj* fpo);
+	static FFJSON* returnNameIfDeclared(std::vector<string>& prop, FFJSONPObj* fpo);
 };
 
 #endif	/* FFJSON_H */
