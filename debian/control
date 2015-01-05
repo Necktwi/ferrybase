@@ -13,7 +13,7 @@ Section: non-free/libdevel
 Architecture: any
 Depends: base1 (= ${binary:Version}), ${misc:Depends}, openssl, libxml2, bluez
 Description: Base shared library for apps by ferryfair.com
- It got multipurpose funtions like sockets, logger, etc.
+ It got multipurpose functions like sockets, logger, etc.
 
 Package: base1
 Section: non-free/libs

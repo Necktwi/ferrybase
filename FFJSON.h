@@ -66,7 +66,8 @@ public:
 		B64ENCODE_STOP = 1 << 2,
 		IS_COMMENT = 1 << 3,
 		HAS_COMMENT = 1 << 4,
-		IS_EXTENDED = 1 << 5
+		IS_EXTENDED = 1 << 5,
+		EXT_VIA_PARENT = 1 << 6
 	};
 
 	enum COPY_FLAGS {
@@ -321,6 +322,7 @@ private:
 	static bool inline isWhiteSpace(char c);
 	static bool inline isTerminatingChar(char c);
 	static FFJSON* returnNameIfDeclared(std::vector<string>& prop, FFJSONPObj* fpo);
+	bool inherit(FFJSON& obj);
 };
 
 #endif	/* FFJSON_H */
