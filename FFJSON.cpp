@@ -1583,9 +1583,19 @@ bool FFJSON::inherit(FFJSON& obj) {
 	if (obj.isType(ARRAY)) {
 					if(isType(ARRAY)){
 						if(obj.size == 1){
-							obj[0];
+							FFJSON& arr=obj[0];
 							map<string,int>* m=new map<string,int>();
-							
+							int i=arr.size;
+							while(i>0){
+								i--;
+								m[arr[i]]=i;
+							}
+							i=obj.size;
+							while(i>0){
+								i--;
+								obj[i].setEFlag(FFJSON::E_FLAGS::EXT_VIA_PARENT);
+								obj[i].fMPtr=
+							}
 						}
 					}
 				} else if (obj->isType(OBJECT)) {

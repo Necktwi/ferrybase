@@ -110,6 +110,7 @@ public:
 
 	union FeaturedMems {
 		std::vector<string>* link;
+		std::map<string,int>* tabHead;
 	};
 
 	struct FeaturedMem {
