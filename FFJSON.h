@@ -111,18 +111,9 @@ public:
 	union FeaturedMems {
 		std::vector<string>* link;
 		std::map<string,int>* tabHead;
+		FeaturedMems* fms;
 	};
 
-	struct FeaturedMem {
-		FeaturedMems fms;
-		FeaturedMem* fm = NULL;
-	};
-	
-	union MemFeatMems{
-		FeaturedMems fms;
-		FeaturedMem* fm;
-	};
-	
 	struct FFJSONExt {
 		FFJSON* base = NULL;
 	};
@@ -321,7 +312,7 @@ private:
 	uint8_t type = UNDEFINED;
 	uint8_t qtype;
 	uint8_t etype;
-	MemFeatMems mFMs;
+	FeaturedMems fms;
 	void copy(const FFJSON& orig, COPY_FLAGS cf = COPY_NONE);
 	static int getIndent(const char* ffjson, int* ci, int indent);
 	static void strObjMapInit();

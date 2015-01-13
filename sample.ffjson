@@ -69,5 +69,6 @@
 			written the ultimate parser :)
 	",
 
-	example: file:///home/gowtham/workspace/base/example.json
+	example: file:///home/gowtham/workspace/base/example.json,
+	link: summary
 }

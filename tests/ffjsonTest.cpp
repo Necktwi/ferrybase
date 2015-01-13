@@ -176,6 +176,12 @@ void test3() {
 	cout << "%TEST_PASSED%" << endl;
 }
 
+void test4() {
+	cout << "===================================================" << endl;
+	cout << "			ffjsonTest test 3 (testing links)		" << endl;
+	cout << "===================================================" << endl;
+	FFJSON f("file://sample.ffjson");
+}
 int main(int argc, char** argv) {
 	std::cout << "%SUITE_STARTING% ffjsonTest" << std::endl;
 	std::cout << "%SUITE_STARTED%" << std::endl;
@@ -192,6 +198,10 @@ int main(int argc, char** argv) {
 	test3();
 	std::cout << "%TEST_FINISHED% time=0 test3 (ffjsonTest)" << std::endl;
 
+	std::cout << "%TEST_STARTED% test4 (ffjsonTest)\n" << std::endl;
+	test4();
+	std::cout << "%TEST_FINISHED% time=0 test4 (ffjsonTest)" << std::endl;
+	
 	std::cout << "%SUITE_FINISHED% time=0" << std::endl;
 
 	return (EXIT_SUCCESS);
