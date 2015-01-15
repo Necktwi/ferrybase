@@ -941,7 +941,9 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 		FFJSONPObj lfpo;
 		lfpo.pObj = pObj;
 		lfpo.value = this;
+		std::list<string*> memberStrings;
 		while (i != objmap.end()) {
+			string& ms = *(new string());
 			uint8_t t = i->second ? i->second->type : NUL;
 			notComment = ((i->second->etype & IS_COMMENT) != IS_COMMENT);
 			hasComment = ((i->second->etype & HAS_COMMENT) == HAS_COMMENT);
@@ -954,38 +956,39 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 					name += i->first;
 					map<string, FFJSON*>::iterator ci = val.pairs->find(name);
 					if (ci != val.pairs->end()) {
-						ps += "\n";
-						ps.append(indent + 1, '\t');
-						ps += name + ": ";
+						ms += "\n";
+						ms.append(indent + 1, '\t');
+						ms += name + ": ";
 						lfpo.name = &name;
-						ps += ci->second->prettyString(json, printComments, indent + 1, &lfpo);
-						ps += ",\n";
+						ms += ci->second->prettyString(json, printComments, indent + 1, &lfpo);
+						ms += ",\n";
 					}
 				}
-				ps.append(indent + 1, '\t');
-				if (json)ps += "\"";
-				ps += i->first;
+				ms.append(indent + 1, '\t');
+				if (json)ms += "\"";
+				ms += i->first;
 				lfpo.name = &i->first;
-				if (json)ps += "\"";
-				ps += ": ";
-				ps.append(i->second->prettyString(json, printComments, indent + 1, &lfpo));
+				if (json)ms += "\"";
+				ms += ": ";
+				ms.append(i->second->prettyString(json, printComments, indent + 1, &lfpo));
 			} else if (t == NUL) {
-				ps.append(indent + 1, '\t');
-				if (json)ps.append("\"");
-				ps += i->first;
-				if (json)ps += "\"";
-				ps += ": ";
+				ms.append(indent + 1, '\t');
+				if (json)ms.append("\"");
+				ms += i->first;
+				if (json)ms += "\"";
+				ms += ": ";
 			}
 			if (++i != objmap.end()) {
 				if (t != UNDEFINED && notComment) {
-					ps.append(",\n");
+					ms.append(",\n");
 					if (hasComment && !json && printComments) {
-						ps += '\n';
+						ms += '\n';
 					}
 				}
 			} else {
-				ps.append("\n");
+				ms.append("\n");
 			}
+			memberStrings.push_back(&ms);
 		}
 		ps.append(indent, '\t');
 		ps.append("}");
