@@ -110,7 +110,7 @@ public:
 
 	union FeaturedMems {
 		std::vector<string>* link;
-		std::map<string,int>* tabHead;
+		std::map<string, int>* tabHead;
 		FeaturedMems* fms;
 	};
 
@@ -124,6 +124,17 @@ public:
 		FFJSONPObj* pObj = NULL;
 	};
 
+	struct StringPair {
+		std::string name;
+		std::string value;
+	};
+
+	struct FFJSONPLObj : FFJSONPObj {
+		std::list<StringPair>& spl;
+
+		FFJSONPLObj(std::list<StringPair>& spl);
+	};
+	
 	/**
 	 * creates an UNRECOGNIZED FFJSON object. Any FFJSON object can be
 	 * assigned any other type of FFJSON object.
@@ -144,9 +155,9 @@ public:
 	 * default.
 	 */
 	FFJSON(const std::string& ffjson, int* ci = NULL, int indent = 0,
-		FFJSONPObj* pObj = NULL);
+			FFJSONPObj* pObj = NULL);
 	void init(const std::string& ffjson, int* ci = NULL, int indent = 0,
-		FFJSONPObj* pObj = NULL);
+			FFJSONPObj* pObj = NULL);
 
 	/**
 	 * Creates an empty FFJSON object of type @param t. It throws an Exception

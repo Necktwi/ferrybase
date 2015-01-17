@@ -882,7 +882,7 @@ string FFJSON::stringify(bool json, FFJSONPObj* pObj) {
 	}
 }
 
-string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, FFJSONPObj* pObj) {
+string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, FFJSONPLObj* pObj) {
 	if (isType(OBJ_TYPE::STRING)) {
 		string ps = "\"";
 		bool hasNewLine = (strchr(val.string, '\n') != NULL);
@@ -941,7 +941,7 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 		FFJSONPObj lfpo;
 		lfpo.pObj = pObj;
 		lfpo.value = this;
-		std::list<string*> memberStrings;
+		std::list<StringPair> memberStrings;
 		while (i != objmap.end()) {
 			string& ms = *(new string());
 			uint8_t t = i->second ? i->second->type : NUL;
@@ -1750,3 +1750,6 @@ FFJSON::Iterator::operator const char*() {
 	}
 	return NULL;
 }
+
+FFJSON::FFJSONPLObj::FFJSONPLObj(std::list<StringPair>& spl) : spl(spl) {
+};

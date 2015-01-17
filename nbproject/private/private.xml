@@ -12,6 +12,7 @@
         <group>
             <file>rfs://gowtham@192.168.137.2:22/home/gowtham/workspace/base/myconverters.h</file>
             <file>rfs://gowtham@192.168.137.2:22/home/gowtham/workspace/base/FFJSON.cpp</file>
+            <file>rfs://gowtham@192.168.137.2:22/home/gowtham/workspace/base/example.json</file>
             <file>rfs://gowtham@192.168.137.2:22/home/gowtham/workspace/base/tests/ffjsonTest.cpp</file>
             <file>rfs://gowtham@192.168.137.2:22/home/gowtham/workspace/base/sample.ffjson</file>
             <file>rfs://gowtham@192.168.137.2:22/home/gowtham/workspace/base/FFJSON.h</file>
