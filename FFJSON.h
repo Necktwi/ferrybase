@@ -124,9 +124,10 @@ public:
 		FFJSONPObj* pObj = NULL;
 	};
 
-	struct StringPair {
+	struct StringPairList {
 		std::string name;
 		std::string value;
+		StringPairList* spl = NULL;
 	};
 
 	struct FFJSONPLObj : FFJSONPObj {
@@ -134,7 +135,7 @@ public:
 
 		FFJSONPLObj(std::list<StringPair>& spl);
 	};
-	
+
 	/**
 	 * creates an UNRECOGNIZED FFJSON object. Any FFJSON object can be
 	 * assigned any other type of FFJSON object.

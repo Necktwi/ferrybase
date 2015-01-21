@@ -941,9 +941,11 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 		FFJSONPObj lfpo;
 		lfpo.pObj = pObj;
 		lfpo.value = this;
-		std::list<StringPair> memberStrings;
+		std::map<string, StringPairList*> memberStrings;
+		StringPairList* psp = NULL;
 		while (i != objmap.end()) {
-			string& ms = *(new string());
+			StringPairList* csp = new StringPairList();
+			string& ms = csp->name;
 			uint8_t t = i->second ? i->second->type : NUL;
 			notComment = ((i->second->etype & IS_COMMENT) != IS_COMMENT);
 			hasComment = ((i->second->etype & HAS_COMMENT) == HAS_COMMENT);
@@ -958,6 +960,7 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 					if (ci != val.pairs->end()) {
 						ms += "\n";
 						ms.append(indent + 1, '\t');
+						memberStrings[name] = csp;
 						ms += name + ": ";
 						lfpo.name = &name;
 						ms += ci->second->prettyString(json, printComments, indent + 1, &lfpo);
@@ -967,6 +970,7 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 				ms.append(indent + 1, '\t');
 				if (json)ms += "\"";
 				ms += i->first;
+				memberStrings[i->first] = csp;
 				lfpo.name = &i->first;
 				if (json)ms += "\"";
 				ms += ": ";
@@ -975,20 +979,16 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 				ms.append(indent + 1, '\t');
 				if (json)ms.append("\"");
 				ms += i->first;
+				memberStrings[i->first] = csp;
 				if (json)ms += "\"";
 				ms += ": ";
 			}
-			if (++i != objmap.end()) {
-				if (t != UNDEFINED && notComment) {
-					ms.append(",\n");
-					if (hasComment && !json && printComments) {
-						ms += '\n';
-					}
+			if (t != UNDEFINED) {
+				ms.append(",\n");
+				if (hasComment && notComment && !json && printComments) {
+					ms += '\n';
 				}
-			} else {
-				ms.append("\n");
 			}
-			memberStrings.push_back(&ms);
 		}
 		ps.append(indent, '\t');
 		ps.append("}");
