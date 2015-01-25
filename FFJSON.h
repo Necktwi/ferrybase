@@ -131,7 +131,7 @@ public:
 	};
 
 	struct FFJSONPLObj : FFJSONPObj {
-		std::list<StringPair>& spl;
+		StringPairList* spl;
 
 		FFJSONPLObj(std::list<StringPair>& spl);
 	};

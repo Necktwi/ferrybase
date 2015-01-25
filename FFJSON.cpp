@@ -941,6 +941,7 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 		FFJSONPObj lfpo;
 		lfpo.pObj = pObj;
 		lfpo.value = this;
+		lfpo.
 		std::map<string, StringPairList*> memberStrings;
 		StringPairList* psp = NULL;
 		while (i != objmap.end()) {
@@ -983,12 +984,16 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 				if (json)ms += "\"";
 				ms += ": ";
 			}
-			if (t != UNDEFINED) {
+			if (t != UNDEFINED && notComment) {		//comment already gets its ",\n" above.
 				ms.append(",\n");
 				if (hasComment && notComment && !json && printComments) {
 					ms += '\n';
 				}
 			}
+			if(psp!=NULL){
+				psp->spl=csp;
+			}
+			psp=csp;
 		}
 		ps.append(indent, '\t');
 		ps.append("}");
