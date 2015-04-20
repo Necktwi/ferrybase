@@ -16,6 +16,7 @@
 #include <map>
 #include <exception>
 #include <stdint.h>
+#include <list>
 
 class FFJSON {
 public:
@@ -107,13 +108,31 @@ public:
 			std::vector<FFJSON*>::iterator* ai;
 		} ui;
 	};
-
-	union FeaturedMems {
+        
+        enum FeaturedMemType{
+            LINK,
+            TABHEAD,
+            PARENT
+        };
+        
+	union FeaturedMember {
 		std::vector<string>* link;
 		std::map<string, int>* tabHead;
-		FeaturedMems* fms;
+                FFJSON* m_pParent;
+                FeaturedMemHook* m_pFMH;
 	};
+        
+        struct FeaturedMemHook{
+            FeaturedMember m_uFM;
+            FeaturedMemHook* m_pFMH=NULL;
+        };
 
+        void insertFeaturedMember(FeaturedMember* fms,FeaturedMemType fMT);
+        
+        void deleteFeaturedMember(FeaturedMemType fMT){
+            
+        }
+        
 	struct FFJSONExt {
 		FFJSON* base = NULL;
 	};
@@ -123,6 +142,13 @@ public:
 		FFJSON* value = NULL;
 		FFJSONPObj* pObj = NULL;
 	};
+        
+        struct FFJSONPrettyPrintPObj : FFJSONPObj {
+            bool m_bHeaded = false;
+            std::map<string,dependentSibling>* m_mDeps = NULL;
+            std::list<string>* ffPairLst = NULL;
+            std::map<string*,string>* memKeyFFPairMap = NULL;
+        };
 
 	struct StringPairList {
 		std::string name;
@@ -186,27 +212,27 @@ public:
 	 * @param t : type to check
 	 * @return true if type matched
 	 */
-	bool isType(uint8_t t) const;
+	bool isType(int t) const;
 
 	/**
 	 * Sets type of the object to t
 	 * @param t
 	 */
-	void setType(uint8_t t);
+	void setType(int t);
 
-	uint8_t getType() const;
+	int getType() const;
 
-	bool isQType(uint8_t t) const;
+	bool isQType(int t) const;
 
-	void setQType(uint8_t t);
+	void setQType(int t);
 
-	uint8_t getQType() const;
+        int getQType() const;
 
-	bool isEFlagSet(uint8_t t) const;
+	bool isEFlagSet(int t) const;
 
-	void setEFlag(uint8_t t);
+	void setEFlag(int t);
 
-	uint8_t getEFlags() const;
+	int getEFlags() const;
 
 	void clearEFlag(uint8_t t);
 
@@ -288,6 +314,8 @@ public:
 
 	Iterator end();
 
+        void headTheHeader(FFJSONPrettyPrintPObj& lfpo);
+        
 	union FFValue {
 		char * string;
 		std::vector<FFJSON*>* array;
@@ -321,10 +349,11 @@ private:
 	/**
 	 * It holds the type of the FFJSON object.
 	 */
-	uint8_t type = UNDEFINED;
-	uint8_t qtype;
-	uint8_t etype;
-	FeaturedMems fms;
+////	uint8_t type = UNDEFINED;
+////	uint8_t qtype;
+////	uint8_t etype;
+        int flags;
+	FeaturedMember m_uFM;
 	void copy(const FFJSON& orig, COPY_FLAGS cf = COPY_NONE);
 	static int getIndent(const char* ffjson, int* ci, int indent);
 	static void strObjMapInit();
