@@ -1511,9 +1511,13 @@ FFJSON * FFJSON::answerObject(FFJSON * queryObject) {
 	return ao;
 }
 
-bool FFJSON::isType(uint8_t t) const {
+//bool FFJSON::isType(uint8_t t) const {
+//
+//	return (t == type);
+//}
 
-	return (t == type);
+bool FFJSON::isType(int t) const {
+    return ((t&flags)==t);
 }
 
 //void FFJSON::setType(uint8_t t) {
@@ -1523,12 +1527,17 @@ bool FFJSON::isType(uint8_t t) const {
 
 void FFJSON::setType(int t) {
     flags&=0xffffff00;
-    
-	type = t;
+    flags|=t;
 }
 
-uint8_t FFJSON::getType() const {
+//uint8_t FFJSON::getType() const {
+//
+//	return type;
+//}
 
+int FFJSON::getType() const {
+    int type = 0xff;
+    type&=flags;
 	return type;
 }
 
@@ -1569,24 +1578,42 @@ int FFJSON::getQType() const {
     return qtype;
 }
 
+//bool FFJSON::isEFlagSet(int t) const {
+//
+//	return (t & etype == t);
+//}
+
 bool FFJSON::isEFlagSet(int t) const {
-
-	return (t & etype == t);
+    int type = flags>>16;
+	return (t & type == t);
 }
 
-uint8_t FFJSON::getEFlags() const {
+//uint8_t FFJSON::getEFlags() const {
+//
+//	return this->etype;
+//}
 
-	return this->etype;
+int FFJSON::getEFlags() const {
+    int type = flags>>16;
+	return type;
 }
+
+//void FFJSON::setEFlag(int t) {
+//    
+//	etype |= t;
+//}
 
 void FFJSON::setEFlag(int t) {
-
-	etype |= t;
+    flags|=t<<16;
 }
 
-void FFJSON::clearEFlag(int t) {
+//void FFJSON::clearEFlag(int t) {
+//
+//	etype &= ~t;
+//}
 
-	etype &= ~t;
+void FFJSON::clearEFlag(int t) {
+	flags &= ~(t<<16);
 }
 
 void FFJSON::erase(string name) {

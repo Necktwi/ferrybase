@@ -234,7 +234,7 @@ public:
 
 	int getEFlags() const;
 
-	void clearEFlag(uint8_t t);
+	void clearEFlag(int t);
 
 	/**
 	 * Removes leading and trailing white spaces; sapces and tabs from a string.
