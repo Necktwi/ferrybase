@@ -592,9 +592,10 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 
 void FFJSON::insertFeaturedMember(FeaturedMember* fms,FeaturedMemType fMT){
             FeaturedMember* pFMS = &m_uFM;
-            if(this->getEFlags(EXT_VIA_PARENT)){
-                if(fMT==TABHEAD){
-                    if((void*)(*pFMS)==NULL){
+            uint32_t iFMCount = flags>>28;
+            if(this->isEFlagSet(EXT_VIA_PARENT)){
+                if(fMT==FM_TABHEAD){
+                    if(pFMS->tabHead==NULL){
                         pFMS->tabHead=fms->tabHead;
                         delete fms;
                         return;
@@ -606,13 +607,13 @@ void FFJSON::insertFeaturedMember(FeaturedMember* fms,FeaturedMemType fMT){
                 }
                 pFMS=pFMS->m_pFMH;
             }
-            if(this->getType(LINK)){
-                if(fMT==LINK){
+            if(this->isType(LINK)){
+                if(fMT==FM_LINK){
                     
                 }
             }
-            if(this->getEFlags(IS_EXTENDED)){
-                if(fMT=PARENT){
+            if(this->isEFlagSet(IS_EXTENDED)){
+                if(fMT=FM_PARENT){
                     
                 }
             }
@@ -756,7 +757,7 @@ FFJSON& FFJSON::operator[](string prop) {
 	if (isType(OBJ_TYPE::OBJECT)) {
 		if ((*val.pairs).find(prop) != (*val.pairs).end()) {
 			if ((*val.pairs)[prop] != NULL) {
-				if ((*val.pairs)[prop]->type == LINK) {
+				if ((*val.pairs)[prop]->isType(LINK)) {
 					return *((*val.fptr->val.pairs)[prop]);
 				}
 				return *((*val.pairs)[prop]);
@@ -1533,7 +1534,7 @@ FFJSON * FFJSON::answerObject(FFJSON * queryObject) {
 //	return (t == type);
 //}
 
-bool FFJSON::isType(int t) const {
+bool FFJSON::isType(OBJ_TYPE t) const {
     return ((t&flags)==t);
 }
 
@@ -1542,7 +1543,7 @@ bool FFJSON::isType(int t) const {
 //	type = t;
 //}
 
-void FFJSON::setType(int t) {
+void FFJSON::setType(OBJ_TYPE t) {
     flags&=0xffffff00;
     flags|=t;
 }
@@ -1552,7 +1553,7 @@ void FFJSON::setType(int t) {
 //	return type;
 //}
 
-int FFJSON::getType() const {
+FFJSON::OBJ_TYPE FFJSON::getType() const {
     int type = 0xff;
     type&=flags;
 	return type;
@@ -1563,8 +1564,8 @@ int FFJSON::getType() const {
 //	return (t == qtype);
 //}
 
-bool FFJSON::isQType(int t) const {
-    int qtype = flags>>8;
+bool FFJSON::isQType(QUERY_TYPE t) const {
+    uint32_t qtype = flags>>8;
     qtype&=0xff;
 	return (t == qtype);
 }
@@ -1574,10 +1575,10 @@ bool FFJSON::isQType(int t) const {
 //	qtype = t;
 //}
 
-void FFJSON::setQType(int t) {
+void FFJSON::setQType(QUERY_TYPE t) {
     uint32_t qtype=0;
 	qtype = t;
-        qtype=<<8;
+        qtype<<=8;
         flags&=(~0xff00);
         //flags&=11111111111111110000000011111111b;
         flags|=qtype;
@@ -1588,8 +1589,8 @@ void FFJSON::setQType(int t) {
 //	return qtype;
 //}
 
-int FFJSON::getQType() const {
-    int qtype=flags;
+FFJSON::QUERY_TYPE FFJSON::getQType() const {
+    uint32_t qtype=flags;
     qtype>>=8;
     qtype&=0xff;
     return qtype;
@@ -1600,8 +1601,8 @@ int FFJSON::getQType() const {
 //	return (t & etype == t);
 //}
 
-bool FFJSON::isEFlagSet(int t) const {
-    int type = flags>>16;
+bool FFJSON::isEFlagSet(E_FLAGS t) const {
+    uint32_t type = flags>>16;
 	return (t & type == t);
 }
 
@@ -1610,8 +1611,8 @@ bool FFJSON::isEFlagSet(int t) const {
 //	return this->etype;
 //}
 
-int FFJSON::getEFlags() const {
-    int type = flags>>16;
+FFJSON::E_FLAGS FFJSON::getEFlags() const {
+    uint32_t type = flags>>16;
 	return type;
 }
 
@@ -1620,7 +1621,7 @@ int FFJSON::getEFlags() const {
 //	etype |= t;
 //}
 
-void FFJSON::setEFlag(int t) {
+void FFJSON::setEFlag(E_FLAGS t) {
     flags|=t<<16;
 }
 
@@ -1629,7 +1630,7 @@ void FFJSON::setEFlag(int t) {
 //	etype &= ~t;
 //}
 
-void FFJSON::clearEFlag(int t) {
+void FFJSON::clearEFlag(E_FLAGS t) {
 	flags &= ~(t<<16);
 }
 
@@ -1856,7 +1857,7 @@ bool FFJSON::Iterator::operator==(const Iterator & i) {
 			return ((*ui.pi) == (*i.ui.pi));
 	/*s*/	} else if (isType(ARRAY)) {
 			return (*ui.ai == *i.ui.ai);
-	/*s*/	} else if (isType(NULL)) {
+	/*s*/	} else if (isType(NUL)) {
 
 			return true;
 		}

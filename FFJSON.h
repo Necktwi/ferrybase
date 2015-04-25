@@ -17,6 +17,7 @@
 #include <exception>
 #include <stdint.h>
 #include <list>
+#include <stdint.h>
 
 class FFJSON {
 public:
@@ -38,7 +39,7 @@ public:
 		std::string identifier;
 	};
 
-	enum OBJ_TYPE {
+	enum OBJ_TYPE:uint8_t {
 		UNDEFINED,
 		STRING,
 		XML,
@@ -50,7 +51,7 @@ public:
 		NUL
 	};
 
-	enum QUERY_TYPE {
+	enum QUERY_TYPE:uint8_t {
 		/**
 		 * To clear query type
 		 */
@@ -60,7 +61,7 @@ public:
 		DELETE,
 	};
 
-	enum E_FLAGS {
+	enum E_FLAGS:uint16_t {
 		ENONE = 0,
 		B64ENCODE = 1 << 0,
 		B64ENCODE_CHILDREN = 1 << 1,
@@ -71,7 +72,7 @@ public:
 		EXT_VIA_PARENT = 1 << 6
 	};
 
-	enum COPY_FLAGS {
+	enum COPY_FLAGS:uint8_t {
 		COPY_NONE = 0,
 		COPY_QUERIES = 1 << 0,
 		COPY_EFLAGS = 1 << 1
@@ -110,10 +111,12 @@ public:
 	};
         
         enum FeaturedMemType{
-            LINK,
-            TABHEAD,
-            PARENT
+            FM_LINK,
+            FM_TABHEAD,
+            FM_PARENT
         };
+        
+        struct FeaturedMemHook;
         
 	union FeaturedMember {
 		std::vector<string>* link;
@@ -145,22 +148,13 @@ public:
         
         struct FFJSONPrettyPrintPObj : FFJSONPObj {
             bool m_bHeaded = false;
-            std::map<string,dependentSibling>* m_mDeps = NULL;
+            /**
+             * to get the parent of object
+             */
+            std::map<string,FFJSON*>* m_mDeps = NULL;
             std::list<string>* ffPairLst = NULL;
             std::map<string*,string>* memKeyFFPairMap = NULL;
         };
-
-	struct StringPairList {
-		std::string name;
-		std::string value;
-		StringPairList* spl = NULL;
-	};
-
-	struct FFJSONPLObj : FFJSONPObj {
-		StringPairList* spl;
-
-		FFJSONPLObj(std::list<StringPair>& spl);
-	};
 
 	/**
 	 * creates an UNRECOGNIZED FFJSON object. Any FFJSON object can be
@@ -212,29 +206,29 @@ public:
 	 * @param t : type to check
 	 * @return true if type matched
 	 */
-	bool isType(int t) const;
+	bool isType(OBJ_TYPE t) const;
 
 	/**
 	 * Sets type of the object to t
 	 * @param t
 	 */
-	void setType(int t);
+	void setType(OBJ_TYPE t);
 
-	int getType() const;
+	OBJ_TYPE getType() const;
 
-	bool isQType(int t) const;
+	bool isQType(QUERY_TYPE t) const;
 
-	void setQType(int t);
+	void setQType(QUERY_TYPE t);
 
-        int getQType() const;
+        QUERY_TYPE getQType() const;
 
-	bool isEFlagSet(int t) const;
+	bool isEFlagSet(E_FLAGS t) const;
 
-	void setEFlag(int t);
+	void setEFlag(E_FLAGS t);
 
-	int getEFlags() const;
+	E_FLAGS getEFlags() const;
 
-	void clearEFlag(int t);
+	void clearEFlag(E_FLAGS t);
 
 	/**
 	 * Removes leading and trailing white spaces; sapces and tabs from a string.
@@ -276,7 +270,7 @@ public:
 	 * an idea on what I'm saying, jst try it with non zero positive value.
 	 * @return A pretty string :)
 	 */
-	std::string prettyString(bool json = false, bool printComments = false, unsigned int indent = 0, FFJSONPObj* pObj = NULL);
+	std::string prettyString(bool json = false, bool printComments = false, unsigned int indent = 0, FFJSONPrettyPrintPObj* pObj = NULL);
 
 	/**
 	 * Generates a query string which can be used to query a FFJSON tree. Query 
@@ -352,7 +346,7 @@ private:
 ////	uint8_t type = UNDEFINED;
 ////	uint8_t qtype;
 ////	uint8_t etype;
-        int flags;
+        uint32_t flags;
 	FeaturedMember m_uFM;
 	void copy(const FFJSON& orig, COPY_FLAGS cf = COPY_NONE);
 	static int getIndent(const char* ffjson, int* ci, int indent);
