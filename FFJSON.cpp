@@ -81,6 +81,11 @@ FFJSON::FFJSON(const FFJSON& orig, COPY_FLAGS cf) {
 	copy(orig, cf);
 }
 
+FFJSON::FFJSON(const string& ffjson, int* ci, int indent,
+        FFJSON::FFJSONPObj* pObj) {
+	init(ffjson, ci, indent, pObj);
+}
+
 void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf) {
 	setType(orig.getType());
 	size = orig.size;
@@ -167,10 +172,6 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf) {
 		setType(UNDEFINED);
 		val.boolean = false;
 	}
-}
-
-FFJSON::FFJSON(const string& ffjson, int* ci, int indent, FFJSON::FFJSONPObj* pObj) {
-	init(ffjson, ci, indent, pObj);
 }
 
 inline bool FFJSON::isWhiteSpace(char c) {

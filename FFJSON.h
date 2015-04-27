@@ -39,7 +39,7 @@ public:
 		std::string identifier;
 	};
 
-	enum OBJ_TYPE:uint8_t {
+	enum OBJ_TYPE:uint32_t {
 		UNDEFINED,
 		STRING,
 		XML,
@@ -51,28 +51,28 @@ public:
 		NUL
 	};
 
-	enum QUERY_TYPE:uint8_t {
+	enum QUERY_TYPE:uint32_t {
 		/**
 		 * To clear query type
 		 */
-		NONE,
-		QUERY,
-		SET,
-		DELETE,
+		NONE = 0 << 8,
+		QUERY = 1 << 8,
+		SET = 2 << 8,
+		DELETE = 3 << 8,
 	};
 
-	enum E_FLAGS:uint16_t {
+	enum E_FLAGS:uint32_t {
 		ENONE = 0,
-		B64ENCODE = 1 << 0,
-		B64ENCODE_CHILDREN = 1 << 1,
-		B64ENCODE_STOP = 1 << 2,
-		IS_COMMENT = 1 << 3,
-		HAS_COMMENT = 1 << 4,
-		IS_EXTENDED = 1 << 5,
-		EXT_VIA_PARENT = 1 << 6
+		B64ENCODE = 1 << 16,
+		B64ENCODE_CHILDREN = 1 << 17,
+		B64ENCODE_STOP = 1 << 18,
+		IS_COMMENT = 1 << 19,
+		HAS_COMMENT = 1 << 20,
+		IS_EXTENDED = 1 << 21,
+		EXT_VIA_PARENT = 1 << 22
 	};
 
-	enum COPY_FLAGS:uint8_t {
+	enum COPY_FLAGS:uint32_t {
 		COPY_NONE = 0,
 		COPY_QUERIES = 1 << 0,
 		COPY_EFLAGS = 1 << 1
