@@ -591,6 +591,7 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 	if (ci != NULL)*ci = i;
 }
 
+//Rethink whether to pass FeaturedMember*
 void FFJSON::insertFeaturedMember(FeaturedMember* fms,FeaturedMemType fMT){
             FeaturedMember* pFMS = &m_uFM;
             uint32_t iFMCount = flags>>28;
@@ -602,15 +603,34 @@ void FFJSON::insertFeaturedMember(FeaturedMember* fms,FeaturedMemType fMT){
                         return;
                     }else {
                         fms->m_pFMH=pFMS->m_pFMH;
-                        pFMS->m_pFMH=fms;
+                        pFMS->m_pFMH->m_uFM=fms;
                         return;
                     }
+                }else{
+                    if(iFMCount==1){
+                        //Should insert New FM hook before the right FMType match
+                        FeaturedMemHook* pNewFMH = new FeaturedMemHook();
+                        pNewFMH->m_uFM.tabHead=pFMS->tabHead;
+                        pFMS->m_pFMH=pNewFMH;
+                    }else{
+                        pFMS=&pFMS->m_pFMH->m_uFM;
+                    }
                 }
-                pFMS=pFMS->m_pFMH;
             }
             if(this->isType(LINK)){
                 if(fMT==FM_LINK){
-                    
+                    if(pFMS->link==NULL){
+                        pFMS->link=fms->link;
+                        delete fms;
+                        return;
+                    }else {
+                        if(iFMCount==1){
+                            pFMS
+                        }
+                        fms->m_pFMH=pFMS->m_pFMH;
+                        pFMS->m_pFMH=fms;
+                        return;
+                    }
                 }
             }
             if(this->isEFlagSet(IS_EXTENDED)){
@@ -1566,8 +1586,8 @@ FFJSON::OBJ_TYPE FFJSON::getType() const {
 //}
 
 bool FFJSON::isQType(QUERY_TYPE t) const {
-    uint32_t qtype = flags>>8;
-    qtype&=0xff;
+    uint32_t qtype = flags;
+    qtype&=0xff00;
 	return (t == qtype);
 }
 
@@ -1577,12 +1597,9 @@ bool FFJSON::isQType(QUERY_TYPE t) const {
 //}
 
 void FFJSON::setQType(QUERY_TYPE t) {
-    uint32_t qtype=0;
-	qtype = t;
-        qtype<<=8;
-        flags&=(~0xff00);
+    flags&=(~0xff00);
         //flags&=11111111111111110000000011111111b;
-        flags|=qtype;
+        flags|=t;
 }
 
 //uint8_t FFJSON::getQType() const {
@@ -1592,8 +1609,7 @@ void FFJSON::setQType(QUERY_TYPE t) {
 
 FFJSON::QUERY_TYPE FFJSON::getQType() const {
     uint32_t qtype=flags;
-    qtype>>=8;
-    qtype&=0xff;
+    qtype&=0xff00;
     return qtype;
 }
 
@@ -1603,8 +1619,7 @@ FFJSON::QUERY_TYPE FFJSON::getQType() const {
 //}
 
 bool FFJSON::isEFlagSet(E_FLAGS t) const {
-    uint32_t type = flags>>16;
-	return (t & type == t);
+    return (t & flags == t);
 }
 
 //uint8_t FFJSON::getEFlags() const {
@@ -1613,8 +1628,7 @@ bool FFJSON::isEFlagSet(E_FLAGS t) const {
 //}
 
 FFJSON::E_FLAGS FFJSON::getEFlags() const {
-    uint32_t type = flags>>16;
-	return type;
+    return flags;
 }
 
 //void FFJSON::setEFlag(int t) {
@@ -1623,7 +1637,7 @@ FFJSON::E_FLAGS FFJSON::getEFlags() const {
 //}
 
 void FFJSON::setEFlag(E_FLAGS t) {
-    flags|=t<<16;
+    flags|=t;
 }
 
 //void FFJSON::clearEFlag(int t) {
@@ -1632,7 +1646,7 @@ void FFJSON::setEFlag(E_FLAGS t) {
 //}
 
 void FFJSON::clearEFlag(E_FLAGS t) {
-	flags &= ~(t<<16);
+	flags &= ~(t);
 }
 
 void FFJSON::erase(string name) {
