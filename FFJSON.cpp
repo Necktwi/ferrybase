@@ -592,51 +592,89 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 }
 
 //Rethink whether to pass FeaturedMember*
-void FFJSON::insertFeaturedMember(FeaturedMember* fms,FeaturedMemType fMT){
-            FeaturedMember* pFMS = &m_uFM;
-            uint32_t iFMCount = flags>>28;
+void FFJSON::insertFeaturedMember(FeaturedMember& fms,FeaturedMemType fMT){
+            FeaturedMember* pFMS    = &m_uFM;
+            uint32_t iFMCount       = flags>>28;
+            uint32_t iFMTraversed   = 0;
             if(this->isEFlagSet(EXT_VIA_PARENT)){
                 if(fMT==FM_TABHEAD){
                     if(pFMS->tabHead==NULL){
-                        pFMS->tabHead=fms->tabHead;
-                        delete fms;
-                        return;
+                        pFMS->tabHead=fms.tabHead;
                     }else {
-                        fms->m_pFMH=pFMS->m_pFMH;
-                        pFMS->m_pFMH->m_uFM=fms;
-                        return;
+                        FeaturedMemHook* pNewFMH = new FeaturedMemHook();
+                        pNewFMH->m_pFMH.m_pFMH=pFMS->m_pFMH;
+                        pNewFMH->m_uFM.tabHead=pFMS->tabHead;
+                        pFMS->m_pFMH=pNewFMH;
                     }
+                    iFMCount++;
+                    iFMCount<<=28;
+                    flags&=0x0FFFFFFF;
+                    flags|=iFMCount;
+                    return;
                 }else{
-                    if(iFMCount==1){
+                    if(iFMCount-iFMTraversed==1){
                         //Should insert New FM hook before the right FMType match
                         FeaturedMemHook* pNewFMH = new FeaturedMemHook();
                         pNewFMH->m_uFM.tabHead=pFMS->tabHead;
                         pFMS->m_pFMH=pNewFMH;
+                        pFMS=&pNewFMH->m_pFMH;
                     }else{
-                        pFMS=&pFMS->m_pFMH->m_uFM;
+                        pFMS=&pFMS->m_pFMH;
                     }
                 }
+                iFMTraversed++;
             }
             if(this->isType(LINK)){
                 if(fMT==FM_LINK){
                     if(pFMS->link==NULL){
-                        pFMS->link=fms->link;
-                        delete fms;
-                        return;
+                        pFMS->link=fms.link;
                     }else {
-                        if(iFMCount==1){
-                            pFMS
-                        }
-                        fms->m_pFMH=pFMS->m_pFMH;
-                        pFMS->m_pFMH=fms;
-                        return;
+                        FeaturedMemHook* pNewFMH = new FeaturedMemHook();
+                        pNewFMH->m_pFMH.m_pFMH=pFMS->m_pFMH;
+                        pNewFMH->m_uFM.link=pFMS->link;
+                        pFMS->m_pFMH=pNewFMH;
+                    }
+                    iFMCount++;
+                    
+                    return;
+                }else{
+                    if(iFMCount-iFMTraversed==1){
+                        //Should insert New FM hook before the right FMType match
+                        FeaturedMemHook* pNewFMH = new FeaturedMemHook();
+                        pNewFMH->m_uFM.link=pFMS->link;
+                        pFMS->m_pFMH=pNewFMH;
+                        pFMS=&pNewFMH->m_pFMH;
+                    }else{
+                        pFMS=&pFMS->m_pFMH;
                     }
                 }
+                iFMTraversed++;
             }
             if(this->isEFlagSet(IS_EXTENDED)){
-                if(fMT=FM_PARENT){
+                if(fMT==FM_PARENT){
+                    if(pFMS->m_pParent==NULL){
+                        pFMS->m_pParent=fms.m_pParent;
+                    }else {
+                        FeaturedMemHook* pNewFMH = new FeaturedMemHook();
+                        pNewFMH->m_pFMH.m_pFMH=pFMS->m_pFMH;
+                        pNewFMH->m_uFM.m_pParent=pFMS->m_pParent;
+                        pFMS->m_pFMH=pNewFMH;
+                    }
+                    iFMCount++;
                     
+                    return;
+                }else{
+                    if(iFMCount-iFMTraversed==1){
+                        //Should insert New FM hook before the right FMType match
+                        FeaturedMemHook* pNewFMH = new FeaturedMemHook();
+                        pNewFMH->m_uFM.m_pParent=pFMS->m_pParent;
+                        pFMS->m_pFMH=pNewFMH;
+                        pFMS=&pNewFMH->m_pFMH;
+                    }else{
+                        pFMS=&pFMS->m_pFMH;
+                    }
                 }
+                iFMTraversed++;
             }
         }
 

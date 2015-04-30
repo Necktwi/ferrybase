@@ -126,11 +126,15 @@ public:
 	};
         
         struct FeaturedMemHook{
+            FeaturedMemHook(){
+                m_uFM.m_pFMH=NULL;
+                m_pFMH.m_pFMH=NULL;
+            }
             FeaturedMember m_uFM;
-            FeaturedMemHook* m_pFMH=NULL;
+            FeaturedMember m_pFMH;
         };
 
-        void insertFeaturedMember(FeaturedMember* fms,FeaturedMemType fMT);
+        void insertFeaturedMember(FeaturedMember& fms,FeaturedMemType fMT);
         
         void deleteFeaturedMember(FeaturedMemType fMT){
             
