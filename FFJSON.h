@@ -136,6 +136,8 @@ public:
 
         void insertFeaturedMember(FeaturedMember& fms,FeaturedMemType fMT);
         
+        FeaturedMember getFeaturedMember(FeaturedMemType fMT);
+        
         void deleteFeaturedMember(FeaturedMemType fMT){
             
         }
@@ -233,6 +235,8 @@ public:
 	E_FLAGS getEFlags() const;
 
 	void clearEFlag(E_FLAGS t);
+        
+        void setFMCount(uint32_t iFMCount);
 
 	/**
 	 * Removes leading and trailing white spaces; sapces and tabs from a string.
