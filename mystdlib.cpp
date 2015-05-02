@@ -20,7 +20,9 @@
 #include <signal.h>
 #include <vector>
 #include <wait.h>
+#ifndef __APPLE__
 #include <malloc.h>
+#endif
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <ifaddrs.h>

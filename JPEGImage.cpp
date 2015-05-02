@@ -8,7 +8,11 @@
 #include "JPEGImage.h"
 #include "mystdlib.h"
 #include <memory>
+#ifndef __APPLE__
+#ifndef __MACH__
 #include <malloc.h>
+#endif
+#endif
 #include <vector>
 #include <iostream>
 

@@ -39,7 +39,7 @@ public:
 		std::string identifier;
 	};
 
-	enum OBJ_TYPE:uint32_t {
+	enum OBJ_TYPE : uint32_t {
 		UNDEFINED,
 		STRING,
 		XML,
@@ -51,7 +51,7 @@ public:
 		NUL
 	};
 
-	enum QUERY_TYPE:uint32_t {
+	enum QUERY_TYPE : uint32_t {
 		/**
 		 * To clear query type
 		 */
@@ -61,7 +61,7 @@ public:
 		DELETE = 3 << 8,
 	};
 
-	enum E_FLAGS:uint32_t {
+	enum E_FLAGS : uint32_t {
 		ENONE = 0,
 		B64ENCODE = 1 << 16,
 		B64ENCODE_CHILDREN = 1 << 17,
@@ -72,7 +72,7 @@ public:
 		EXT_VIA_PARENT = 1 << 22
 	};
 
-	enum COPY_FLAGS:uint32_t {
+	enum COPY_FLAGS : uint32_t {
 		COPY_NONE = 0,
 		COPY_QUERIES = 1 << 0,
 		COPY_EFLAGS = 1 << 1
@@ -109,39 +109,40 @@ public:
 			std::vector<FFJSON*>::iterator* ai;
 		} ui;
 	};
-        
-        enum FeaturedMemType{
-            FM_LINK,
-            FM_TABHEAD,
-            FM_PARENT
-        };
-        
-        struct FeaturedMemHook;
-        
+
+	enum FeaturedMemType {
+		FM_LINK,
+		FM_TABHEAD,
+		FM_PARENT
+	};
+
+	struct FeaturedMemHook;
+
 	union FeaturedMember {
 		std::vector<string>* link;
 		std::map<string, int>* tabHead;
-                FFJSON* m_pParent;
-                FeaturedMemHook* m_pFMH;
+		FFJSON* m_pParent;
+		FeaturedMemHook* m_pFMH;
 	};
-        
-        struct FeaturedMemHook{
-            FeaturedMemHook(){
-                m_uFM.m_pFMH=NULL;
-                m_pFMH.m_pFMH=NULL;
-            }
-            FeaturedMember m_uFM;
-            FeaturedMember m_pFMH;
-        };
 
-        void insertFeaturedMember(FeaturedMember& fms,FeaturedMemType fMT);
-        
-        FeaturedMember getFeaturedMember(FeaturedMemType fMT);
-        
-        void deleteFeaturedMember(FeaturedMemType fMT){
-            
-        }
-        
+	struct FeaturedMemHook {
+
+		FeaturedMemHook() {
+			m_uFM.m_pFMH = NULL;
+			m_pFMH.m_pFMH = NULL;
+		}
+		FeaturedMember m_uFM;
+		FeaturedMember m_pFMH;
+	};
+
+	void insertFeaturedMember(FeaturedMember& fms, FeaturedMemType fMT);
+
+	FeaturedMember getFeaturedMember(FeaturedMemType fMT);
+
+	void deleteFeaturedMember(FeaturedMemType fMT) {
+
+	}
+
 	struct FFJSONExt {
 		FFJSON* base = NULL;
 	};
@@ -151,16 +152,20 @@ public:
 		FFJSON* value = NULL;
 		FFJSONPObj* pObj = NULL;
 	};
-        
-        struct FFJSONPrettyPrintPObj : FFJSONPObj {
-            bool m_bHeaded = false;
-            /**
-             * to get the parent of object
-             */
-            std::map<string,string>* m_mpDeps = NULL;
-            std::list<string>* m_lsFFPairLst = NULL;
-            std::map<string*,string>* m_mpMemKeyFFPairMap = NULL;
-        };
+
+	struct FFJSONPrettyPrintPObj : FFJSONPObj {
+		FFJSONPrettyPrintPObj(std::map<string, string>* m_mpDeps,
+			std::list<string>* m_lsFFPairLst,
+			std::map<string*, string>* m_mpMemKeyFFPairMap);
+		bool m_bHeaded = false;
+		
+		/**
+		 * to get the parent of object
+		 */
+		std::map<string, string>* m_mpDeps = NULL;
+		std::list<string>* m_lsFFPairLst = NULL;
+		std::map<string*, string>* m_mpMemKeyFFPairMap = NULL;
+	};
 
 	/**
 	 * creates an UNRECOGNIZED FFJSON object. Any FFJSON object can be
@@ -182,9 +187,9 @@ public:
 	 * default.
 	 */
 	FFJSON(const std::string& ffjson, int* ci = NULL, int indent = 0,
-			FFJSONPObj* pObj = NULL);
+		FFJSONPObj* pObj = NULL);
 	void init(const std::string& ffjson, int* ci = NULL, int indent = 0,
-			FFJSONPObj* pObj = NULL);
+		FFJSONPObj* pObj = NULL);
 
 	/**
 	 * Creates an empty FFJSON object of type @param t. It throws an Exception
@@ -226,7 +231,7 @@ public:
 
 	void setQType(QUERY_TYPE t);
 
-        QUERY_TYPE getQType() const;
+	QUERY_TYPE getQType() const;
 
 	bool isEFlagSet(E_FLAGS t) const;
 
@@ -235,8 +240,8 @@ public:
 	E_FLAGS getEFlags() const;
 
 	void clearEFlag(E_FLAGS t);
-        
-        void setFMCount(uint32_t iFMCount);
+
+	void setFMCount(uint32_t iFMCount);
 
 	/**
 	 * Removes leading and trailing white spaces; sapces and tabs from a string.
@@ -316,8 +321,8 @@ public:
 
 	Iterator end();
 
-        void headTheHeader(FFJSONPrettyPrintPObj& lfpo);
-        
+	void headTheHeader(FFJSONPrettyPrintPObj& lfpo);
+
 	union FFValue {
 		char * string;
 		std::vector<FFJSON*>* array;
@@ -351,10 +356,10 @@ private:
 	/**
 	 * It holds the type of the FFJSON object.
 	 */
-////	uint8_t type = UNDEFINED;
-////	uint8_t qtype;
-////	uint8_t etype;
-        uint32_t flags;
+	////	uint8_t type = UNDEFINED;
+	////	uint8_t qtype;
+	////	uint8_t etype;
+	uint32_t flags;
 	FeaturedMember m_uFM;
 	void copy(const FFJSON& orig, COPY_FLAGS cf = COPY_NONE);
 	static int getIndent(const char* ffjson, int* ci, int indent);

@@ -3,8 +3,18 @@
 #include "ClientSocket.h"
 #include "SocketException.h"
 #include "logger.h"
+#ifndef __APPLE__
+#ifndef __MACH__
 #include <malloc.h>
+#endif
+#endif
+#include <pthread.h>
 
+#ifdef __APPLE__
+#ifdef __MACH__
+#define MSG_NOSIGNAL SO_NOSIGPIPE
+#endif
+#endif
 ClientSocket::ClientSocket(std::string host, int port,
 		Socket::SOCKET_TYPE socketType, std::string trustedCA,
 		std::string privatecert, std::string privatekey) :

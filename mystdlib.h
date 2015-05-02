@@ -13,6 +13,12 @@
 #include <list>
 #include <map>
 
+#ifdef __APPLE__
+#ifdef __MACH__
+typedef mode_t __mode_t;
+#endif
+#endif
+
 #define NELEMS(x)  (sizeof(x) / sizeof(x[0]))
 
 void initTermios(int echo);
