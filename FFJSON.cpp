@@ -10,7 +10,11 @@
  * 1. remove escape characters from string
  */
 #include <string>
+#ifndef __APPLE__
+#ifndef __MACH__
 #include <malloc.h>
+#endif
+#endif
 #include <math.h>
 #include <string.h>
 #include <openssl/bio.h>
@@ -1051,7 +1055,7 @@ string FFJSON::stringify(bool json, FFJSONPObj* pObj) {
 	}
 }
 
-string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, FFJSONPLObj* pObj) {
+string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, FFJSONPrettyPrintPObj* pObj) {
 	if (isType(OBJ_TYPE::STRING)) {
 		string ps = "\"";
 		bool hasNewLine = (strchr(val.string, '\n') != NULL);
@@ -1112,10 +1116,10 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 		lfpo.value = this;
 		std::map<string*, string> memKeyFFPairMap;
                 std::list<string> ffPairLst;
-                std::map<string,dependentSibling> deps;
-                lfpo.ffPairLst=&ffPairLst;
-                lfpo.memKeyFFPairMap=&memKeyFFPairMap;
-                lfpo.m_mDeps=&deps;
+                std::map<string,string> deps;
+                lfpo.m_lsFFPairLst=&ffPairLst;
+                lfpo.m_mpMemKeyFFPairMap=&memKeyFFPairMap;
+                lfpo.m_mpDeps=&deps;
 		while (i != objmap.end()) {
                     ffPairLst.push_back(string());
                     //std::list<string>::iterator ffplIter = ffPairLst.end();
@@ -1203,8 +1207,9 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 		ps.append("]");
 		return ps;
 	} else if (isType(LINK)) {
-		if (returnNameIfDeclared(*fms.link, pObj) != NULL) {
-			return implode(".", *fms.link);
+		vector<string>* vtProp = getFeaturedMember(FM_LINK).link;
+		if (returnNameIfDeclared(*vtProp, pObj) != NULL) {
+			return implode(".", *vtProp);
 		} else {
 			return val.fptr->stringify(json, pObj);
 		}
@@ -1974,7 +1979,7 @@ FFJSON::Iterator::operator const char*() {
 	return NULL;
 }
 
-FFJSON::FFJSONPLObj::FFJSONPLObj(std::list<StringPair>& spl) : spl(spl) {
+FFJSON::FFJSONPrettyPrintPObj::FFJSONPrettyPrintPObj(std::list<StringPair>& spl) : spl(spl) {
 };
 
 void FFJSON::headTheHeader(FFJSONPrettyPrintPObj& lfpo){

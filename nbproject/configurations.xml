@@ -105,6 +105,8 @@
           <commandlineTool>gcc</commandlineTool>
           <incDir>
             <pElem>.</pElem>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
           </incDir>
           <commandLine>-O0</commandLine>
         </cTool>
@@ -114,6 +116,8 @@
           <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>/usr/include/libxml2</pElem>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
             <pElem>.</pElem>
           </incDir>
           <commandLine>-g -O0</commandLine>
@@ -125,7 +129,7 @@
           <commandlineTool>as</commandlineTool>
         </asmTool>
         <linkerTool>
-          <output>${TESTDIR}/TestFiles/f3</output>
+          <output>${TESTDIR}/TestFiles/f1</output>
           <commandlineTool>g++</commandlineTool>
           <linkerLibItems>
             <linkerOptionItem>-lxml2</linkerOptionItem>
@@ -270,23 +274,6 @@
       </item>
       <item path="example.json" ex="false" tool="3" flavor2="0">
       </item>
-      <folder path="TestFiles/f1">
-        <cTool>
-          <incDir>
-            <pElem>.</pElem>
-            <pElem>.</pElem>
-          </incDir>
-        </cTool>
-        <ccTool>
-          <incDir>
-            <pElem>.</pElem>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f1</output>
-        </linkerTool>
-      </folder>
       <folder path="TestFiles/f2">
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f2</output>
@@ -328,6 +315,8 @@
           <commandlineTool>gcc</commandlineTool>
           <incDir>
             <pElem>.</pElem>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
           </incDir>
         </cTool>
         <ccTool>
@@ -336,6 +325,8 @@
           <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>/usr/include/libxml2</pElem>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
             <pElem>.</pElem>
           </incDir>
           <preprocessorList>
@@ -461,23 +452,6 @@
       </item>
       <item path="example.json" ex="false" tool="3" flavor2="0">
       </item>
-      <folder path="TestFiles/f1">
-        <cTool>
-          <incDir>
-            <pElem>.</pElem>
-            <pElem>.</pElem>
-          </incDir>
-        </cTool>
-        <ccTool>
-          <incDir>
-            <pElem>.</pElem>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f1</output>
-        </linkerTool>
-      </folder>
       <folder path="TestFiles/f2">
         <cTool>
           <incDir>
@@ -536,6 +510,8 @@
             <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
           </incDir>
         </cTool>
         <ccTool>
@@ -550,6 +526,8 @@
             <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
           </incDir>
           <preprocessorList>
             <Elem>_DEBUG</Elem>
@@ -559,7 +537,7 @@
           <commandlineTool>arm-linux-gnueabihf-as</commandlineTool>
         </asmTool>
         <linkerTool>
-          <output>${TESTDIR}/TestFiles/f3</output>
+          <output>${TESTDIR}/TestFiles/f1</output>
           <commandlineTool>arm-linux-gnueabihf-g++</commandlineTool>
           <linkerLibItems>
             <linkerOptionItem>-lxml2 -lpthread -lssl -lcrypto -lz -ludev</linkerOptionItem>
@@ -699,23 +677,6 @@
       </item>
       <item path="example.json" ex="false" tool="3" flavor2="0">
       </item>
-      <folder path="TestFiles/f1">
-        <cTool>
-          <incDir>
-            <pElem>.</pElem>
-            <pElem>.</pElem>
-          </incDir>
-        </cTool>
-        <ccTool>
-          <incDir>
-            <pElem>.</pElem>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f1</output>
-        </linkerTool>
-      </folder>
       <folder path="TestFiles/f2">
         <cTool>
           <incDir>

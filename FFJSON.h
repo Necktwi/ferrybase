@@ -157,9 +157,9 @@ public:
             /**
              * to get the parent of object
              */
-            std::map<string,FFJSON*>* m_mDeps = NULL;
-            std::list<string>* ffPairLst = NULL;
-            std::map<string*,string>* memKeyFFPairMap = NULL;
+            std::map<string,string>* m_mpDeps = NULL;
+            std::list<string>* m_lsFFPairLst = NULL;
+            std::map<string*,string>* m_mpMemKeyFFPairMap = NULL;
         };
 
 	/**
