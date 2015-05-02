@@ -21,8 +21,8 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=GNU-Linux-x86
-CND_DLIB_EXT=so
+CND_PLATFORM=GNU-MacOSX
+CND_DLIB_EXT=dylib
 CND_CONF=DebugDynamic
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -75,7 +75,7 @@ LDLIBSOPTIONS=-lxml2 -lpthread -lssl -lcrypto -lz -lrt
 
 ${TESTDIR}/TestFiles/f1: ${OBJECTFILES}
 	${MKDIR} -p ${TESTDIR}/TestFiles
-	g++ -o ${TESTDIR}/TestFiles/f1 ${OBJECTFILES} ${LDLIBSOPTIONS} -Wl,-soname,lib${APPNAME}.so.${MAJOR_VERSION} -shared -fPIC
+	g++ -o ${TESTDIR}/TestFiles/f1 ${OBJECTFILES} ${LDLIBSOPTIONS} -Wl,-soname,lib${APPNAME}.so.${MAJOR_VERSION} -dynamiclib -install_name f1 -fPIC
 
 ${OBJECTDIR}/ClientSocket.o: ClientSocket.cpp 
 	${MKDIR} -p ${OBJECTDIR}
