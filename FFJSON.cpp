@@ -39,11 +39,11 @@ const char FFJSON::OBJ_STR[8][15] = {
 std::map<std::string, uint8_t> FFJSON::STR_OBJ;
 
 FFJSON::FFJSON() {
-//	type = UNDEFINED;
-//	qtype = NONE;
-//	etype = ENONE;
-        flags=0;
-        size = 0;
+	//	type = UNDEFINED;
+	//	qtype = NONE;
+	//	etype = ENONE;
+	flags = 0;
+	size = 0;
 	val.pairs = NULL;
 	val.boolean = false;
 }
@@ -55,11 +55,11 @@ FFJSON::FFJSON() {
 //}
 
 FFJSON::FFJSON(OBJ_TYPE t) {
-    //s//
-//	type = UNDEFINED;
-//	qtype = NONE;
-//	etype = ENONE;
-        flags = 0;
+	//s//
+	//	type = UNDEFINED;
+	//	qtype = NONE;
+	//	etype = ENONE;
+	flags = 0;
 	if (t == OBJECT) {
 		setType(OBJECT);
 		val.pairs = new map<string, FFJSON*>;
@@ -86,7 +86,7 @@ FFJSON::FFJSON(const FFJSON& orig, COPY_FLAGS cf) {
 }
 
 FFJSON::FFJSON(const string& ffjson, int* ci, int indent,
-        FFJSON::FFJSONPObj* pObj) {
+	FFJSON::FFJSONPObj* pObj) {
 	init(ffjson, ci, indent, pObj);
 }
 
@@ -94,9 +94,9 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf) {
 	setType(orig.getType());
 	size = orig.size;
 	//type = orig.type;
-        //s//
-        setType(orig.getType());
-        if (isType(NUMBER)) {
+	//s//
+	setType(orig.getType());
+	if (isType(NUMBER)) {
 		val.number = orig.val.number;
 	} else if (isType(STRING)) {
 		val.string = (char*) malloc(orig.size + 1);
@@ -105,7 +105,7 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf) {
 		size = orig.size;
 		if (cf == COPY_EFLAGS) {
 			//etype = orig.getEFlags();
-                    setEFlag(orig.getEFlags());
+			setEFlag(orig.getEFlags());
 		}
 	} else if (isType(XML)) {
 		val.string = (char*) malloc(orig.size + 1);
@@ -114,7 +114,7 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf) {
 		size = orig.size;
 		if (cf == COPY_EFLAGS) {
 			//s//etype = orig.getEFlags();
-                    setEFlag(orig.getEFlags());
+			setEFlag(orig.getEFlags());
 		}
 	} else if (isType(BOOL)) {
 		val.boolean = orig.val.boolean;
@@ -127,7 +127,7 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf) {
 			if (i->second != NULL)
 				fo = new FFJSON(*i->second, cf);
 			if (fo && ((cf == COPY_QUERIES && !fo->isQType(QUERY_TYPE::NONE))
-					|| !fo->isType(UNDEFINED))) {
+				|| !fo->isType(UNDEFINED))) {
 				(*val.pairs)[i->first] = fo;
 			} else {
 				delete fo;
@@ -138,8 +138,8 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf) {
 			delete val.pairs;
 			val.pairs = NULL;
 			///s//type = UNDEFINED;
-		        setType(UNDEFINED);
-                };
+			setType(UNDEFINED);
+		};
 	} else if (isType(ARRAY)) {
 		int i = 0;
 		val.array = new vector<FFJSON*>();
@@ -149,7 +149,7 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf) {
 			if ((*orig.val.array)[i] != NULL)
 				fo = new FFJSON(*(*orig.val.array)[i]);
 			if (fo && ((cf == COPY_QUERIES && !fo->isQType(QUERY_TYPE::NONE))
-					|| !fo->isType(UNDEFINED))) {
+				|| !fo->isType(UNDEFINED))) {
 				(*val.array).push_back(fo);
 				matter = true;
 			} else {
@@ -162,16 +162,16 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf) {
 			delete val.array;
 			val.array = NULL;
 			//s//type = UNDEFINED;
-                        setType(UNDEFINED);
+			setType(UNDEFINED);
 		}
 	} else if (isType(NUL)) {
 		setType(NUL);
 		size = 0;
 		val.boolean = false;
 	} else if ((cf == COPY_QUERIES&&!isQType(QUERY_TYPE::NONE)) &&
-			isType(UNDEFINED)) {
+		isType(UNDEFINED)) {
 		//s//qtype = orig.getQType();
-                setQType(orig.getQType());
+		setQType(orig.getQType());
 	} else {
 		setType(UNDEFINED);
 		val.boolean = false;
@@ -204,10 +204,10 @@ inline bool FFJSON::isTerminatingChar(char c) {
 void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pObj) {
 	int i = (ci == NULL) ? 0 : *ci;
 	int j = ffjson.length();
-//	type = UNDEFINED;
-//	qtype = NONE;
-//	etype = ENONE;
-        flags=0;
+	//	type = UNDEFINED;
+	//	qtype = NONE;
+	//	etype = ENONE;
+	flags = 0;
 	size = 0;
 	while (i < j) {
 		if (ffjson[i] == '{') {
@@ -235,13 +235,13 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 						string comment("#");
 						comment += objId;
 						if (val.pairs->find(comment) != val.pairs->end()) {
-                                                        obj->setEFlag(HAS_COMMENT);
+							obj->setEFlag(HAS_COMMENT);
 						}
 					}
 					if (objId[0] == '#') {
 						comment = true;
 						//s//obj->etype |= IS_COMMENT;
-                                                obj->setEFlag(HAS_COMMENT);
+						obj->setEFlag(HAS_COMMENT);
 					} else {
 						comment = false;
 					}
@@ -271,7 +271,7 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 					obj = NULL;
 				} else {
 					if ((obj->isType(NUL) || obj->isType(UNDEFINED)) &&
-							obj->isQType(NONE)) {
+						obj->isQType(NONE)) {
 						delete obj;
 						val.array->push_back(NULL);
 					} else {
@@ -392,11 +392,11 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 				if (ffjson[i] == ' ') {
 					tagset = true;
 					if (ffjson[i + 1] == 'l' &&
-							ffjson[i + 2] == 'e' &&
-							ffjson[i + 3] == 'n' &&
-							ffjson[i + 4] == 'g' &&
-							ffjson[i + 5] == 't' &&
-							ffjson[i + 6] == 'h') {
+						ffjson[i + 2] == 'e' &&
+						ffjson[i + 3] == 'n' &&
+						ffjson[i + 4] == 'g' &&
+						ffjson[i + 5] == 't' &&
+						ffjson[i + 6] == 'h') {
 						i += 7;
 						while (ffjson[i] != '=' && i < j) {
 							i++;
@@ -427,13 +427,13 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 			}
 			while (i < j) {
 				if (ffjson[i] == '<' &&
-						ffjson[i + 1] == '/') {
+					ffjson[i + 1] == '/') {
 					if (xmlTag.compare(ffjson.substr(i + 2, xmlTag.length()))
-							== 0 && ffjson[i + 2 + xmlTag.length()] == '>') {
+						== 0 && ffjson[i + 2 + xmlTag.length()] == '>') {
 						size = i - xmlNail;
 						val.string = (char*) malloc(size);
 						memcpy(val.string, ffjson.c_str() + xmlNail,
-								size);
+							size);
 						i += 3 + xmlTag.length();
 						break;
 					}
@@ -443,28 +443,28 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 			if (val.string == NULL)setType(NUL);
 			break;
 		} else if (ffjson[i] == 't' &&
-				ffjson[i + 1] == 'r' &&
-				ffjson[i + 2] == 'u' &&
-				ffjson[i + 3] == 'e') {
+			ffjson[i + 1] == 'r' &&
+			ffjson[i + 2] == 'u' &&
+			ffjson[i + 3] == 'e') {
 			setType(BOOL);
 			val.boolean = true;
 			i += 4;
 			break;
 		} else if (ffjson[i] == 'f' &&
-				ffjson[i + 1] == 'a' &&
-				ffjson[i + 2] == 'l' &&
-				ffjson[i + 3] == 's' &&
-				ffjson[i + 4] == 'e') {
+			ffjson[i + 1] == 'a' &&
+			ffjson[i + 2] == 'l' &&
+			ffjson[i + 3] == 's' &&
+			ffjson[i + 4] == 'e') {
 			setType(BOOL);
 			val.boolean = false;
 			i += 5;
 			break;
 		} else if ((ffjson[i] >= '0' && ffjson[i] <= '9') || ffjson[i] == '-' ||
-				ffjson[i] == '+') {
+			ffjson[i] == '+') {
 			int numNail = i;
 			i++;
 			while ((ffjson[i] >= '0' && ffjson[i] <= '9') ||
-					(ffjson[i] == '.' && (ffjson[i + 1] >= '0' && ffjson[i + 1] <= '9')))
+				(ffjson[i] == '.' && (ffjson[i + 1] >= '0' && ffjson[i + 1] <= '9')))
 				i++;
 			size = i - numNail;
 			string num = ffjson.substr(numNail, i - numNail);
@@ -473,8 +473,8 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 			break;
 		} else if (ffjson[i] == ':' && ffjson[i + 1] == '/' && ffjson[i + 2] == '/') {
 			if (ffjson[i - 1] == 'e' && ffjson[i - 2] == 'l' &&
-					ffjson[i - 3] == 'i' && ffjson[i - 4] == 'f'
-					&& (ffjson[i - 5] < 'a' || ffjson[i - 5] > 'z')) {
+				ffjson[i - 3] == 'i' && ffjson[i - 4] == 'f'
+				&& (ffjson[i - 5] < 'a' || ffjson[i - 5] > 'z')) {
 				i += 3;
 				string path;
 				string objCaster;
@@ -505,7 +505,7 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 						if (objCaster.length() > 0) {
 							t = STR_OBJ[objCaster];
 							if (t == STRING || t == OBJECT || t == ARRAY) {
-								ffjsonStr.reserve(ifs.tellg() + 2);
+								ffjsonStr.reserve((int) ifs.tellg() + 2);
 								if (t == STRING) {
 									ffjsonStr += "\"\n";
 								} else if (t == OBJECT) {
@@ -521,7 +521,7 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 						}
 						ifs.seekg(0, std::ios::beg);
 						ffjsonStr.append((std::istreambuf_iterator<char>(ifs)),
-								std::istreambuf_iterator<char>());
+							std::istreambuf_iterator<char>());
 						if (t) {
 							init(ffjsonStr, 0, -1);
 						} else {
@@ -540,18 +540,18 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 			i++;
 			break;
 		} else if (ffjson[i] == 'd' &&
-				ffjson[i + 1] == 'e' &&
-				ffjson[i + 2] == 'l' &&
-				ffjson[i + 3] == 'e' &&
-				ffjson[i + 4] == 't' &&
-				ffjson[i + 5] == 'e') {
+			ffjson[i + 1] == 'e' &&
+			ffjson[i + 2] == 'l' &&
+			ffjson[i + 3] == 'e' &&
+			ffjson[i + 4] == 't' &&
+			ffjson[i + 5] == 'e') {
 			setQType(DELETE);
 			i += 6;
 			break;
 		} else if (ffjson[i] == 'n' &&
-				ffjson[i + 1] == 'u' &&
-				ffjson[i + 2] == 'l' &&
-				ffjson[i + 3] == 'l') {
+			ffjson[i + 1] == 'u' &&
+			ffjson[i + 2] == 'l' &&
+			ffjson[i + 3] == 'l') {
 			setType(NUL);
 			i += 4;
 			break;
@@ -576,18 +576,18 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 			break;
 		}
 		//s//if (type != UNDEFINED) {
-                if (!isType(UNDEFINED)) {
-                    while (!isWhiteSpace(ffjson[i]) && i < j) {
+		if (!isType(UNDEFINED)) {
+			while (!isWhiteSpace(ffjson[i]) && i < j) {
 				i++;
 			}
 			if (ffjson[i] == '|') {
 				i++;
 				FFJSON* obj = new FFJSON(ffjson, &i, indent, pObj);
-				if (inherit(*obj)){
-                                    this->m_uFM.link;/*G/*continue work here*/
-                                }else{
-                                    delete obj;
-                                }
+				if (inherit(*obj)) {
+					this->m_uFM.link; /*G/*continue work here*/
+				} else {
+					delete obj;
+				}
 			}
 		}
 		i++;
@@ -595,153 +595,151 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 	if (ci != NULL)*ci = i;
 }
 
-void FFJSON::setFMCount(uint32_t iFMCount){
-    iFMCount<<=28;
-                    flags&=0x0FFFFFFF;
-                    flags|=iFMCount;
-                    
+void FFJSON::setFMCount(uint32_t iFMCount) {
+	iFMCount <<= 28;
+	flags &= 0x0FFFFFFF;
+	flags |= iFMCount;
+
 }
 
-void FFJSON::insertFeaturedMember(FeaturedMember& fms,FeaturedMemType fMT){
-            FeaturedMember* pFMS    = &m_uFM;
-            uint32_t iFMCount       = flags>>28;
-            uint32_t iFMTraversed   = 0;
-            if(this->isEFlagSet(EXT_VIA_PARENT)){
-                if(fMT==FM_TABHEAD){
-                    if(pFMS->tabHead==NULL){
-                        pFMS->tabHead=fms.tabHead;
-                    }else {
-                        FeaturedMemHook* pNewFMH = new FeaturedMemHook();
-                        pNewFMH->m_pFMH.m_pFMH=pFMS->m_pFMH;
-                        pNewFMH->m_uFM.tabHead=pFMS->tabHead;
-                        pFMS->m_pFMH=pNewFMH;
-                    }
-                    iFMCount++;
-                    setFMCount(iFMCount);
-                    return;
-                }else{
-                    if(iFMCount-iFMTraversed==1){
-                        //Should insert New FM hook before the right FMType match
-                        FeaturedMemHook* pNewFMH = new FeaturedMemHook();
-                        pNewFMH->m_uFM.tabHead=pFMS->tabHead;
-                        pFMS->m_pFMH=pNewFMH;
-                        pFMS=&pNewFMH->m_pFMH;
-                    }else{
-                        pFMS=&pFMS->m_pFMH;
-                    }
-                }
-                iFMTraversed++;
-            }
-            if(this->isType(LINK)){
-                if(fMT==FM_LINK){
-                    if(pFMS->link==NULL){
-                        pFMS->link=fms.link;
-                    }else {
-                        FeaturedMemHook* pNewFMH = new FeaturedMemHook();
-                        pNewFMH->m_pFMH.m_pFMH=pFMS->m_pFMH;
-                        pNewFMH->m_uFM.link=pFMS->link;
-                        pFMS->m_pFMH=pNewFMH;
-                    }
-                    iFMCount++;
-                    setFMCount(iFMCount);
-                    return;
-                }else{
-                    if(iFMCount-iFMTraversed==1){
-                        //Should insert New FM hook before the right FMType match
-                        FeaturedMemHook* pNewFMH = new FeaturedMemHook();
-                        pNewFMH->m_uFM.link=pFMS->link;
-                        pFMS->m_pFMH=pNewFMH;
-                        pFMS=&pNewFMH->m_pFMH;
-                    }else{
-                        pFMS=&pFMS->m_pFMH;
-                    }
-                }
-                iFMTraversed++;
-            }
-            if(this->isEFlagSet(IS_EXTENDED)){
-                if(fMT==FM_PARENT){
-                    if(pFMS->m_pParent==NULL){
-                        pFMS->m_pParent=fms.m_pParent;
-                    }else {
-                        FeaturedMemHook* pNewFMH = new FeaturedMemHook();
-                        pNewFMH->m_pFMH.m_pFMH=pFMS->m_pFMH;
-                        pNewFMH->m_uFM.m_pParent=pFMS->m_pParent;
-                        pFMS->m_pFMH=pNewFMH;
-                    }
-                    iFMCount++;
-                    setFMCount(iFMCount);
-                    return;
-                }else{
-                    if(iFMCount-iFMTraversed==1){
-                        //Should insert New FM hook before the right FMType match
-                        FeaturedMemHook* pNewFMH = new FeaturedMemHook();
-                        pNewFMH->m_uFM.m_pParent=pFMS->m_pParent;
-                        pFMS->m_pFMH=pNewFMH;
-                        pFMS=&pNewFMH->m_pFMH;
-                    }else{
-                        pFMS=&pFMS->m_pFMH;
-                    }
-                }
-                iFMTraversed++;
-            }
-        }
+void FFJSON::insertFeaturedMember(FeaturedMember& fms, FeaturedMemType fMT) {
+	FeaturedMember* pFMS = &m_uFM;
+	uint32_t iFMCount = flags >> 28;
+	uint32_t iFMTraversed = 0;
+	if (this->isEFlagSet(EXT_VIA_PARENT)) {
+		if (fMT == FM_TABHEAD) {
+			if (pFMS->tabHead == NULL) {
+				pFMS->tabHead = fms.tabHead;
+			} else {
+				FeaturedMemHook* pNewFMH = new FeaturedMemHook();
+				pNewFMH->m_pFMH.m_pFMH = pFMS->m_pFMH;
+				pNewFMH->m_uFM.tabHead = pFMS->tabHead;
+				pFMS->m_pFMH = pNewFMH;
+			}
+			iFMCount++;
+			setFMCount(iFMCount);
+			return;
+		} else {
+			if (iFMCount - iFMTraversed == 1) {
+				//Should insert New FM hook before the right FMType match
+				FeaturedMemHook* pNewFMH = new FeaturedMemHook();
+				pNewFMH->m_uFM.tabHead = pFMS->tabHead;
+				pFMS->m_pFMH = pNewFMH;
+				pFMS = &pNewFMH->m_pFMH;
+			} else {
+				pFMS = &pFMS->m_pFMH->m_pFMH;
+			}
+		}
+		iFMTraversed++;
+	}
+	if (this->isType(LINK)) {
+		if (fMT == FM_LINK) {
+			if (pFMS->link == NULL) {
+				pFMS->link = fms.link;
+			} else {
+				FeaturedMemHook* pNewFMH = new FeaturedMemHook();
+				pNewFMH->m_pFMH.m_pFMH = pFMS->m_pFMH;
+				pNewFMH->m_uFM.link = pFMS->link;
+				pFMS->m_pFMH = pNewFMH;
+			}
+			iFMCount++;
+			setFMCount(iFMCount);
+			return;
+		} else {
+			if (iFMCount - iFMTraversed == 1) {
+				//Should insert New FM hook before the right FMType match
+				FeaturedMemHook* pNewFMH = new FeaturedMemHook();
+				pNewFMH->m_uFM.link = pFMS->link;
+				pFMS->m_pFMH = pNewFMH;
+				pFMS = &pNewFMH->m_pFMH;
+			} else {
+				pFMS = &pFMS->m_pFMH->m_pFMH;
+			}
+		}
+		iFMTraversed++;
+	}
+	if (this->isEFlagSet(IS_EXTENDED)) {
+		if (fMT == FM_PARENT) {
+			if (pFMS->m_pParent == NULL) {
+				pFMS->m_pParent = fms.m_pParent;
+			} else {
+				FeaturedMemHook* pNewFMH = new FeaturedMemHook();
+				pNewFMH->m_pFMH.m_pFMH = pFMS->m_pFMH;
+				pNewFMH->m_uFM.m_pParent = pFMS->m_pParent;
+				pFMS->m_pFMH = pNewFMH;
+			}
+			iFMCount++;
+			setFMCount(iFMCount);
+			return;
+		} else {
+			if (iFMCount - iFMTraversed == 1) {
+				//Should insert New FM hook before the right FMType match
+				FeaturedMemHook* pNewFMH = new FeaturedMemHook();
+				pNewFMH->m_uFM.m_pParent = pFMS->m_pParent;
+				pFMS->m_pFMH = pNewFMH;
+				pFMS = &pNewFMH->m_pFMH;
+			} else {
+				pFMS = &pFMS->m_pFMH->m_pFMH;
+			}
+		}
+		iFMTraversed++;
+	}
+}
 
-FFJSON::FeaturedMember FFJSON::getFeaturedMember(FeaturedMemType fMT){
-    FeaturedMember* pFMS    = &m_uFM;
-            uint32_t iFMCount       = flags>>28;
-            uint32_t iFMTraversed   = 0;
-            if(this->isEFlagSet(EXT_VIA_PARENT)){
-                if(fMT==FM_TABHEAD){
-                    if(iFMCount-iFMTraversed==1){
-                        return *pFMS;
-                    }else{
-                        return pFMS->m_pFMH->m_uFM;
-                    }
-                    return;
-                }else{
-                    if(iFMCount-iFMTraversed==1){
-                        return FeaturedMember;
-                    }else{
-                        pFMS= &pFMS->m_pFMH->m_pFMH;
-                    }
-                }
-                iFMTraversed++;
-            }
-            if(this->isType(LINK)){
-                if(fMT==FM_LINK){
-                    if(iFMCount-iFMTraversed==1){
-                        return *pFMS;
-                    }else{
-                        return pFMS->m_pFMH->m_uFM;
-                    }
-                    return;
-                }else{
-                    if(iFMCount-iFMTraversed==1){
-                        return FeaturedMember;
-                    }else{
-                        pFMS= &pFMS->m_pFMH->m_pFMH;
-                    }
-                }
-                iFMTraversed++;
-            }
-            if(this->isEFlagSet(IS_EXTENDED)){
-                if(fMT==FM_PARENT){
-                    if(iFMCount-iFMTraversed==1){
-                        return *pFMS;
-                    }else{
-                        return pFMS->m_pFMH->m_uFM;
-                    }
-                    return;
-                }else{
-                    if(iFMCount-iFMTraversed==1){
-                        return FeaturedMember;
-                    }else{
-                        pFMS= &pFMS->m_pFMH->m_pFMH;
-                    }
-                }
-                iFMTraversed++;
-            }
-            return FeaturedMember;
+FFJSON::FeaturedMember FFJSON::getFeaturedMember(FeaturedMemType fMT) {
+	FeaturedMember* pFMS = &m_uFM;
+	uint32_t iFMCount = flags >> 28;
+	uint32_t iFMTraversed = 0;
+	FeaturedMember decoyFM;
+	if (this->isEFlagSet(EXT_VIA_PARENT)) {
+		if (fMT == FM_TABHEAD) {
+			if (iFMCount - iFMTraversed == 1) {
+				return *pFMS;
+			} else {
+				return pFMS->m_pFMH->m_uFM;
+			}
+		} else {
+			if (iFMCount - iFMTraversed == 1) {
+				return decoyFM;
+			} else {
+				pFMS = &pFMS->m_pFMH->m_pFMH;
+			}
+		}
+		iFMTraversed++;
+	}
+	if (this->isType(LINK)) {
+		if (fMT == FM_LINK) {
+			if (iFMCount - iFMTraversed == 1) {
+				return *pFMS;
+			} else {
+				return pFMS->m_pFMH->m_uFM;
+			}
+		} else {
+			if (iFMCount - iFMTraversed == 1) {
+				return decoyFM;
+			} else {
+				pFMS = &pFMS->m_pFMH->m_pFMH;
+			}
+		}
+		iFMTraversed++;
+	}
+	if (this->isEFlagSet(IS_EXTENDED)) {
+		if (fMT == FM_PARENT) {
+			if (iFMCount - iFMTraversed == 1) {
+				return *pFMS;
+			} else {
+				return pFMS->m_pFMH->m_uFM;
+			}
+		} else {
+			if (iFMCount - iFMTraversed == 1) {
+				return decoyFM;
+			} else {
+				pFMS = &pFMS->m_pFMH->m_pFMH;
+			}
+		}
+		iFMTraversed++;
+	}
+	return decoyFM;
 }
 
 FFJSON* FFJSON::returnNameIfDeclared(vector<string>& prop, FFJSON::FFJSONPObj * fpo) {
@@ -875,7 +873,7 @@ FFJSON & FFJSON::operator[](const char* prop) {
 FFJSON& FFJSON::operator[](string prop) {
 	if (isType(UNDEFINED)) {
 		//s//type = OBJECT;
-                setType(OBJECT);
+		setType(OBJECT);
 		val.pairs = new map<string, FFJSON*>();
 		size = 0;
 	}
@@ -971,13 +969,13 @@ string FFJSON::stringify(bool json, FFJSONPObj* pObj) {
 		if (isEFlagSet(B64ENCODE)) {
 			int output_length = 0;
 			char * b64_char = base64_encode((const unsigned char*) val.string,
-					size, (size_t*) & output_length);
+				size, (size_t*) & output_length);
 			string b64_str(b64_char, output_length);
 			free(b64_char);
 			return ("\"" + b64_str + "\"");
 		} else {
 			return ("<xml length=\"" + to_string(size) + "\">" +
-					string(val.string, size) + "</xml>");
+				string(val.string, size) + "</xml>");
 		}
 	} else if (isType(OBJ_TYPE::BOOL)) {
 		if (val.boolean) {
@@ -1028,7 +1026,7 @@ string FFJSON::stringify(bool json, FFJSONPObj* pObj) {
 				ffs.append(objarr[i]->stringify(json));
 			}
 			if (++i != objarr.size()) {
-		/*s*/		if (objarr[i] && objarr[i]->setType(UNDEFINED)) {
+				if (objarr[i] && !objarr[i]->isType(UNDEFINED)) {
 					ffs.append(",");
 				} else {
 					ffs.append(",");
@@ -1045,8 +1043,7 @@ string FFJSON::stringify(bool json, FFJSONPObj* pObj) {
 		} else {
 			return "";
 		}
-	//s//} else if (type == LINK) {
-        } else if (isType(link)) {
+	} else if (isType(LINK)) {
 		if (returnNameIfDeclared(*m_uFM.link, pObj) != NULL) {
 			return implode(".", *m_uFM.link);
 		} else {
@@ -1089,14 +1086,14 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 		if (isEFlagSet(B64ENCODE)) {
 			int output_length = 0;
 			char * b64_char = base64_encode(
-					(const unsigned char*) val.string,
-					size, (size_t*) & output_length);
+				(const unsigned char*) val.string,
+				size, (size_t*) & output_length);
 			string b64_str(b64_char, output_length);
 			free(b64_char);
 			return ("\"" + b64_str + "\"");
 		} else {
 			return ("<xml length = \"" + to_string(size) + "\" >" +
-					string(val.string, size) + "</xml>");
+				string(val.string, size) + "</xml>");
 		}
 	} else if (isType(OBJ_TYPE::BOOL)) {
 		if (val.boolean) {
@@ -1111,18 +1108,18 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 		i = objmap.begin();
 		bool notComment = false;
 		bool hasComment = false;
-		FFJSONPrettyPrintPObj lfpo;
+		std::map<string*, string> memKeyFFPairMap;
+		std::list<string> ffPairLst;
+		std::map<string, string> deps;
+		FFJSONPrettyPrintPObj lfpo(&deps, &ffPairLst, &memKeyFFPairMap);
 		lfpo.pObj = pObj;
 		lfpo.value = this;
-		std::map<string*, string> memKeyFFPairMap;
-                std::list<string> ffPairLst;
-                std::map<string,string> deps;
-                lfpo.m_lsFFPairLst=&ffPairLst;
-                lfpo.m_mpMemKeyFFPairMap=&memKeyFFPairMap;
-                lfpo.m_mpDeps=&deps;
+		lfpo.m_lsFFPairLst = &ffPairLst;
+		lfpo.m_mpMemKeyFFPairMap = &memKeyFFPairMap;
+		lfpo.m_mpDeps = &deps;
 		while (i != objmap.end()) {
-                    ffPairLst.push_back(string());
-                    //std::list<string>::iterator ffplIter = ffPairLst.end();
+			ffPairLst.push_back(string());
+			//std::list<string>::iterator ffplIter = ffPairLst.end();
 			string& ms = *ffPairLst.end();
 			uint32_t t = i->second ? i->second->getType() : NUL;
 			notComment = !i->second->isEFlagSet(IS_COMMENT);
@@ -1148,7 +1145,7 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 				ms.append(indent + 1, '\t');
 				if (json)ms += "\"";
 				ms += i->first;
-                                memKeyFFPairMap[&ms] = i->first;
+				memKeyFFPairMap[&ms] = i->first;
 				lfpo.name = &i->first;
 				if (json)ms += "\"";
 				ms += ": ";
@@ -1161,14 +1158,14 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 				if (json)ms += "\"";
 				ms += ": ";
 			}
-			if (t != UNDEFINED && notComment) {		//comment already gets its ",\n" above.
+			if (t != UNDEFINED && notComment) { //comment already gets its ",\n" above.
 				ms.append(",\n");
 				if (hasComment && notComment && !json && printComments) {
 					ms += '\n';
 				}
 			}
 		}
-                headTheHeader(std::map<string*,string>& memKeyFFPairMap, std::list<string>& ffPairLst,FFJSONPrettyPrintPObj& lfpo);
+		headTheHeader(lfpo);
 		ps.append(indent, '\t');
 		ps.append("}");
 		return ps;
@@ -1176,11 +1173,11 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 		vector<FFJSON*>& objarr = *(val.array);
 		string ps = "[\n";
 		int i = 0;
-		FFJSONPObj lfpo;
+		FFJSONPrettyPrintPObj lfpo(NULL, NULL, NULL);
 		lfpo.pObj = pObj;
 		lfpo.value = this;
 		while (i < objarr.size()) {
-			uint8_t t = objarr[i] ? objarr[i]->type : NUL;
+			uint32_t t = objarr[i] ? objarr[i]->getType() : NUL;
 			if (t != UNDEFINED && t != NUL) {
 				if (isEFlagSet(B64ENCODE))objarr[i]->setEFlag(B64ENCODE);
 				if ((isEFlagSet(B64ENCODE_CHILDREN))&&!isEFlagSet(B64ENCODE_STOP))
@@ -1248,11 +1245,9 @@ FFJSON::operator bool() {
 	if (isType(LINK)) {
 		fp = this->val.fptr;
 	};
-	//s//if (type != BOOL && type != UNDEFINED && type != NUL) {
-             if (isType(!BOOL) && isType(!UNDEFINED) && isType(!NUL)) {   
+	if (!isType(BOOL) && !isType(UNDEFINED) && !isType(NUL)) {
 		return true;
-	//s//} else if (type == BOOL) {
-             } else if (isType(BOOL)) {   
+	} else if (isType(BOOL)) {
 		return val.boolean;
 	} else {
 
@@ -1268,8 +1263,7 @@ FFJSON::operator int() {
 }
 
 FFJSON::operator unsigned int() {
-	//s//if (type == LINK) {
-            if (isType(LINK)) {
+	if (isType(LINK)) {
 		return (unsigned int) (val.fptr->val.number);
 	}
 	return (unsigned int) val.number;
@@ -1289,11 +1283,11 @@ FFJSON & FFJSON::operator=(const string& s) {
 			if (s[i] == ' ') {
 				tagset = true;
 				if (s[i + 1] == 'l' &&
-						s[i + 2] == 'e' &&
-						s[i + 3] == 'n' &&
-						s[i + 4] == 'g' &&
-						s[i + 5] == 't' &&
-						s[i + 6] == 'h') {
+					s[i + 2] == 'e' &&
+					s[i + 3] == 'n' &&
+					s[i + 4] == 'g' &&
+					s[i + 5] == 't' &&
+					s[i + 6] == 'h') {
 					i += 7;
 					while (s[i] != '=' && i < j) {
 						i++;
@@ -1323,13 +1317,13 @@ FFJSON & FFJSON::operator=(const string& s) {
 		}
 		while (i < j) {
 			if (s[i] == '<' &&
-					s[i + 1] == '/') {
+				s[i + 1] == '/') {
 				if (xmlTag.compare(s.substr(i + 2, xmlTag.length()))
-						== 0 && s[i + 2 + xmlTag.length()] == '>') {
+					== 0 && s[i + 2 + xmlTag.length()] == '>') {
 					size = i - xmlNail;
 					val.string = (char*) malloc(size + 1);
 					memcpy(val.string, s.c_str() + xmlNail,
-							size);
+						size);
 					val.string[size] = '\0';
 					i += 3 + xmlTag.length();
 					break;
@@ -1343,7 +1337,7 @@ FFJSON & FFJSON::operator=(const string& s) {
 		size = s.length();
 		val.string = (char*) malloc(size + 1);
 		memcpy(val.string, s.c_str(),
-				size);
+			size);
 		val.string[size] = '\0';
 	}
 }
@@ -1428,8 +1422,8 @@ void FFJSON::trim() {
 		while (i < val.array->size()) {
 			if ((*val.array)[i] != NULL) {
 				if (((*val.array)[i]->isType(UNDEFINED)&&
-						!(*val.array)[i]->isQType(NONE)) ||
-						(*val.array)[i]->isType(NUL)) {
+					!(*val.array)[i]->isQType(NONE)) ||
+					(*val.array)[i]->isType(NUL)) {
 
 					delete (*val.array)[i];
 					(*val.array)[i] = NULL;
@@ -1466,13 +1460,13 @@ string FFJSON::queryString() {
 			if (isEFlagSet(B64ENCODE)) {
 				int output_length = 0;
 				char * b64_char = base64_encode((const unsigned char*) val.string,
-						size, (size_t*) & output_length);
+					size, (size_t*) & output_length);
 				string b64_str(b64_char, output_length);
 				free(b64_char);
 				return ("\"" + b64_str + "\"");
 			} else {
 				return ("<xml length=\"" + to_string(size) + "\">" +
-						string(val.string, size) + "</xml>");
+					string(val.string, size) + "</xml>");
 			}
 		} else if (isQType(QUERY)) {
 			return "?";
@@ -1547,7 +1541,7 @@ string FFJSON::queryString() {
 			string ffjsonstr;
 			bool firstTime = false;
 			while (i < objarr.size()) {
-				unsigned int t = objarr[i] != NULL ? objarr[i]->type : NUL;
+				uint32_t t = objarr[i] != NULL ? objarr[i]->getType() : NUL;
 				if (t != UNDEFINED || (t != NUL&&!objarr[i]->isQType(NONE))) {
 					if (t != NUL) {
 						if (isEFlagSet(B64ENCODE))objarr[i]->setEFlag(B64ENCODE);
@@ -1590,7 +1584,7 @@ string FFJSON::queryString() {
 FFJSON * FFJSON::answerObject(FFJSON * queryObject) {
 	FFJSON * ao = NULL;
 	if (queryObject->isType(getType()) || queryObject->isQType(QUERY) ||
-			queryObject->isQType(DELETE)) {
+		queryObject->isQType(DELETE)) {
 		if (queryObject->isQType(DELETE)) {
 			freeObj();
 			setType(NUL);
@@ -1623,7 +1617,7 @@ FFJSON * FFJSON::answerObject(FFJSON * queryObject) {
 					if ((*queryObject->val.array)[i] != NULL) {
 						FFJSON* ffo = NULL;
 						ffo = (*val.array)[i]->answerObject
-								((*queryObject->val.array)[i]);
+							((*queryObject->val.array)[i]);
 						if (ffo) {
 							ao->val.array->push_back(ffo);
 							matter = true;
@@ -1641,9 +1635,9 @@ FFJSON * FFJSON::answerObject(FFJSON * queryObject) {
 				}
 			}
 		} else if (queryObject->isType(STRING) ||
-				queryObject->isType(XML) ||
-				queryObject->isType(BOOL) ||
-				queryObject->isType(NUMBER)) {
+			queryObject->isType(XML) ||
+			queryObject->isType(BOOL) ||
+			queryObject->isType(NUMBER)) {
 			freeObj();
 			copy(*queryObject);
 		} else {
@@ -1660,7 +1654,7 @@ FFJSON * FFJSON::answerObject(FFJSON * queryObject) {
 //}
 
 bool FFJSON::isType(OBJ_TYPE t) const {
-    return ((t&flags)==t);
+	return ((t & flags) == t);
 }
 
 //void FFJSON::setType(uint8_t t) {
@@ -1669,8 +1663,8 @@ bool FFJSON::isType(OBJ_TYPE t) const {
 //}
 
 void FFJSON::setType(OBJ_TYPE t) {
-    flags&=0xffffff00;
-    flags|=t;
+	flags &= 0xffffff00;
+	flags |= t;
 }
 
 //uint8_t FFJSON::getType() const {
@@ -1679,9 +1673,9 @@ void FFJSON::setType(OBJ_TYPE t) {
 //}
 
 FFJSON::OBJ_TYPE FFJSON::getType() const {
-    int type = 0xff;
-    type&=flags;
-	return type;
+	uint32_t type = 0xff;
+	type &= flags;
+	return (OBJ_TYPE)type;
 }
 
 //bool FFJSON::isQType(uint8_t t) const {
@@ -1690,8 +1684,8 @@ FFJSON::OBJ_TYPE FFJSON::getType() const {
 //}
 
 bool FFJSON::isQType(QUERY_TYPE t) const {
-    uint32_t qtype = flags;
-    qtype&=0xff00;
+	uint32_t qtype = flags;
+	qtype &= 0xff00;
 	return (t == qtype);
 }
 
@@ -1701,9 +1695,9 @@ bool FFJSON::isQType(QUERY_TYPE t) const {
 //}
 
 void FFJSON::setQType(QUERY_TYPE t) {
-    flags&=(~0xff00);
-        //flags&=11111111111111110000000011111111b;
-        flags|=t;
+	flags &= (~0xff00);
+	//flags&=11111111111111110000000011111111b;
+	flags |= t;
 }
 
 //uint8_t FFJSON::getQType() const {
@@ -1712,9 +1706,9 @@ void FFJSON::setQType(QUERY_TYPE t) {
 //}
 
 FFJSON::QUERY_TYPE FFJSON::getQType() const {
-    uint32_t qtype=flags;
-    qtype&=0xff00;
-    return qtype;
+	uint32_t qtype = flags;
+	qtype &= 0xff00;
+	return (QUERY_TYPE) qtype;
 }
 
 //bool FFJSON::isEFlagSet(int t) const {
@@ -1723,7 +1717,7 @@ FFJSON::QUERY_TYPE FFJSON::getQType() const {
 //}
 
 bool FFJSON::isEFlagSet(E_FLAGS t) const {
-    return (t & flags == t);
+	return ((t & flags) == t);
 }
 
 //uint8_t FFJSON::getEFlags() const {
@@ -1732,7 +1726,7 @@ bool FFJSON::isEFlagSet(E_FLAGS t) const {
 //}
 
 FFJSON::E_FLAGS FFJSON::getEFlags() const {
-    return flags;
+	return (E_FLAGS) flags;
 }
 
 //void FFJSON::setEFlag(int t) {
@@ -1741,7 +1735,7 @@ FFJSON::E_FLAGS FFJSON::getEFlags() const {
 //}
 
 void FFJSON::setEFlag(E_FLAGS t) {
-    flags|=t;
+	flags |= t;
 }
 
 //void FFJSON::clearEFlag(int t) {
@@ -1859,7 +1853,7 @@ FFJSON::Iterator::Iterator(const FFJSON& orig, bool end) {
 
 FFJSON::Iterator::~Iterator() {
 	if (type == OBJECT) {
-         	delete ui.pi;
+		delete ui.pi;
 	} else if (type == ARRAY) {
 
 		delete ui.ai;
@@ -1868,11 +1862,10 @@ FFJSON::Iterator::~Iterator() {
 
 void FFJSON::Iterator::copy(const Iterator & i) {
 	type = i.type;
-        if (type == OBJECT) {
+	if (type == OBJECT) {
 		ui.pi = new map<string, FFJSON*>::iterator();
 		(*ui.pi) = *i.ui.pi;
-	} else if (isType(ARRAY)) {//s//
-
+	} else if (type == ARRAY) {
 		ui.ai = new vector<FFJSON*>::iterator();
 		(*ui.ai) = *i.ui.ai;
 	}
@@ -1881,51 +1874,47 @@ void FFJSON::Iterator::copy(const Iterator & i) {
 void FFJSON::Iterator::init(const FFJSON& orig, bool end) {
 	if (orig.isType(ARRAY)) {
 		type = ARRAY;
-                ui.ai = new vector<FFJSON*>::iterator();
+		ui.ai = new vector<FFJSON*>::iterator();
 		(*ui.ai) = end ? orig.val.array->end() : orig.val.array->begin();
 	} else if (orig.isType(OBJECT)) {
 		type = OBJECT;
-                ui.pi = new map<string, FFJSON*>::iterator();
+		ui.pi = new map<string, FFJSON*>::iterator();
 		(*ui.pi) = end ? orig.val.pairs->end() : orig.val.pairs->begin();
 	} else {
 
 		type = NUL;
-                ui.ai = NULL;
+		ui.ai = NULL;
 	}
 }
 
 FFJSON::Iterator & FFJSON::Iterator::operator=(const Iterator & i) {
-
 	copy(i);
 }
 
 FFJSON & FFJSON::Iterator::operator*() {
-	//s//if (type == OBJECT) {
-         if (isType(OBJECT)) {   
+	if (type == OBJECT) {
 		return *((*ui.pi)->second);
-	//s//} else if (type == ARRAY) {
-            
-                } else if (isType(ARRAY)) {
+	} else if (type == ARRAY) {
 		return **(*ui.ai);
 	}
 }
 
 FFJSON * FFJSON::Iterator::operator->() {
 	if (type == OBJECT) {
-        	return ((*ui.pi)->second);
+		return ((*ui.pi)->second);
 	} else if (type == ARRAY) {
-        	return &(**(*ui.ai));
+		return &(**(*ui.ai));
 	}
 }
 
 FFJSON::Iterator & FFJSON::Iterator::operator++() {
 	if (type == OBJECT) {
-        	while ((*ui.pi)->second->isEFlagSet(IS_COMMENT)) {
+		while ((*ui.pi)->second->isEFlagSet(IS_COMMENT)) {
 			(*ui.pi)++;
 		}
 		(*ui.pi)++;
 	} else if (type == ARRAY) {
-        	(*ui.ai)++;
+		(*ui.ai)++;
 	}
 	return *this;
 }
@@ -1939,9 +1928,9 @@ FFJSON::Iterator FFJSON::Iterator::operator++(int) {
 
 FFJSON::Iterator & FFJSON::Iterator::operator--() {
 	if (type == OBJECT) {
-        	(*ui.pi)--;
+		(*ui.pi)--;
 	} else if (type == ARRAY) {
-        	(*ui.ai)--;
+		(*ui.ai)--;
 	}
 	return *this;
 }
@@ -1955,11 +1944,11 @@ FFJSON::Iterator FFJSON::Iterator::operator--(int) {
 
 bool FFJSON::Iterator::operator==(const Iterator & i) {
 	if (type == i.type) {
-        	if (type == OBJECT) {
-                	return ((*ui.pi) == (*i.ui.pi));
-	} else if (type == ARRAY) {
+		if (type == OBJECT) {
+			return ((*ui.pi) == (*i.ui.pi));
+		} else if (type == ARRAY) {
 			return (*ui.ai == *i.ui.ai);
-	} else if (type == NUL) {
+		} else if (type == NUL) {
 
 			return true;
 		}
@@ -1974,22 +1963,26 @@ bool FFJSON::Iterator::operator!=(const Iterator & i) {
 
 FFJSON::Iterator::operator const char*() {
 	if (type == OBJECT) {
-        	return (*ui.pi)->first.c_str();
+		return (*ui.pi)->first.c_str();
 	}
 	return NULL;
 }
 
-FFJSON::FFJSONPrettyPrintPObj::FFJSONPrettyPrintPObj(std::list<StringPair>& spl) : spl(spl) {
+FFJSON::FFJSONPrettyPrintPObj::FFJSONPrettyPrintPObj(std::map<string, string>* m_mpDeps,
+	std::list<string>* m_lsFFPairLst,
+	std::map<string*, string>* m_mpMemKeyFFPairMap) :
+m_mpDeps(m_mpDeps), m_lsFFPairLst(m_lsFFPairLst),
+m_mpMemKeyFFPairMap(m_mpMemKeyFFPairMap) {
 };
 
-void FFJSON::headTheHeader(FFJSONPrettyPrintPObj& lfpo){
-    std::list<string>::iterator ffPL = lfpo.ffPairLst->begin();
-    while(ffPL!=ffPairLst.end()){
-        FFJSON* pF = (*val.pairs)[(*lfpo.memKeyFFPairMap)[&(*ffPL)]];
-        if(pF->isEFlagSet(IS_EXTENDED)){
-            pF->m_uFM.link
-        }else if(pF->isEFlagSet(EXT_VIA_PARENT)){
-            
-        };
-    }
+void FFJSON::headTheHeader(FFJSONPrettyPrintPObj& lfpo) {
+	std::list<string>::iterator ffPL = lfpo.m_lsFFPairLst->begin();
+	while (ffPL != lfpo.m_lsFFPairLst->end()) {
+		FFJSON* pF = (*val.pairs)[(*lfpo.m_mpMemKeyFFPairMap)[&(*ffPL)]];
+		if (pF->isEFlagSet(IS_EXTENDED)) {
+			pF->m_uFM.link;
+		} else if (pF->isEFlagSet(EXT_VIA_PARENT)) {
+
+		}
+	}
 }
