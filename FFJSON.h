@@ -66,9 +66,9 @@ public:
 		B64ENCODE = 1 << 16,
 		B64ENCODE_CHILDREN = 1 << 17,
 		B64ENCODE_STOP = 1 << 18,
-		IS_COMMENT = 1 << 19,
+		COMMENT = 1 << 19,
 		HAS_COMMENT = 1 << 20,
-		IS_EXTENDED = 1 << 21,
+		EXTENDED = 1 << 21,
 		EXT_VIA_PARENT = 1 << 22
 	};
 
@@ -139,9 +139,7 @@ public:
 
 	FeaturedMember getFeaturedMember(FeaturedMemType fMT);
 
-	void deleteFeaturedMember(FeaturedMemType fMT) {
-
-	}
+	void destroyAllFeaturedMembers();
 
 	struct FFJSONExt {
 		FFJSON* base = NULL;
@@ -154,17 +152,20 @@ public:
 	};
 
 	struct FFJSONPrettyPrintPObj : FFJSONPObj {
-		FFJSONPrettyPrintPObj(std::map<string, string>* m_mpDeps,
+		FFJSONPrettyPrintPObj(std::map<const string*,const string*>* m_mpDeps,
 			std::list<string>* m_lsFFPairLst,
-			std::map<string*, string>* m_mpMemKeyFFPairMap);
+			std::map<string*, const string*>* m_mpMemKeyFFPairMap,
+			std::map<const string*,std::list<string>::iterator>* pKeyPrettyStringMap);
 		bool m_bHeaded = false;
 		
 		/**
 		 * to get the parent of object
 		 */
-		std::map<string, string>* m_mpDeps = NULL;
+		std::map<const string*,const string*>* m_mpDeps = NULL;
 		std::list<string>* m_lsFFPairLst = NULL;
-		std::map<string*, string>* m_mpMemKeyFFPairMap = NULL;
+		std::map<string*,const string*>* m_mpMemKeyFFPairMap = NULL;
+		std::map<const string*,std::list<string>::iterator>* m_pKeyPrettyStringItMap = NULL;
+		FFJSONPrettyPrintPObj* pObj = NULL;
 	};
 
 	/**
@@ -273,7 +274,7 @@ public:
 	 * Converts FFJSON object into FFJSON string.
 	 * @return FFJSON string.
 	 */
-	std::string stringify(bool json = false, FFJSONPObj* pObj = NULL);
+	std::string stringify(bool json = false, FFJSONPrettyPrintPObj* pObj = NULL);
 
 	/**
 	 * Converts FFJSON object into FFJSON pretty string that has indents where
@@ -367,6 +368,7 @@ private:
 	static bool inline isWhiteSpace(char c);
 	static bool inline isTerminatingChar(char c);
 	static FFJSON* returnNameIfDeclared(std::vector<string>& prop, FFJSONPObj* fpo);
+	FFJSON* markTheNameIfExtended(FFJSONPrettyPrintPObj* fpo);
 	bool inherit(FFJSON& obj);
 };
 
