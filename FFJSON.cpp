@@ -951,7 +951,9 @@ void FFJSON::freeObj() {
 	} else if (isType(LINK)) {
 
 	}
-	destroyAllFeaturedMembers();
+	if (m_uFM.m_pFMH != NULL) {
+		destroyAllFeaturedMembers();
+	}
 }
 
 void FFJSON::trimWhites(string & s) {
@@ -1143,7 +1145,7 @@ string FFJSON::stringify(bool json, FFJSONPrettyPrintPObj* pObj) {
 				mpKeyPrettyStringItMap[&i->first] = itPretty;
 				lfpo.name = &i->first;
 				if (t != NUL) {
-					ms.append(i->second->stringify(json));
+					ms.append(i->second->stringify(json, &lfpo));
 				} else if (json) {
 					ms.append("null");
 				}
@@ -1332,7 +1334,11 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 		ffPairLst.pop_back();
 		headTheHeader(lfpo);
 		string& rLastKeyValStr = ffPairLst.back();
-		rLastKeyValStr.erase(rLastKeyValStr.length() - 2);
+		if ((*val.pairs)[*memKeyFFPairMap[&rLastKeyValStr]]->isEFlagSet(HAS_COMMENT)) {
+			rLastKeyValStr.erase(rLastKeyValStr.length() - 3);
+		} else {
+			rLastKeyValStr.erase(rLastKeyValStr.length() - 2);
+		}
 		rLastKeyValStr += '\n';
 		itPretty = ffPairLst.begin();
 		while (itPretty != ffPairLst.end()) {
@@ -1827,7 +1833,7 @@ FFJSON * FFJSON::answerObject(FFJSON * queryObject) {
 //}
 
 bool FFJSON::isType(OBJ_TYPE t) const {
-	return ((t & flags) == (flags & 0xff));
+	return (t == (flags & 0xff));
 }
 
 //void FFJSON::setType(uint8_t t) {
