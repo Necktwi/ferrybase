@@ -70,5 +70,12 @@
 	",
 
 	example: file:///home/gowtham/workspace/base/example.json,
-	link: summary
+	link: summary,
+	subjects: [	"Maths",	"Physics",	"Telugu",	"Social"],
+	studentsMarks: [
+			[	10,			20,			30,			40],
+			[	50,			60,			70,			80],
+			[	20,			30,			40,			50],
+			[	30,			40,			50,			60]
+		]|[subjects]
 }

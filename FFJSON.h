@@ -110,11 +110,13 @@ public:
 		} ui;
 	};
 
-	enum FeaturedMemType {
-		FM_LINK,
+	enum FeaturedMemType : uint32_t {
 		FM_TABHEAD,
+		FM_LINK,
 		FM_PARENT
 	};
+
+	static const FeaturedMemType m_FM_LAST = FM_PARENT;
 
 	struct FeaturedMemHook;
 
@@ -137,7 +139,7 @@ public:
 
 	void insertFeaturedMember(FeaturedMember& fms, FeaturedMemType fMT);
 
-	FeaturedMember getFeaturedMember(FeaturedMemType fMT);
+	FeaturedMember getFeaturedMember(FeaturedMemType fMT) const;
 
 	void destroyAllFeaturedMembers();
 
@@ -152,19 +154,19 @@ public:
 	};
 
 	struct FFJSONPrettyPrintPObj : FFJSONPObj {
-		FFJSONPrettyPrintPObj(std::map<const string*,const string*>* m_mpDeps,
-			std::list<string>* m_lsFFPairLst,
-			std::map<string*, const string*>* m_mpMemKeyFFPairMap,
-			std::map<const string*,std::list<string>::iterator>* pKeyPrettyStringMap);
+		FFJSONPrettyPrintPObj(std::map<const string*, const string*>* m_mpDeps,
+				std::list<string>* m_lsFFPairLst,
+				std::map<string*, const string*>* m_mpMemKeyFFPairMap,
+				std::map<const string*, std::list<string>::iterator>* pKeyPrettyStringMap);
 		bool m_bHeaded = false;
-		
+
 		/**
 		 * to get the parent of object
 		 */
-		std::map<const string*,const string*>* m_mpDeps = NULL;
+		std::map<const string*, const string*>* m_mpDeps = NULL;
 		std::list<string>* m_lsFFPairLst = NULL;
-		std::map<string*,const string*>* m_mpMemKeyFFPairMap = NULL;
-		std::map<const string*,std::list<string>::iterator>* m_pKeyPrettyStringItMap = NULL;
+		std::map<string*, const string*>* m_mpMemKeyFFPairMap = NULL;
+		std::map<const string*, std::list<string>::iterator>* m_pKeyPrettyStringItMap = NULL;
 		FFJSONPrettyPrintPObj* pObj = NULL;
 	};
 
@@ -179,7 +181,7 @@ public:
 	 * Copy constructor. Creates a copy of FFJSON object
 	 * @param orig is the object one wants to create a copy
 	 */
-	FFJSON(const FFJSON& orig, COPY_FLAGS cf = COPY_NONE);
+	FFJSON(const FFJSON& orig, COPY_FLAGS cf = COPY_NONE, FFJSONPObj* pObj = NULL);
 
 	/**
 	 * Creates a FFJSON object from a FFJSON string.
@@ -188,9 +190,9 @@ public:
 	 * default.
 	 */
 	FFJSON(const std::string& ffjson, int* ci = NULL, int indent = 0,
-		FFJSONPObj* pObj = NULL);
+			FFJSONPObj* pObj = NULL);
 	void init(const std::string& ffjson, int* ci = NULL, int indent = 0,
-		FFJSONPObj* pObj = NULL);
+			FFJSONPObj* pObj = NULL);
 
 	/**
 	 * Creates an empty FFJSON object of type @param t. It throws an Exception
@@ -362,7 +364,7 @@ private:
 	////	uint8_t etype;
 	uint32_t flags;
 	FeaturedMember m_uFM;
-	void copy(const FFJSON& orig, COPY_FLAGS cf = COPY_NONE);
+	void copy(const FFJSON& orig, COPY_FLAGS cf = COPY_NONE, FFJSONPObj* pObj = NULL);
 	static int getIndent(const char* ffjson, int* ci, int indent);
 	static void strObjMapInit();
 	static bool inline isWhiteSpace(char c);

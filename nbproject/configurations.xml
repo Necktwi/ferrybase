@@ -84,6 +84,7 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>ExtensionTest.ffjson</itemPath>
     <itemPath>base.pc</itemPath>
     <itemPath>example.json</itemPath>
     <itemPath>sample.ffjson</itemPath>
@@ -227,6 +228,8 @@
       <item path="ClientSocket.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ClientSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ExtensionTest.ffjson" ex="false" tool="3" flavor2="0">
       </item>
       <item path="FFJSON.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -407,6 +410,8 @@
       <item path="ClientSocket.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="ClientSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ExtensionTest.ffjson" ex="false" tool="3" flavor2="0">
       </item>
       <item path="FFJSON.cpp" ex="false" tool="1" flavor2="8">
       </item>
@@ -634,6 +639,8 @@
       <item path="ClientSocket.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="ClientSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ExtensionTest.ffjson" ex="false" tool="3" flavor2="0">
       </item>
       <item path="FFJSON.cpp" ex="false" tool="1" flavor2="8">
       </item>
