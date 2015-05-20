@@ -2,6 +2,6 @@
 .bzr/
 build/
 dist/
-private.xml
+nbproject/private/private.xml
 .DS_Store
 nbproject/.DS_Store
