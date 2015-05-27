@@ -93,7 +93,7 @@ void test1() {
 	std::string ps3 = ffo2.prettyString();
 	cout << ps3 << endl;
 	cout << "FFJSON signature size: " << sizeof (ffo2) << endl;
-	
+
 	std::cout << "sizeInfo test 1" << std::endl;
 
 	std::cout << "size of char: " << sizeof (char) << std::endl;
@@ -106,7 +106,7 @@ void test1() {
 	std::cout << "size of double: " << sizeof (double) << std::endl;
 
 	std::cout << "size of pointer: " << sizeof (int *) << std::endl;
-	
+
 	ffo2["amphibians"]["frogs"].setQType(FFJSON::QUERY_TYPE::QUERY);
 	ffo2["amphibians"]["salamanders"].setQType(FFJSON::QUERY_TYPE::DELETE);
 	ffo2["amphibians"]["genome"].setQType(FFJSON::QUERY_TYPE::SET);
@@ -121,15 +121,15 @@ void test1() {
 	FFJSON qo(query);
 	query = qo.queryString();
 	cout << query << endl;
-	
-	if(ffo2["amphibians"]["frogs"].isEFlagSet(FFJSON::E_FLAGS::EXTENDED)){
+
+	if (ffo2["amphibians"]["frogs"].isEFlagSet(FFJSON::E_FLAGS::EXTENDED)) {
 		std::cout << "already extended" << std::endl;
 	}
 	FFJSON* ao = ffo2.answerObject(&qo);
-	if(ffo2["amphibians"]["frogs"].isEFlagSet(FFJSON::E_FLAGS::EXTENDED)){
+	if (ffo2["amphibians"]["frogs"].isEFlagSet(FFJSON::E_FLAGS::EXTENDED)) {
 		std::cout << "already extended" << std::endl;
 	}
-	
+
 	cout << ao->stringify() << endl;
 	string ffo2a = ffo2.prettyString();
 	cout << ffo2a << endl;
@@ -140,7 +140,7 @@ void test1() {
 	cout << ffo2a << endl;
 	delete ao;
 	cout << "3rd students Maths marks: " << ffo2["studentsMarks"][2]["Maths"].prettyString() << endl;
-	cout << "end of test" <<endl;
+	cout << "end of test" << endl;
 	return;
 }
 
@@ -199,34 +199,42 @@ void test5() {
 	cout << "===================================================" << endl;
 	FFJSON f("file://ExtensionTest.ffjson");
 	cout << f.prettyString() << endl;
+
+	cout << "Marks[0]['Maths']: " << f["Marks"][0]["Maths"].prettyString()
+			<< endl;
+
+	cout << "StudentsMarks['Gowtham']['Maths']: "
+			<< f["School"]["Class1"]["StudentsMarks"]["Gowtham"]["Maths"].prettyString()
+			<< endl;
+	FFJSON f2(f.prettyString());
+	cout << f2.prettyString() << endl;
 }
 
 int main(int argc, char** argv) {
 	std::cout << "%SUITE_STARTING% ffjsonTest" << std::endl;
 	std::cout << "%SUITE_STARTED%" << std::endl;
 
-//	std::cout << "%TEST_STARTED% test1 (ffjsonTest)" << std::endl;
-//	test1();
-//	std::cout << "%TEST_FINISHED% time=0 test1 (ffjsonTest)" << std::endl;
-//
-//	std::cout << "%TEST_STARTED% test2 (ffjsonTest)\n" << std::endl;
-//	test2();
-//	std::cout << "%TEST_FINISHED% time=0 test2 (ffjsonTest)" << std::endl;
-//
-//	std::cout << "%TEST_STARTED% test3 (ffjsonTest)\n" << std::endl;
-//	test3();
-//	std::cout << "%TEST_FINISHED% time=0 test3 (ffjsonTest)" << std::endl;
-//
-//	std::cout << "%TEST_STARTED% test4 (ffjsonTest)\n" << std::endl;
-//	test4();
-//	std::cout << "%TEST_FINISHED% time=0 test4 (ffjsonTest)" << std::endl;
-//	
+	//	std::cout << "%TEST_STARTED% test1 (ffjsonTest)" << std::endl;
+	//	test1();
+	//	std::cout << "%TEST_FINISHED% time=0 test1 (ffjsonTest)" << std::endl;
+	//
+	//	std::cout << "%TEST_STARTED% test2 (ffjsonTest)\n" << std::endl;
+	//	test2();
+	//	std::cout << "%TEST_FINISHED% time=0 test2 (ffjsonTest)" << std::endl;
+	//
+	//	std::cout << "%TEST_STARTED% test3 (ffjsonTest)\n" << std::endl;
+	//	test3();
+	//	std::cout << "%TEST_FINISHED% time=0 test3 (ffjsonTest)" << std::endl;
+	//
+	//	std::cout << "%TEST_STARTED% test4 (ffjsonTest)\n" << std::endl;
+	//	test4();
+	//	std::cout << "%TEST_FINISHED% time=0 test4 (ffjsonTest)" << std::endl;
+	//	
 	std::cout << "%TEST_STARTED% test5 (ffjsonTest)\n" << std::endl;
 	test5();
 	std::cout << "%TEST_FINISHED% time=0 test5 (ffjsonTest)" << std::endl;
-	
+
 	std::cout << "%SUITE_FINISHED% time=0" << std::endl;
 
 	return (EXIT_SUCCESS);
 }
-

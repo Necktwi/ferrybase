@@ -370,6 +370,7 @@ private:
 	static bool inline isWhiteSpace(char c);
 	static bool inline isTerminatingChar(char c);
 	static FFJSON* returnNameIfDeclared(std::vector<string>& prop, FFJSONPObj* fpo);
+	static FFJSON* returnNameIfDeclared(std::vector<string>& prop, FFJSON::FFJSONPrettyPrintPObj * fpo);
 	FFJSON* markTheNameIfExtended(FFJSONPrettyPrintPObj* fpo);
 	bool inherit(FFJSON& obj);
 };
