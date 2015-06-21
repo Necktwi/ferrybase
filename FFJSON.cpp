@@ -95,6 +95,8 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf, FFJSONPObj* pObj) {
 	setType(orig.getType());
 	size = orig.size;
 	setType(orig.getType());
+	m_uFM.link = NULL;
+	val.number = 0;
 	if (isType(NUMBER)) {
 		val.number = orig.val.number;
 	} else if (isType(STRING)) {
@@ -102,7 +104,7 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf, FFJSONPObj* pObj) {
 		memcpy(val.string, orig.val.string, orig.size);
 		val.string[orig.size] = '\0';
 		size = orig.size;
-		if (cf == COPY_EFLAGS) {
+		if (cf & COPY_EFLAGS) {
 			setEFlag(orig.getEFlags());
 		}
 	} else if (isType(XML)) {
@@ -110,7 +112,7 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf, FFJSONPObj* pObj) {
 		memcpy(val.string, orig.val.string, orig.size);
 		val.string[orig.size] = '\0';
 		size = orig.size;
-		if (cf == COPY_EFLAGS) {
+		if (cf & COPY_EFLAGS) {
 			setEFlag(orig.getEFlags());
 		}
 	} else if (isType(BOOL)) {
@@ -194,18 +196,33 @@ void FFJSON::copy(const FFJSON& orig, COPY_FLAGS cf, FFJSONPObj* pObj) {
 		setType(UNDEFINED);
 		val.boolean = false;
 	}
-	if (isEFlagSet(EXTENDED)) {
-		vector<string>* parentLn = new vector<string>(
-				*orig.getFeaturedMember(FM_PARENT).m_pParent->getFeaturedMember(FM_LINK).link);
-		FFJSON* parent = returnNameIfDeclared(*parentLn, pObj);
+	if (orig.isEFlagSet(EXTENDED)) {
+		FFJSON* pOrigParent = orig.getFeaturedMember(FM_PARENT).m_pParent;
+		setEFlag(EXTENDED);
 		FeaturedMember fm;
-		fm.m_pParent = parent;
+		fm.m_pParent = new FFJSON(*pOrigParent, COPY_ALL, pObj);
 		insertFeaturedMember(fm, FM_PARENT);
-		if (isEFlagSet(EXT_VIA_PARENT)) {
-			map<string, int>* pTabHead = new map<string, int>(*orig.getFeaturedMember(FM_TABHEAD).tabHead);
+		if (orig.isEFlagSet(EXT_VIA_PARENT)) {
+			map<string, int>* pOrigTabHead = orig.getFeaturedMember(FM_TABHEAD).tabHead;
+			map<string, int>* pTabHead = new map<string, int>(*pOrigTabHead);
+			setEFlag(EXT_VIA_PARENT);
 			FeaturedMember fm;
 			fm.tabHead = pTabHead;
 			insertFeaturedMember(fm, FM_TABHEAD);
+			if (isType(ARRAY)) {
+				std::vector<FFJSON*>& vElems = *val.array;
+				for (int i = 0; i < size; i++) {
+					vElems[i]->setEFlag(EXT_VIA_PARENT);
+					vElems[i]->insertFeaturedMember(fm, FM_TABHEAD);
+				}
+			} else if (isType(OBJECT)) {
+				std::map<string, FFJSON*>::iterator itPairs = val.pairs->begin();
+				while (itPairs != val.pairs->end()) {
+					itPairs->second->setEFlag(EXT_VIA_PARENT);
+					itPairs->second->insertFeaturedMember(fm, FM_TABHEAD);
+					itPairs++;
+				}
+			}
 		}
 	}
 }
@@ -1636,7 +1653,7 @@ FFJSON& FFJSON::operator=(const int& i) {
 FFJSON& FFJSON::operator=(const FFJSON& f) {
 
 	freeObj();
-	copy(f);
+	copy(f, COPY_ALL);
 }
 
 FFJSON& FFJSON::operator=(FFJSON * f) {
@@ -2008,7 +2025,7 @@ bool FFJSON::isEFlagSet(E_FLAGS t) const {
 //}
 
 FFJSON::E_FLAGS FFJSON::getEFlags() const {
-	return (E_FLAGS) (flags & 0xffff0000);
+	return (E_FLAGS) (flags & 0x0fff0000);
 }
 
 //void FFJSON::setEFlag(int t) {

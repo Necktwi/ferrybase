@@ -75,7 +75,8 @@ public:
 	enum COPY_FLAGS : uint32_t {
 		COPY_NONE = 0,
 		COPY_QUERIES = 1 << 0,
-		COPY_EFLAGS = 1 << 1
+		COPY_EFLAGS = 1 << 1,
+		COPY_ALL = 0xffffffff
 	};
 
 	static const char OBJ_STR[8][15];
@@ -181,7 +182,7 @@ public:
 	 * Copy constructor. Creates a copy of FFJSON object
 	 * @param orig is the object one wants to create a copy
 	 */
-	FFJSON(const FFJSON& orig, COPY_FLAGS cf = COPY_NONE, FFJSONPObj* pObj = NULL);
+	FFJSON(const FFJSON& orig, COPY_FLAGS cf = COPY_ALL, FFJSONPObj* pObj = NULL);
 
 	/**
 	 * Creates a FFJSON object from a FFJSON string.

@@ -1,10 +1,8 @@
 {
-	Subjects: [				
-							"Maths",	"Physics"
-		],
-	Marks: [
-			[				20,			50],
-			[				30,			60]
+	Subjects:	[			"Maths",	"Physics"],
+	Marks:		[
+					[		20,			50],
+					[		30,			60]
 	]|[Subjects],
 	School: {
 		Class1: {
