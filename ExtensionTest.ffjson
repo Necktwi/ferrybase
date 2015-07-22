@@ -1,8 +1,8 @@
 {
-	Subjects:	[			"Maths",	"Physics"],
-	Marks:		[
-					[		20,			50],
-					[		30,			60]
+	Subjects: [				"Maths",	"Physics"],
+	Marks: [
+		[					20,			50],
+		[					30,			60]
 	]|[Subjects],
 	School: {
 		Class1: {
@@ -14,10 +14,14 @@
 		Class2: {
 			StudentsMarks: {
 				Sasi:	[	40,			50],
-				Siva:	[	60,			70]
+				Siva:	[	60,			7000000000000]
 			}|{*:Subjects}
 		}
 	},
 	info: "Testing Extension feature",
-	Students: [	"Satya Gowtham Kudupudi",	"Satish Kumar Kottali",	"Sasidhar Gulipalli"]
+	Students: [	"Satya Gowtham Kudupudi",	"Satish Kumar Kottali",	"Sasidhar Gulipalli"],
+	Dom: {xpos: 12, ypos: 13, width: 14,
+		head: {
+		}
+	}
 }
