@@ -107,9 +107,6 @@
           <commandlineTool>gcc</commandlineTool>
           <incDir>
             <pElem>.</pElem>
-            <pElem>.</pElem>
-            <pElem>.</pElem>
-            <pElem>.</pElem>
           </incDir>
           <commandLine>-O0</commandLine>
         </cTool>
@@ -119,9 +116,6 @@
           <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>/usr/include/libxml2</pElem>
-            <pElem>.</pElem>
-            <pElem>.</pElem>
-            <pElem>.</pElem>
             <pElem>.</pElem>
           </incDir>
           <commandLine>-g -O0</commandLine>

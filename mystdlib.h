@@ -13,8 +13,8 @@
 #include <list>
 #include <map>
 
-#ifdef __APPLE__
-#ifdef __MACH__
+#if defined(__APPLE__) || defined(__CYGWIN__)
+#if defined(__MACH__) || defined(__CYGWIN__)
 typedef mode_t __mode_t;
 #endif
 #endif

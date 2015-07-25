@@ -7,7 +7,11 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
+#ifdef __CYGWIN__
+#include <pthread.h>
+#else
 #include <sys/syscall.h>
+#endif
 #include <stdlib.h>
 
 /**
@@ -113,7 +117,13 @@ int _ff_log(_ff_log_type t, unsigned int l, const char* func, const char* file_n
     for (n = 0; n < FFLT_COUNT; n++)
         if (t == (1 << n)) {
             //now = time_in_microseconds() / 100;
-            sprintf(buf2, "[%s %s %05d %s:%s:%d]: ", (const char*) getuTime().c_str(), log_type_names[n], syscall(SYS_gettid), func, file_name, line_no);
+            sprintf(buf2, "[%s %s %05d %s:%s:%d]: ", (const char*) getuTime().c_str(), log_type_names[n],
+#ifdef __CYGWIN__
+					pthread_self(),
+#else
+					syscall(SYS_gettid),
+#endif
+					func, file_name, line_no);
             break;
         }
 

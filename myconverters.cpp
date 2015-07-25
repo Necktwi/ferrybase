@@ -5,6 +5,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<iostream>
+#include<stdio.h>
 
 using namespace std;
 
@@ -185,3 +186,24 @@ void str_cstrlit(const char *str, char *buffer, size_t buflen) {
 		buflen -= len;
 	}
 }
+
+#ifdef __CYGWIN__
+    template < typename T > std::string to_string( const T& n )
+    {
+        std::ostringstream stm ;
+        stm << n ;
+        return stm.str() ;
+    }
+    int stoi(const string& s, size_t* t){
+		char* pEndPtr = NULL;
+		int iResult = (int)strtol(s.c_str(), &pEndPtr,10);
+		(*t) = pEndPtr-s.c_str();
+	    return iResult;
+    }
+	double stod(const string& s, size_t* t){
+		char* pEndPtr = NULL;
+		double iResult = (double)strtol(s.c_str(), &pEndPtr,10);
+		if(t)(*t) = pEndPtr-s.c_str();
+	    return iResult;
+	}
+#endif

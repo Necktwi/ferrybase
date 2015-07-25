@@ -17,11 +17,11 @@ using namespace std;
 
 std::string itoa(int i, int size = 0);
 std::string implode(const std::string glue,
-	const std::vector<std::string> &pieces);
+		const std::vector<std::string> &pieces);
 std::vector<std::string> explode(const std::string delimiter,
-	const std::string &str);
+		const std::string &str);
 void explode(const std::string delimiter, const std::string &str,
-	std::vector<std::string>& shrapnel);
+		std::vector<std::string>& shrapnel);
 float timeToSec(std::string timestring);
 std::string tolower(std::string s);
 void str_cstrlit(const char *str, char *buffer, size_t buflen);
@@ -51,6 +51,11 @@ public:
 	std::vector<splitstring>& split(char delim, char dum, int rep = 1);
 };
 
+#ifdef __CYGWIN__
+template < typename T > std::string to_string(const T& n);
+int stoi(const string& s, size_t* t = NULL);
+double stod(const string& s, size_t* t = NULL);
+#endif
 
 #endif	/* MYCONVERTERS_H */
 

@@ -16,7 +16,9 @@
 #include <sys/stat.h> 
 #include <ftw.h>
 #include <unistd.h>
+#ifdef linux
 #include <sys/prctl.h>
+#endif
 #include <signal.h>
 #include <vector>
 #include <wait.h>
@@ -162,7 +164,12 @@ spawn::spawn(std::string command, bool daemon, void (*onStopHandler)(spawn*), bo
 			}
 			int fi;
 			if (!freeChild) {
+#ifdef linux
 				prctl(PR_SET_PDEATHSIG, SIGHUP);
+#elif _WIN32			
+#elif __APPLE__
+#elif __CYGWIN__
+#endif
 			}
 			dup2(this->cpstdinp[0], 0);
 			close(this->cpstdinp[1]);
@@ -389,16 +396,23 @@ std::string inputPass() {
 
 std::string getStdoutFromCommand(std::string cmd) {
 	std::string data;
-	FILE * stream;
+	FILE * stream = NULL;
 	const int max_buffer = 256;
 	char buffer[max_buffer];
 	cmd.append(" 2>&1"); // Do we want STDERR?
-
+#ifdef linux
 	stream = popen(cmd.c_str(), "r");
+#elif _WIN32
+#elif __APPLE__
+#endif
 	if (stream) {
 		while (!feof(stream))
 			if (fgets(buffer, max_buffer, stream) != NULL) data.append(buffer);
+#ifdef linux
 		pclose(stream);
+#elif _WIN32
+#elif __APPLE__
+#endif
 	}
 	return data;
 }
