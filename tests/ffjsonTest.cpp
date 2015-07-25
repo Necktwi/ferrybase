@@ -208,12 +208,13 @@ void test5() {
 			<< endl;
 	FFJSON f2(f.prettyString());
 	cout << f2.prettyString() << endl;
-	
+
 	FFJSON f3(f2);
 	cout << "f3 StudentsMarks['Gowtham']['Maths']: "
 			<< f3["School"]["Class1"]["StudentsMarks"]["Gowtham"]["Maths"].prettyString()
 			<< endl;
-	
+	FFJSON f4(f2.stringify());
+	cout << f4.stringify() << endl;
 }
 
 int main(int argc, char** argv) {

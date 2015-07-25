@@ -40,5 +40,9 @@
 	],
 
 	info: "Testing Extension feature",
-	Students: [	"Satya Gowtham Kudupudi",	"Satish Kumar Kottali",	"Sasidhar Gulipalli"]
+	Students: [	"Satya Gowtham Kudupudi",	"Satish Kumar Kottali",	"Sasidhar Gulipalli"],
+	Dom: {xpos: 12, ypos: 13, width: 14,
+		head: {
+		}
+	}
 }

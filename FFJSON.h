@@ -69,6 +69,7 @@ public:
 		COMMENT = 1 << 19,
 		HAS_COMMENT = 1 << 20,
 		EXTENDED = 1 << 21,
+		PRECISION = 1 << 22,
 		EXT_VIA_PARENT = 1 << 22
 	};
 
@@ -112,9 +113,10 @@ public:
 	};
 
 	enum FeaturedMemType : uint32_t {
-		FM_TABHEAD,
-		FM_LINK,
-		FM_PARENT
+		FM_TABHEAD = 1,
+		FM_PRECISION = 1,
+		FM_LINK = 2,
+		FM_PARENT = 3
 	};
 
 	static const FeaturedMemType m_FM_LAST = FM_PARENT;
@@ -125,6 +127,7 @@ public:
 		std::vector<string>* link;
 		std::map<string, int>* tabHead;
 		FFJSON* m_pParent;
+		unsigned int precision;
 		FeaturedMemHook* m_pFMH;
 	};
 
@@ -168,7 +171,6 @@ public:
 		std::list<string>* m_lsFFPairLst = NULL;
 		std::map<string*, const string*>* m_mpMemKeyFFPairMap = NULL;
 		std::map<const string*, std::list<string>::iterator>* m_pKeyPrettyStringItMap = NULL;
-		FFJSONPrettyPrintPObj* pObj = NULL;
 	};
 
 	/**
@@ -371,7 +373,6 @@ private:
 	static bool inline isWhiteSpace(char c);
 	static bool inline isTerminatingChar(char c);
 	static FFJSON* returnNameIfDeclared(std::vector<string>& prop, FFJSONPObj* fpo);
-	static FFJSON* returnNameIfDeclared(std::vector<string>& prop, FFJSON::FFJSONPrettyPrintPObj * fpo);
 	FFJSON* markTheNameIfExtended(FFJSONPrettyPrintPObj* fpo);
 	bool inherit(FFJSON& obj);
 };
