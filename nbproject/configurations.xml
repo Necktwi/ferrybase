@@ -35,19 +35,25 @@
     </logicalFolder>
     <logicalFolder name="nbproject" displayName="nbproject" projectFiles="true">
       <logicalFolder name="private" displayName="private" projectFiles="true">
-        <itemPath>/home/gowtham/Projects/base/nbproject/private/Makefile-variables.mk</itemPath>
-        <itemPath>/home/gowtham/Projects/base/nbproject/private/configurations.xml</itemPath>
-        <itemPath>/home/gowtham/Projects/base/nbproject/private/launcher.properties</itemPath>
-        <itemPath>/home/gowtham/Projects/base/nbproject/private/private.xml</itemPath>
+        <itemPath>nbproject/private/Makefile-variables.mk</itemPath>
+        <itemPath>nbproject/private/configurations.xml</itemPath>
+        <itemPath>nbproject/private/downloads-crunchbang-gowtham-22</itemPath>
+        <itemPath>nbproject/private/downloads-newmek7.newmeksolutions.com-gowtham-22</itemPath>
+        <itemPath>nbproject/private/launcher.properties</itemPath>
+        <itemPath>nbproject/private/private.xml</itemPath>
+        <itemPath>nbproject/private/timestamps-crunchbang-gowtham-22</itemPath>
+        <itemPath>nbproject/private/timestamps-newmek7.newmeksolutions.com-gowtham-22</itemPath>
       </logicalFolder>
-      <itemPath>/home/gowtham/Projects/base/nbproject/Makefile-DebugDynamic.mk</itemPath>
-      <itemPath>/home/gowtham/Projects/base/nbproject/Makefile-DebugStatic.mk</itemPath>
-      <itemPath>/home/gowtham/Projects/base/nbproject/Makefile-impl.mk</itemPath>
-      <itemPath>/home/gowtham/Projects/base/nbproject/Makefile-variables.mk</itemPath>
-      <itemPath>/home/gowtham/Projects/base/nbproject/Package-DebugDynamic.bash</itemPath>
-      <itemPath>/home/gowtham/Projects/base/nbproject/Package-DebugStatic.bash</itemPath>
-      <itemPath>/home/gowtham/Projects/base/nbproject/configurations.xml</itemPath>
-      <itemPath>/home/gowtham/Projects/base/nbproject/project.xml</itemPath>
+      <itemPath>nbproject/Makefile-DebugDynamic.mk</itemPath>
+      <itemPath>nbproject/Makefile-DebugStatic.mk</itemPath>
+      <itemPath>nbproject/Makefile-armhfDebugDynamic.mk</itemPath>
+      <itemPath>nbproject/Makefile-impl.mk</itemPath>
+      <itemPath>nbproject/Makefile-variables.mk</itemPath>
+      <itemPath>nbproject/Package-DebugDynamic.bash</itemPath>
+      <itemPath>nbproject/Package-DebugStatic.bash</itemPath>
+      <itemPath>nbproject/Package-armhfDebugDynamic.bash</itemPath>
+      <itemPath>nbproject/configurations.xml</itemPath>
+      <itemPath>nbproject/project.xml</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -91,8 +97,8 @@
     <itemPath>sample.ffjson</itemPath>
   </logicalFolder>
   <sourceRootList>
-    <Elem>../../Projects/base/nbproject</Elem>
     <Elem>debian</Elem>
+    <Elem>nbproject</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -166,66 +172,6 @@
           <packInfoListElem name="Description" value="..." mandatory="false"/>
         </packInfoList>
       </packaging>
-      <item path="/home/gowtham/Projects/base/nbproject/Makefile-DebugDynamic.mk"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/Makefile-DebugStatic.mk"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/Makefile-impl.mk"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/Makefile-variables.mk"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/Package-DebugDynamic.bash"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/Package-DebugStatic.bash"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/configurations.xml"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/Makefile-variables.mk"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/configurations.xml"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/launcher.properties"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/private.xml"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/project.xml"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="ClientSocket.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ClientSocket.h" ex="false" tool="3" flavor2="0">
@@ -305,6 +251,72 @@
       </item>
       <item path="myxml.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="nbproject/Makefile-DebugDynamic.mk" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Makefile-DebugStatic.mk" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Makefile-armhfDebugDynamic.mk"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/Makefile-impl.mk" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Makefile-variables.mk" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Package-DebugDynamic.bash"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/Package-DebugStatic.bash" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Package-armhfDebugDynamic.bash"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/configurations.xml" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/private/Makefile-variables.mk"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/configurations.xml"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/downloads-crunchbang-gowtham-22"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/downloads-newmek7.newmeksolutions.com-gowtham-22"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/launcher.properties"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/private.xml" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/private/timestamps-crunchbang-gowtham-22"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/timestamps-newmek7.newmeksolutions.com-gowtham-22"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/project.xml" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="sample.ffjson" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tests/ffjsonTest.cpp" ex="false" tool="1" flavor2="0">
@@ -348,66 +360,6 @@
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.a</output>
         </archiverTool>
       </compileType>
-      <item path="/home/gowtham/Projects/base/nbproject/Makefile-DebugDynamic.mk"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/Makefile-DebugStatic.mk"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/Makefile-impl.mk"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/Makefile-variables.mk"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/Package-DebugDynamic.bash"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/Package-DebugStatic.bash"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/configurations.xml"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/Makefile-variables.mk"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/configurations.xml"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/launcher.properties"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/private.xml"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/project.xml"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="ClientSocket.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="ClientSocket.h" ex="false" tool="3" flavor2="0">
@@ -498,6 +450,72 @@
       <item path="myxml.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="myxml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Makefile-DebugDynamic.mk" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Makefile-DebugStatic.mk" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Makefile-armhfDebugDynamic.mk"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/Makefile-impl.mk" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Makefile-variables.mk" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Package-DebugDynamic.bash"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/Package-DebugStatic.bash" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Package-armhfDebugDynamic.bash"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/configurations.xml" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/private/Makefile-variables.mk"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/configurations.xml"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/downloads-crunchbang-gowtham-22"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/downloads-newmek7.newmeksolutions.com-gowtham-22"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/launcher.properties"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/private.xml" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/private/timestamps-crunchbang-gowtham-22"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/timestamps-newmek7.newmeksolutions.com-gowtham-22"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/project.xml" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sample.ffjson" ex="false" tool="3" flavor2="0">
       </item>
@@ -577,66 +595,6 @@
           <packInfoListElem name="Description" value="..." mandatory="false"/>
         </packInfoList>
       </packaging>
-      <item path="/home/gowtham/Projects/base/nbproject/Makefile-DebugDynamic.mk"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/Makefile-DebugStatic.mk"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/Makefile-impl.mk"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/Makefile-variables.mk"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/Package-DebugDynamic.bash"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/Package-DebugStatic.bash"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/configurations.xml"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/Makefile-variables.mk"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/configurations.xml"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/launcher.properties"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/private/private.xml"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/gowtham/Projects/base/nbproject/project.xml"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="ClientSocket.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="ClientSocket.h" ex="false" tool="3" flavor2="0">
@@ -727,6 +685,72 @@
       <item path="myxml.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="myxml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Makefile-DebugDynamic.mk" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Makefile-DebugStatic.mk" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Makefile-armhfDebugDynamic.mk"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/Makefile-impl.mk" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Makefile-variables.mk" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Package-DebugDynamic.bash"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/Package-DebugStatic.bash" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/Package-armhfDebugDynamic.bash"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/configurations.xml" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/private/Makefile-variables.mk"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/configurations.xml"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/downloads-crunchbang-gowtham-22"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/downloads-newmek7.newmeksolutions.com-gowtham-22"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/launcher.properties"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/private.xml" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="nbproject/private/timestamps-crunchbang-gowtham-22"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/private/timestamps-newmek7.newmeksolutions.com-gowtham-22"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="nbproject/project.xml" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sample.ffjson" ex="false" tool="3" flavor2="0">
       </item>
