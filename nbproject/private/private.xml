@@ -7,20 +7,30 @@
         <activeConfTypeElem>2</activeConfTypeElem>
         <activeConfIndexElem>0</activeConfIndexElem>
     </data>
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>FFJSON.cpp</url>
+            <bookmark id="1">
+                <name/>
+                <line>202</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/gowtham/NetBeansProjects/base/FFJSON.cpp</file>
-            <file>file:/Users/gowtham/NetBeansProjects/base/FFJSON.h</file>
-            <file>file:/Users/gowtham/NetBeansProjects/base/ClientSocket.cpp</file>
-            <file>file:/Users/gowtham/NetBeansProjects/base/mystdlib.h</file>
-            <file>file:/Users/gowtham/NetBeansProjects/base/JPEGImage.cpp</file>
-            <file>file:/Users/gowtham/NetBeansProjects/base/tests/ListInsertTest.cpp</file>
-            <file>file:/Users/gowtham/NetBeansProjects/base/tests/ffjsonTest.cpp</file>
-            <file>file:/Users/gowtham/NetBeansProjects/base/sample.ffjson</file>
-            <file>file:/Users/gowtham/NetBeansProjects/base/example.json</file>
-            <file>file:/Users/gowtham/NetBeansProjects/base/base.pc</file>
-            <file>file:/Users/gowtham/NetBeansProjects/base/ExtensionTest.ffjson</file>
+            <file>file:nbproject/configurations.xml</file>
+            <file>file:.gitignore</file>
+            <file>file:base.pc</file>
+            <file>file:sample.ffjson</file>
+            <file>file:FFJSON.cpp</file>
+            <file>file:example.json</file>
+            <file>file:FFJSON.h</file>
+            <file>file:nbproject/private/configurations.xml</file>
+            <file>file:tests/ffjsonTest.cpp</file>
+            <file>file:ExtensionTest.ffjson</file>
+            <file>file:nbproject/project.xml</file>
+            <file>file:nbproject/private/private.xml</file>
         </group>
     </open-files>
 </project-private>
