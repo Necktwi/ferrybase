@@ -19,18 +19,18 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:nbproject/configurations.xml</file>
-            <file>file:.gitignore</file>
-            <file>file:base.pc</file>
-            <file>file:sample.ffjson</file>
-            <file>file:FFJSON.cpp</file>
-            <file>file:example.json</file>
-            <file>file:FFJSON.h</file>
-            <file>file:nbproject/private/configurations.xml</file>
-            <file>file:tests/ffjsonTest.cpp</file>
-            <file>file:ExtensionTest.ffjson</file>
-            <file>file:nbproject/project.xml</file>
-            <file>file:nbproject/private/private.xml</file>
+            <file>nbproject/configurations.xml</file>
+            <file>.gitignore</file>
+            <file>base.pc</file>
+            <file>sample.ffjson</file>
+            <file>FFJSON.cpp</file>
+            <file>example.json</file>
+            <file>FFJSON.h</file>
+            <file>nbproject/private/configurations.xml</file>
+            <file>tests/ffjsonTest.cpp</file>
+            <file>ExtensionTest.ffjson</file>
+            <file>nbproject/project.xml</file>
+            <file>nbproject/private/private.xml</file>
         </group>
     </open-files>
 </project-private>
