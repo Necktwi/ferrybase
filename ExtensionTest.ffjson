@@ -1,27 +1,51 @@
 {
-	Subjects: [				"Maths",	"Physics"],
-	Marks: [
-		[					20,			50],
-		[					30,			60]
+	Subjects:			["Maths",	"Physics"],
+	Marks:	[
+					[20,		50],
+					[30,		60]
 	]|[Subjects],
 	School: {
 		Class1: {
 			StudentsMarks: {
-				Gowtham:[	20,			50],
-				Satish:	[	30,			60]
+				Gowtham:[20,		50],
+				Satish:	[30,		60]
 			}|{*:Subjects}
 		},
 		Class2: {
 			StudentsMarks: {
-				Sasi:	[	40,			50],
-				Siva:	[	60,			7000000000000]
+				Sasi:	[40,		50],
+				Siva:	[60,		70]
 			}|{*:Subjects}
 		}
 	},
+
+	
+	
+
+	EmployeeAttributes: 	["EmpId",	"Name",		"Address",		"Role",			"Salary"],
+	EmployeeDetails:[
+				[1,		"Gowtham",	"5-71/1, Anjini st.	"Senior Software	5.5
+								 Santhosh Nagar,	 Engineer",
+								 Kakinada.",						],
+				[2,		"Ravi",		"2-3/4,			"Software		2.8
+								 Boenpally,		 Engineer",
+								 Hyderabad.",						],
+				[3,		"Pramila",	"2-3/4,			"Senior Software	6
+								 Boenpally,		 Engineer",
+								 Hyderabad.",						],
+				[4,		"Gangadri",	"2-3/4,			"Software		4.4
+								 Boenpally,		 Engineer",
+								 Hyderabad.",						]
+
+	],
+
 	info: "Testing Extension feature",
 	Students: [	"Satya Gowtham Kudupudi",	"Satish Kumar Kottali",	"Sasidhar Gulipalli"],
-	Dom: {xpos: 12, ypos: 13, width: 14,
-		head: {
-		}
-	}
+	Dom: <html>
+		<head>
+		
+		</head>
+		<body>
+		</body>
+	</html>
 }
