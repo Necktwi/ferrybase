@@ -70,7 +70,8 @@ public:
 		HAS_COMMENT = 1 << 20,
 		EXTENDED = 1 << 21,
 		PRECISION = 1 << 22,
-		EXT_VIA_PARENT = 1 << 22
+		EXT_VIA_PARENT = 1 << 22,
+		COLUMN_WIDTH = 1 << 22
 	};
 
 	enum COPY_FLAGS : uint32_t {
@@ -155,6 +156,8 @@ public:
 		const std::string* name;
 		FFJSON* value = NULL;
 		FFJSONPObj* pObj = NULL;
+		std::list<string*>* m_pIncompleteStrLst = NULL;
+		bool m_bEndOfIncompleteStrArray = false;
 	};
 
 	struct FFJSONPrettyPrintPObj : FFJSONPObj {

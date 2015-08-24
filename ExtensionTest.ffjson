@@ -40,12 +40,5 @@
 	],
 
 	info: "Testing Extension feature",
-	Students: [	"Satya Gowtham Kudupudi",	"Satish Kumar Kottali",	"Sasidhar Gulipalli"],
-	Dom: <html>
-		<head>
-		
-		</head>
-		<body>
-		</body>
-	</html>
+	Students: [	"Satya Gowtham Kudupudi",	"Satish Kumar Kottali",		"Sasidhar Gulipalli"]
 }

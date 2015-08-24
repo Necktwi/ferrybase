@@ -337,7 +337,25 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 					}
 					size++;
 				}
-				while (ffjson[i] != ',' && ffjson[i] != ']' && i < j)i++;
+				bool bEndOfIncompleteArrayChecked = false;
+				while (ffjson[i] != ',' && ffjson[i] != ']' && i < j) {
+					while (!bEndOfIncompleteArrayChecked && ffpo.m_pIncompleteStrLst) {
+						if (!ffpo.m_bEndOfIncompleteStrArray) {
+							while (ffjson[i] == ' ' || ffjson[i] == '\t')i++;
+							if (ffjson[i] == '\n' || ffjson[i] == '\r') {
+								ffpo.m_bEndOfIncompleteStrArray = true;
+								if(ffjson[i]=='\r')i++;
+							} else {
+								bEndOfIncompleteArrayChecked = true;
+								break;
+							}
+						}
+						if(ffpo.m_bEndOfIncompleteStrArray){
+							
+						}
+					}
+					i++;
+				}
 				if (ffjson[i] == ',') {
 					i++;
 					objNail = i;
@@ -358,6 +376,7 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 			int k = 0;
 			int pi = 0;
 			char* buf = NULL;
+			bool bMultiLineTxt = false;
 			while (i < j) {
 				if ((k % 100) == 0 && (pi == 0 || i >= 100 + pi)) {
 					pi = i;
@@ -388,6 +407,14 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 					i++;
 					k++;
 				} else if (ffjson[i] == '\n') {
+					if (ffjson[i - 1] == '"')bMultiLineTxt = true;
+					if (!bMultiLineTxt) {
+						if (!pObj->m_pIncompleteStrLst)pObj->m_pIncompleteStrLst =
+								new std::list<string*>();
+						pObj->m_pIncompleteStrLst->push_back(pObj->name);
+						pObj->m_bEndOfIncompleteStrArray = true;
+						break;
+					}
 					int ind = ++i;
 					while (ffjson[ind] == '\t' && (ind - i) < nind) {
 						ind++;
@@ -403,6 +430,7 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 						k++;
 					}
 				} else if (ffjson[i] == '\r' && ffjson[i + 1] == '\n') {
+					if (ffjson[i - 1] == '"')bMultiLineTxt = true;
 					i++;
 					int ind = ++i;
 					while (ffjson[ind] == '\t' && (ind - i) < nind) {
@@ -418,6 +446,11 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 						buf[k] = '\n';
 						k++;
 					}
+				} else if (ffjson[i] == '\t') {
+					if (!pObj->m_pIncompleteStrLst)pObj->m_pIncompleteStrLst =
+							new std::list<string*>();
+					pObj->m_pIncompleteStrLst->push_back(pObj->name);
+					break;
 				} else if (ffjson[i] == '"' && nind == indent) {
 					i++;
 					break;
@@ -955,7 +988,7 @@ FFJSON* FFJSON::markTheNameIfExtended(FFJSONPrettyPrintPObj* fpo) {
 					}
 					j++;
 				}
-				fpo = (FFJSONPrettyPrintPObj*)fpo->pObj;
+				fpo = (FFJSONPrettyPrintPObj*) fpo->pObj;
 				if (fpo != NULL) {
 					pChildRootKey = fpo->name;
 				}
@@ -1334,7 +1367,7 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 	} else if (isType(OBJ_TYPE::NUMBER)) {
 		if (isEFlagSet(PRECISION)) {
 			return (to_string(val.number)).erase(getFeaturedMember(FM_PRECISION).precision);
-		}else{
+		} else {
 			return to_string(val.number);
 		}
 	} else if (isType(OBJ_TYPE::XML)) {
@@ -1445,7 +1478,11 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 		ps.append("}");
 	} else if (isType(OBJ_TYPE::ARRAY)) {
 		vector<FFJSON*>& objarr = *(val.array);
-		ps = "[\n";
+		if (isEFlagSet(EXT_VIA_PARENT)) {
+			ps = "[";
+		} else {
+			ps = "[\n";
+		}
 		int i = 0;
 		FFJSONPrettyPrintPObj lfpo(NULL, NULL, NULL, NULL);
 		lfpo.pObj = pObj;
@@ -1469,12 +1506,21 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 				} else {
 					ps.append(",\n");
 				}*/
-				ps.append(",\n");
+				if (isEFlagSet(EXT_VIA_PARENT)) {
+					ps.append(",\t");
+				} else {
+					ps.append(",\n");
+				}
 			} else {
-				ps.append("\n");
+				if (isEFlagSet(EXT_VIA_PARENT) && isEFlagSet(EXTENDED)) {
+					ps.append("\n");
+				}
 			}
 		}
-		ps.append(indent, '\t');
+		if (isEFlagSet(EXT_VIA_PARENT)) {
+		} else {
+			ps.append(indent, '\t');
+		}
 		ps.append("]");
 	} else if (isType(LINK)) {
 		vector<string>* vtProp = getFeaturedMember(FM_LINK).link;
