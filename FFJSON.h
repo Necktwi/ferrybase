@@ -130,6 +130,10 @@ public:
 		FFJSON* m_pParent;
 		unsigned int precision;
 		FeaturedMemHook* m_pFMH;
+		/**
+		 * used for multiline buffer while parsing
+		 */
+		string* m_sMultiLnBuffer = NULL;
 	};
 
 	struct FeaturedMemHook {
@@ -156,8 +160,6 @@ public:
 		const std::string* name;
 		FFJSON* value = NULL;
 		FFJSONPObj* pObj = NULL;
-		std::list<string*>* m_pIncompleteStrLst = NULL;
-		bool m_bEndOfIncompleteStrArray = false;
 	};
 
 	struct FFJSONPrettyPrintPObj : FFJSONPObj {
@@ -378,6 +380,7 @@ private:
 	static FFJSON* returnNameIfDeclared(std::vector<string>& prop, FFJSONPObj* fpo);
 	FFJSON* markTheNameIfExtended(FFJSONPrettyPrintPObj* fpo);
 	bool inherit(FFJSON& obj);
+	void ReadMultiLinesInContainers(const string& ffjson, int& i,FFJSONPObj& pObj);
 };
 
 #endif	/* FFJSON_H */

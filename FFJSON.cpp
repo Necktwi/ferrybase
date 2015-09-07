@@ -344,14 +344,14 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 							while (ffjson[i] == ' ' || ffjson[i] == '\t')i++;
 							if (ffjson[i] == '\n' || ffjson[i] == '\r') {
 								ffpo.m_bEndOfIncompleteStrArray = true;
-								if(ffjson[i]=='\r')i++;
+								if (ffjson[i] == '\r')i++;
 							} else {
 								bEndOfIncompleteArrayChecked = true;
 								break;
 							}
 						}
-						if(ffpo.m_bEndOfIncompleteStrArray){
-							
+						if (ffpo.m_bEndOfIncompleteStrArray) {
+
 						}
 					}
 					i++;
@@ -409,10 +409,8 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 				} else if (ffjson[i] == '\n') {
 					if (ffjson[i - 1] == '"')bMultiLineTxt = true;
 					if (!bMultiLineTxt) {
-						if (!pObj->m_pIncompleteStrLst)pObj->m_pIncompleteStrLst =
-								new std::list<string*>();
-						pObj->m_pIncompleteStrLst->push_back(pObj->name);
-						pObj->m_bEndOfIncompleteStrArray = true;
+						buf[k + 1] = '\0';
+						this->m_uFM.m_sMultiLnBuffer = new string(buf);
 						break;
 					}
 					int ind = ++i;
@@ -431,6 +429,11 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 					}
 				} else if (ffjson[i] == '\r' && ffjson[i + 1] == '\n') {
 					if (ffjson[i - 1] == '"')bMultiLineTxt = true;
+					if (!bMultiLineTxt) {
+						buf[k + 1] = '\0';
+						this->m_uFM.m_sMultiLnBuffer = new string(buf);
+						break;
+					}
 					i++;
 					int ind = ++i;
 					while (ffjson[ind] == '\t' && (ind - i) < nind) {
@@ -447,9 +450,7 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 						k++;
 					}
 				} else if (ffjson[i] == '\t') {
-					if (!pObj->m_pIncompleteStrLst)pObj->m_pIncompleteStrLst =
-							new std::list<string*>();
-					pObj->m_pIncompleteStrLst->push_back(pObj->name);
+					this->m_uFM.m_bMultiLnStrCont = true;
 					break;
 				} else if (ffjson[i] == '"' && nind == indent) {
 					i++;
@@ -690,6 +691,61 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 		}
 	}
 	if (ci != NULL)*ci = i;
+}
+
+void FFJSON::ReadMultiLinesInContainers(const string& ffjson, int& i, FFJSONPObj& pObj) {
+	if (ffjson[i] == '\n') {
+		int iI = 0;
+		int iArrSize = pObj->value->val.array->size();
+		while (iI < iArrSize) {
+			while (iI < iArrSize && (*pObj->value->val.array)[iI]->m_uFM.m_sMultiLnBuffer == NULL) {
+				iI++;
+			}
+			string& sTemp = *(*pObj->value->val.array)[iI]->m_uFM.m_sMultiLnBuffer;
+			while (isWhiteSpace(ffjson[i]))i++;
+			bool bBreak = false;
+			while (!bBreak) {
+				switch (ffjson[i]) {
+					case '\\':
+						i++;
+						switch (ffjson[i]) {
+							case 'n':
+								sTemp += '\n';
+								break;
+							case 'r':
+								sTemp += '\r';
+								break;
+							case 't':
+								sTemp += '\t';
+								break;
+							case '\\':
+								sTemp += '\\';
+								break;
+							default:
+								sTemp += ffjson[i];
+								break;
+						}
+						i++;
+					case '\t':
+					case '\r':
+						i++;
+					case '\n':
+						iI++;
+						bBreak = true;
+						break;
+					case '"':
+						free((*pObj->value->val.array)[iI]->val.string);
+						*(*pObj->value->val.array)[iI] = sTemp;
+						delete &sTemp;
+						break;
+					default:
+						sTemp += ffjson[i];
+						break;
+				}
+				i++;
+			}
+		}
+	}
 }
 
 void FFJSON::setFMCount(uint32_t iFMCount) {
