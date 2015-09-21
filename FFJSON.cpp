@@ -320,10 +320,11 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 			FFJSONPObj ffpo;
 			ffpo.value = this;
 			ffpo.pObj = pObj;
+			FFJSON* obj = NULL;
 			while (i < j) {
 				string index = to_string(val.array->size());
 				ffpo.name = &index;
-				FFJSON* obj = new FFJSON(ffjson, &i, nind, &ffpo);
+				obj = new FFJSON(ffjson, &i, nind, &ffpo);
 				if (obj->isType(NUL) && ffjson[i] == ']' && size == 0) {
 					delete obj;
 					obj = NULL;
@@ -337,26 +338,16 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 					}
 					size++;
 				}
-				bool bEndOfIncompleteArrayChecked = false;
-				while (ffjson[i] != ',' && ffjson[i] != ']' && i < j) {
-					while (!bEndOfIncompleteArrayChecked && ffpo.m_pIncompleteStrLst) {
-						if (!ffpo.m_bEndOfIncompleteStrArray) {
-							while (ffjson[i] == ' ' || ffjson[i] == '\t')i++;
-							if (ffjson[i] == '\n' || ffjson[i] == '\r') {
-								ffpo.m_bEndOfIncompleteStrArray = true;
-								if (ffjson[i] == '\r')i++;
-							} else {
-								bEndOfIncompleteArrayChecked = true;
-								break;
-							}
-						}
-						if (ffpo.m_bEndOfIncompleteStrArray) {
-
-						}
+				bool bLastObjIsMulLnStr = (obj->isType(STRING) && obj->m_uFM.m_sMultiLnBuffer && (ffjson[i] == '\t' || ffjson[i] == '\n' || ffjson[i] == '\r'));
+				if (!bLastObjIsMulLnStr) {
+					while (ffjson[i] != ',' && ffjson[i] != ']' && i < j) {
+						i++;
 					}
-					i++;
 				}
-				if (ffjson[i] == ',') {
+				if (m_uFM.m_bIsMultiLineArray && (ffjson[i] == '\n' || ffjson[i] == '\r')) {
+					ReadMultiLinesInContainers(ffjson, i, ffpo);
+				}
+				if (ffjson[i] == ',' || bLastObjIsMulLnStr) {
 					i++;
 					objNail = i;
 				} else if (ffjson[i] == ']') {
@@ -409,7 +400,9 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 				} else if (ffjson[i] == '\n') {
 					if (ffjson[i - 1] == '"')bMultiLineTxt = true;
 					if (!bMultiLineTxt) {
-						buf[k + 1] = '\0';
+						buf[k]		= '\n';
+						buf[k + 1]	= '\0';
+						pObj->value->m_uFM.m_bIsMultiLineArray = true;
 						this->m_uFM.m_sMultiLnBuffer = new string(buf);
 						break;
 					}
@@ -430,9 +423,11 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 				} else if (ffjson[i] == '\r' && ffjson[i + 1] == '\n') {
 					if (ffjson[i - 1] == '"')bMultiLineTxt = true;
 					if (!bMultiLineTxt) {
-						buf[k + 1] = '\0';
-						this->m_uFM.m_sMultiLnBuffer = new string(buf);
-						break;
+						buf[k]									= '\n';
+						buf[k + 1]								= '\0';
+						pObj->value->m_uFM.m_bIsMultiLineArray	= true;
+						this->m_uFM.m_sMultiLnBuffer			= new string(buf);
+						break; 
 					}
 					i++;
 					int ind = ++i;
@@ -450,7 +445,12 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 						k++;
 					}
 				} else if (ffjson[i] == '\t') {
-					this->m_uFM.m_bMultiLnStrCont = true;
+					if (!bMultiLineTxt) {
+						buf[k]		= '\n';
+						buf[k + 1]	= '\0';
+						pObj->value->m_uFM.m_bIsMultiLineArray = true;
+						this->m_uFM.m_sMultiLnBuffer = new string(buf);
+					}
 					break;
 				} else if (ffjson[i] == '"' && nind == indent) {
 					i++;
@@ -676,7 +676,7 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 		}
 		i++;
 	}
-	if (!isType(UNDEFINED)) {
+	if (!isType(UNDEFINED) && !(isType(STRING) && m_uFM.m_sMultiLnBuffer)) {
 		while (isWhiteSpace(ffjson[i]) && i < j) {
 			i++;
 		}
@@ -694,17 +694,21 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 }
 
 void FFJSON::ReadMultiLinesInContainers(const string& ffjson, int& i, FFJSONPObj& pObj) {
-	if (ffjson[i] == '\n') {
+	if (ffjson[i] == '\n' || ffjson[i] == '\r') {
+		if (ffjson[i] == '\r')i++;
 		int iI = 0;
-		int iArrSize = pObj->value->val.array->size();
+		int iFFJSONSize = ffjson.length();
+		int iArrSize = pObj.value->val.array->size();
 		while (iI < iArrSize) {
-			while (iI < iArrSize && (*pObj->value->val.array)[iI]->m_uFM.m_sMultiLnBuffer == NULL) {
+			while (iI < iArrSize && !((*pObj.value->val.array)[iI]->isType(STRING)
+					&& (*pObj.value->val.array)[iI]->m_uFM.m_sMultiLnBuffer != NULL)) {
 				iI++;
 			}
-			string& sTemp = *(*pObj->value->val.array)[iI]->m_uFM.m_sMultiLnBuffer;
+			if (iI == iArrSize)break;
+			string& sTemp = *(*pObj.value->val.array)[iI]->m_uFM.m_sMultiLnBuffer;
 			while (isWhiteSpace(ffjson[i]))i++;
 			bool bBreak = false;
-			while (!bBreak) {
+			while (!bBreak && i < iFFJSONSize) {
 				switch (ffjson[i]) {
 					case '\\':
 						i++;
@@ -726,16 +730,16 @@ void FFJSON::ReadMultiLinesInContainers(const string& ffjson, int& i, FFJSONPObj
 								break;
 						}
 						i++;
-					case '\t':
 					case '\r':
 						i++;
+					case '\t':
 					case '\n':
 						iI++;
 						bBreak = true;
 						break;
 					case '"':
-						free((*pObj->value->val.array)[iI]->val.string);
-						*(*pObj->value->val.array)[iI] = sTemp;
+						free((*pObj.value->val.array)[iI]->val.string);
+						*(*pObj.value->val.array)[iI] = sTemp;
 						delete &sTemp;
 						break;
 					default:

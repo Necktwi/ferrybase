@@ -9,6 +9,7 @@
 #include <iostream>
 #include "FFJSON.h"
 #include "logger.h"
+#include "mystdlib.h"
 #include <string>
 #include <fstream>
 #include <streambuf>
@@ -217,10 +218,23 @@ void test5() {
 	cout << f4.stringify() << endl;
 }
 
+void test6() {
+	cout << "===================================================" << endl;
+	cout << "			ffjsonTest test 6 (testing extensions)		" << endl;
+	cout << "===================================================" << endl;
+	FFJSON f("file://MultiLineArray.ffjson");
+	cout << f.prettyString() << endl;
+}
+
 int main(int argc, char** argv) {
 	std::cout << "%SUITE_STARTING% ffjsonTest" << std::endl;
 	std::cout << "%SUITE_STARTED%" << std::endl;
-
+	timespec tsStart = {0, 0};
+	timespec tsEnd = {0, 0};
+	timespec tsDiff = {0, 0};
+	timespec tsSuiteStart = {0, 0};
+	clock_gettime(CLOCK_REALTIME, &tsSuiteStart);
+	
 	//	std::cout << "%TEST_STARTED% test1 (ffjsonTest)" << std::endl;
 	//	test1();
 	//	std::cout << "%TEST_FINISHED% time=0 test1 (ffjsonTest)" << std::endl;
@@ -237,11 +251,30 @@ int main(int argc, char** argv) {
 	//	test4();
 	//	std::cout << "%TEST_FINISHED% time=0 test4 (ffjsonTest)" << std::endl;
 	//	
+	
 	std::cout << "%TEST_STARTED% test5 (ffjsonTest)\n" << std::endl;
+	tsStart = {0, 0};
+	clock_gettime(CLOCK_REALTIME, &tsStart);
 	test5();
-	std::cout << "%TEST_FINISHED% time=0 test5 (ffjsonTest)" << std::endl;
-
-	std::cout << "%SUITE_FINISHED% time=0" << std::endl;
+	tsEnd = {0, 0};
+	clock_gettime(CLOCK_REALTIME, &tsEnd);
+	tsDiff = UTimeDiff(tsEnd, tsStart);
+	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." << tsDiff.tv_nsec << " test5 (ffjsonTest)" << std::endl;
+	
+	std::cout << "%TEST_STARTED% test6 (ffjsonTest)\n" << std::endl;
+	tsStart = {0, 0};
+	clock_gettime(CLOCK_REALTIME, &tsStart);
+	test6();
+	tsEnd = {0, 0};
+	clock_gettime(CLOCK_REALTIME, &tsEnd);
+	tsDiff = UTimeDiff(tsEnd, tsStart);
+	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." << tsDiff.tv_nsec << " test6 (ffjsonTest)" << std::endl;
+	
+	
+	timespec tsSuiteEnd = {0, 0};
+	clock_gettime(CLOCK_REALTIME, &tsSuiteEnd);
+	tsDiff = UTimeDiff(tsSuiteEnd, tsSuiteStart);
+	std::cout << "%SUITE_FINISHED% time= " << tsDiff.tv_sec << "." << tsDiff.tv_nsec << std::endl;
 
 	return (EXIT_SUCCESS);
 }

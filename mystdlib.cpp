@@ -439,6 +439,18 @@ std::string getuTime() {
 	return std::string(buf);
 }
 
+timespec UTimeDiff(timespec& tsEnd, timespec& tsStart) {
+	timespec tsTemp;
+	if (tsEnd.tv_nsec > tsStart.tv_nsec) {
+		tsTemp.tv_nsec = tsEnd.tv_nsec - tsStart.tv_nsec;
+		tsTemp.tv_sec = tsEnd.tv_sec - tsStart.tv_sec;
+	} else {
+		tsTemp.tv_nsec = tsStart.tv_nsec - tsEnd.tv_nsec;
+		tsTemp.tv_sec = tsEnd.tv_sec - tsStart.tv_sec - 1;
+	}
+	return tsTemp;
+}
+
 std::string get_command_line(pid_t pid) {
 	FILE *f;
 	char file[256], cmdline[256] = {0};

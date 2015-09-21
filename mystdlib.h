@@ -41,6 +41,7 @@ int getIp();
 std::string GetPrimaryIp();
 std::string get_fd_contents(int fd);
 char const * sperm(__mode_t mode);
+timespec UTimeDiff(timespec& tsEnd, timespec& tsStart);
 
 /*Corrected on system time change*/
 class FerryTimeStamp {

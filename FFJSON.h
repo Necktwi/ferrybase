@@ -69,9 +69,9 @@ public:
 		COMMENT = 1 << 19,
 		HAS_COMMENT = 1 << 20,
 		EXTENDED = 1 << 21,
-		PRECISION = 1 << 22,
-		EXT_VIA_PARENT = 1 << 22,
-		COLUMN_WIDTH = 1 << 22
+		PRECISION = 1 << 22,				//NUMBER
+		EXT_VIA_PARENT = 1 << 22,			//ARRAY N OBJECT
+		COLUMN_WIDTH = 1 << 22				//STRING
 	};
 
 	enum COPY_FLAGS : uint32_t {
@@ -134,6 +134,12 @@ public:
 		 * used for multiline buffer while parsing
 		 */
 		string* m_sMultiLnBuffer = NULL;
+		
+		/**
+		 * used to mark a multi line array during init
+		 */
+		bool m_bIsMultiLineArray;
+		
 	};
 
 	struct FeaturedMemHook {
