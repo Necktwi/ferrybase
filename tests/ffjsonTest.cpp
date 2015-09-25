@@ -224,6 +224,8 @@ void test6() {
 	cout << "===================================================" << endl;
 	FFJSON f("file://MultiLineArray.ffjson");
 	cout << f.prettyString() << endl;
+	FFJSON f2(f.prettyString());
+	cout << f2.stringify() << endl;
 }
 
 int main(int argc, char** argv) {

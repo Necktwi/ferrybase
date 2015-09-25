@@ -1,4 +1,5 @@
 {
+	EmployeeAttributes:	["EmpId",	"Name",		"Address",		"Role",			"Salary"],
 	EmployeeDetails:[
 				[1,		"Gowtham",	"5-71/1, Anjini st.	"Senior Software	5.5
 								 Santhosh Nagar,	 Engineer",
