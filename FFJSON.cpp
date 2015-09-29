@@ -1559,8 +1559,26 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 		ps.append("}");
 	} else if (isType(OBJ_TYPE::ARRAY)) {
 		vector<FFJSON*>& objarr = *(val.array);
+		int iLastNwLnIndex = 0;
+		std::vector<int> vClWidths;
 		if (isEFlagSet(EXT_VIA_PARENT)) {
-			ps = "[";
+			if (isEFlagSet(EXTENDED)) {
+				ps = "[\n";
+				iLastNwLnIndex=1;
+				int iClWiIndexer=0;
+				map<string,int>& mTabHead=*getFeaturedMember(FM_TABHEAD).tabHead;
+				map<string,int>::iterator itTabHead = mTabHead.begin();
+				vClWidths.resize(mTabHead.size(),0);
+				while(itTabHead!=mTabHead.end()){
+					int iCurColWidth = itTabHead->first.size();
+					int iCurColIndex = itTabHead->second;
+					for(int i=0;i<size;i++){
+						(*val.array)[i]
+					}
+				}
+			} else {
+				ps = "[";
+			}
 		} else {
 			ps = "[\n";
 		}
@@ -1574,9 +1592,13 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 				if (isEFlagSet(B64ENCODE))objarr[i]->setEFlag(B64ENCODE);
 				if ((isEFlagSet(B64ENCODE_CHILDREN))&&!isEFlagSet(B64ENCODE_STOP))
 					objarr[i]->setEFlag(B64ENCODE_CHILDREN);
-				ps.append(indent + 1, '\t');
+				if (!(isEFlagSet(EXT_VIA_PARENT) && !isEFlagSet(EXTENDED)))
+					ps.append(indent + 1, '\t');
 				string name = to_string(i);
 				lfpo.name = &name;
+				if (objarr[i]->isType(STRING) && objarr[i]->isEFlagSet(COLUMN_WIDTH) && isEFlagSet(EXT_VIA_PARENT)) {
+					ps
+				}
 				ps.append(objarr[i]->prettyString(json, printComments, indent + 1, &lfpo));
 			} else if (t == NUL) {
 				ps.append(indent + 1, '\t');
@@ -1587,18 +1609,18 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 				} else {
 					ps.append(",\n");
 				}*/
-				if (isEFlagSet(EXT_VIA_PARENT)) {
+				if (isEFlagSet(EXT_VIA_PARENT) && !isEFlagSet(EXTENDED)) {
 					ps.append(",\t");
 				} else {
 					ps.append(",\n");
 				}
 			} else {
-				if (isEFlagSet(EXT_VIA_PARENT) && isEFlagSet(EXTENDED)) {
+				if (!(isEFlagSet(EXT_VIA_PARENT) && !isEFlagSet(EXTENDED))) {
 					ps.append("\n");
 				}
 			}
 		}
-		if (isEFlagSet(EXT_VIA_PARENT)) {
+		if (isEFlagSet(EXT_VIA_PARENT) && !isEFlagSet(EXTENDED)) {
 		} else {
 			ps.append(indent, '\t');
 		}
@@ -1742,8 +1764,18 @@ FFJSON & FFJSON::operator=(const string& s) {
 		setType(STRING);
 		size = s.length();
 		val.string = (char*) malloc(size + 1);
-		memcpy(val.string, s.c_str(),
-				size);
+		int iLastNewLnIndex = 0;
+		FeaturedMember fmWidth;
+		for (int i = 0; i < size; i++) {
+			if (s[i] == '\n') {
+				if (i - iLastNewLnIndex > fmWidth.width)fmWidth.width = i - iLastNewLnIndex;
+			}
+			val.string[i] = s[i];
+		}
+		if (fmWidth.width) {
+			setEFlag(FFJSON::COLUMN_WIDTH);
+			insertFeaturedMember(fmWidth, FM_WIDTH);
+		}
 		val.string[size] = '\0';
 	}
 }
@@ -2209,7 +2241,7 @@ bool FFJSON::inherit(FFJSON& obj) {
 				if (obj.size == 1) {
 					//only links are allowed to be inherited
 					//so parents should be declared first (:
-					if ((*obj.val.array)[0]->isType(LINK)) {
+					if ((*obj.val.array)[0] && (*obj.val.array)[0]->isType(LINK)) {
 						FFJSON& arr = obj[0];
 						m = new map<string, int>();
 						int i = arr.size;

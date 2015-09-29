@@ -116,6 +116,7 @@ public:
 	enum FeaturedMemType : uint32_t {
 		FM_TABHEAD = 1,
 		FM_PRECISION = 1,
+		FM_WIDTH = 1,
 		FM_LINK = 2,
 		FM_PARENT = 3
 	};
@@ -128,7 +129,17 @@ public:
 		std::vector<string>* link;
 		std::map<string, int>* tabHead;
 		FFJSON* m_pParent;
+		/**
+		 * used to store the number precision
+		 */
 		unsigned int precision;
+		/**
+		 * used to store the width of the string
+		 */
+		unsigned int width;
+		/**
+		 * used to link another Featured member
+		 */
 		FeaturedMemHook* m_pFMH;
 		/**
 		 * used for multiline buffer while parsing
