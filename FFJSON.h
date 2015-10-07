@@ -69,9 +69,10 @@ public:
 		COMMENT = 1 << 19,
 		HAS_COMMENT = 1 << 20,
 		EXTENDED = 1 << 21,
-		PRECISION = 1 << 22,				//NUMBER
-		EXT_VIA_PARENT = 1 << 22,			//ARRAY N OBJECT
-		COLUMN_WIDTH = 1 << 22				//STRING
+		PRECISION = 1 << 22, //NUMBER
+		EXT_VIA_PARENT = 1 << 22, //ARRAY N OBJECT
+		COLUMN_WIDTH = 1 << 22, //STRING
+		HAS_CHILDREN = 1 << 23
 	};
 
 	enum COPY_FLAGS : uint32_t {
@@ -118,15 +119,17 @@ public:
 		FM_PRECISION = 1,
 		FM_WIDTH = 1,
 		FM_LINK = 2,
-		FM_PARENT = 3
+		FM_PARENT = 3,
+		FM_CHILDREN = 4
 	};
 
 	static const FeaturedMemType m_FM_LAST = FM_PARENT;
 
 	struct FeaturedMemHook;
 
+	typedef std::vector<string> Link;
 	union FeaturedMember {
-		std::vector<string>* link;
+		Link* link;
 		std::map<string, int>* tabHead;
 		FFJSON* m_pParent;
 		/**
@@ -145,12 +148,15 @@ public:
 		 * used for multiline buffer while parsing
 		 */
 		string* m_sMultiLnBuffer = NULL;
-		
+
 		/**
 		 * used to mark a multi line array during init
 		 */
 		bool m_bIsMultiLineArray;
-		
+		/**
+		 * array of links of all children
+		 */
+		std::vector<FFJSON*>* m_pvChildren;
 	};
 
 	struct FeaturedMemHook {
@@ -183,7 +189,8 @@ public:
 		FFJSONPrettyPrintPObj(std::map<const string*, const string*>* m_mpDeps,
 				std::list<string>* m_lsFFPairLst,
 				std::map<string*, const string*>* m_mpMemKeyFFPairMap,
-				std::map<const string*, std::list<string>::iterator>* pKeyPrettyStringMap);
+				std::map<const string*, std::list<string>::iterator>*
+				pKeyPrettyStringMap);
 		bool m_bHeaded = false;
 
 		/**
@@ -192,7 +199,9 @@ public:
 		std::map<const string*, const string*>* m_mpDeps = NULL;
 		std::list<string>* m_lsFFPairLst = NULL;
 		std::map<string*, const string*>* m_mpMemKeyFFPairMap = NULL;
-		std::map<const string*, std::list<string>::iterator>* m_pKeyPrettyStringItMap = NULL;
+		std::map<const string*, std::list<string>::iterator>*
+				m_pKeyPrettyStringItMap = NULL;
+		std::vector<int>* m_pvClWidths = NULL;
 	};
 
 	/**
@@ -396,8 +405,8 @@ private:
 	static bool inline isTerminatingChar(char c);
 	static FFJSON* returnNameIfDeclared(std::vector<string>& prop, FFJSONPObj* fpo);
 	FFJSON* markTheNameIfExtended(FFJSONPrettyPrintPObj* fpo);
-	bool inherit(FFJSON& obj);
-	void ReadMultiLinesInContainers(const string& ffjson, int& i,FFJSONPObj& pObj);
+	bool inherit(FFJSON& obj,FFJSONPObj* pFPObj);
+	void ReadMultiLinesInContainers(const string& ffjson, int& i, FFJSONPObj& pObj);
 };
 
 #endif	/* FFJSON_H */

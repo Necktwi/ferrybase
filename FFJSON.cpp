@@ -24,6 +24,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include <exception>
 
 #include "FFJSON.h"
 #include "mystdlib.h"
@@ -687,8 +688,8 @@ void FFJSON::init(const std::string& ffjson, int* ci, int indent, FFJSONPObj* pO
 		if (ffjson[i] == '|') {
 			i++;
 			FFJSON* obj = new FFJSON(ffjson, &i, indent, pObj);
-			if (inherit(*obj)) {
-				this->m_uFM.link; /*G/*continue work here*/
+			if (inherit(*obj, pObj)) {
+
 			} else {
 				delete obj;
 			}
@@ -862,6 +863,32 @@ void FFJSON::insertFeaturedMember(FeaturedMember& fms, FeaturedMemType fMT) {
 		}
 		iFMTraversed++;
 	}
+	if (this->isEFlagSet(HAS_CHILDREN)) {
+		if (fMT == FM_PARENT) {
+			if (pFMS->m_pvChildren == NULL) {
+				pFMS->m_pvChildren = fms.m_pvChildren;
+			} else {
+				FeaturedMemHook* pNewFMH = new FeaturedMemHook();
+				pNewFMH->m_pFMH.m_pFMH = pFMS->m_pFMH;
+				pNewFMH->m_uFM.m_pvChildren = fms.m_pvChildren;
+				pFMS->m_pFMH = pNewFMH;
+			}
+			iFMCount++;
+			setFMCount(iFMCount);
+			return;
+		} else {
+			if (iFMCount - iFMTraversed == 1) {
+				//Should insert New FM hook before the right FMType match
+				FeaturedMemHook* pNewFMH = new FeaturedMemHook();
+				pNewFMH->m_uFM.m_pvChildren = pFMS->m_pvChildren;
+				pFMS->m_pFMH = pNewFMH;
+				pFMS = &pNewFMH->m_pFMH;
+			} else {
+				pFMS = &pFMS->m_pFMH->m_pFMH;
+			}
+		}
+		iFMTraversed++;
+	}
 }
 
 FFJSON::FeaturedMember FFJSON::getFeaturedMember(FeaturedMemType fMT) const {
@@ -917,7 +944,29 @@ FFJSON::FeaturedMember FFJSON::getFeaturedMember(FeaturedMemType fMT) const {
 		}
 		iFMTraversed++;
 	}
+	if (this->isEFlagSet(HAS_CHILDREN)) {
+		if (fMT == FM_CHILDREN) {
+			if (iFMCount - iFMTraversed == 1) {
+				return *pFMS;
+			} else {
+				return pFMS->m_pFMH->m_uFM;
+			}
+		} else {
+			if (iFMCount - iFMTraversed == 1) {
+				return decoyFM;
+			} else {
+				pFMS = &pFMS->m_pFMH->m_pFMH;
+			}
+		}
+		iFMTraversed++;
+	}
 	return decoyFM;
+}
+
+void DeleteChildLinks(vector<FFJSON*>* childLinks){
+	for(int i =0;i<childLinks->size(); i++){
+		delete childLinks[i];
+	}
 }
 
 void FFJSON::destroyAllFeaturedMembers() {
@@ -955,6 +1004,19 @@ void FFJSON::destroyAllFeaturedMembers() {
 			delete pFMS->m_pParent;
 		} else {
 			delete pFMS->m_pFMH->m_uFM.m_pParent;
+			FeaturedMember* pTempFMS = &pFMS->m_pFMH->m_pFMH;
+			delete pFMS->m_pFMH;
+			pFMS = pTempFMS;
+		}
+		iFMTraversed++;
+	}
+	if (this->isEFlagSet(HAS_CHILDREN)) {
+		if (iFMCount - iFMTraversed == 1) {
+			DeleteChildLinks(pFMS->m_pvChildren);
+			delete pFMS->m_pvChildren;
+		} else {
+			DeleteChildLinks(pFMS->m_pFMH->m_uFM.m_pvChildren);
+			delete pFMS->m_pFMH->m_uFM.m_pvChildren;
 			FeaturedMember* pTempFMS = &pFMS->m_pFMH->m_pFMH;
 			delete pFMS->m_pFMH;
 			pFMS = pTempFMS;
@@ -1561,21 +1623,32 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 		vector<FFJSON*>& objarr = *(val.array);
 		int iLastNwLnIndex = 0;
 		std::vector<int> vClWidths;
+		FFJSONPrettyPrintPObj lfpo(NULL, NULL, NULL, NULL);
+		lfpo.pObj = pObj;
+		lfpo.value = this;
 		if (isEFlagSet(EXT_VIA_PARENT)) {
 			if (isEFlagSet(EXTENDED)) {
 				ps = "[\n";
-				iLastNwLnIndex=1;
-				int iClWiIndexer=0;
-				map<string,int>& mTabHead=*getFeaturedMember(FM_TABHEAD).tabHead;
-				map<string,int>::iterator itTabHead = mTabHead.begin();
-				vClWidths.resize(mTabHead.size(),0);
-				while(itTabHead!=mTabHead.end()){
+				iLastNwLnIndex = 1;
+				map<string, int>& mTabHead = *getFeaturedMember(FM_TABHEAD).tabHead;
+				map<string, int>::iterator itTabHead = mTabHead.begin();
+				vClWidths.resize(mTabHead.size(), 0);
+				while (itTabHead != mTabHead.end()) {
 					int iCurColWidth = itTabHead->first.size();
 					int iCurColIndex = itTabHead->second;
-					for(int i=0;i<size;i++){
-						(*val.array)[i]
+					vClWidths[iCurColIndex] = iCurColWidth;
+					for (int i = 0; i < size; i++) {
+						if (vClWidths[iCurColIndex]<(*(*val.array)[i]->val.array)
+								[iCurColIndex]->getFeaturedMember(FM_WIDTH).
+								width) {
+							vClWidths[iCurColIndex] = (*(*val.array)[i]->val.array)
+									[iCurColIndex]->getFeaturedMember(FM_WIDTH).
+									width;
+						}
 					}
+					itTabHead++;
 				}
+				lfpo.m_pvClWidths = &vClWidths;
 			} else {
 				ps = "[";
 			}
@@ -1583,9 +1656,6 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 			ps = "[\n";
 		}
 		int i = 0;
-		FFJSONPrettyPrintPObj lfpo(NULL, NULL, NULL, NULL);
-		lfpo.pObj = pObj;
-		lfpo.value = this;
 		while (i < objarr.size()) {
 			uint32_t t = objarr[i] ? objarr[i]->getType() : NUL;
 			if (t != UNDEFINED && t != NUL) {
@@ -1596,8 +1666,9 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent, 
 					ps.append(indent + 1, '\t');
 				string name = to_string(i);
 				lfpo.name = &name;
-				if (objarr[i]->isType(STRING) && objarr[i]->isEFlagSet(COLUMN_WIDTH) && isEFlagSet(EXT_VIA_PARENT)) {
-					ps
+				if (objarr[i]->isType(STRING) && objarr[i]->isEFlagSet(COLUMN_WIDTH)
+						&& isEFlagSet(EXT_VIA_PARENT)) {
+					//ps
 				}
 				ps.append(objarr[i]->prettyString(json, printComments, indent + 1, &lfpo));
 			} else if (t == NUL) {
@@ -2228,7 +2299,7 @@ void FFJSON::erase(FFJSON * value) {
 	}
 }
 
-bool FFJSON::inherit(FFJSON& obj) {
+bool FFJSON::inherit(FFJSON& obj, FFJSONPObj* pFPObj) {
 	FFJSON* pObj = &obj;
 	if (obj.isType(LINK)) {
 		pObj = val.fptr;
@@ -2257,6 +2328,76 @@ bool FFJSON::inherit(FFJSON& obj) {
 							cFM.tabHead = m;
 							(*val.array)[i]->insertFeaturedMember(cFM, FM_TABHEAD);
 						}
+						
+						//set "this" as child to the parent
+						Link& rLnParent = *(*obj.val.array)[0]->getFeaturedMember(FM_LINK).link;
+						std::vector<string*> path;
+						FFJSONPObj* pFPObjTemp = pFPObj;
+						bool bParentFound = false;
+						while (pFPObjTemp != NULL) {
+							if (*pFPObj->value->isType(OBJECT)) {
+								if (*pFPObj->value->val.pairs->find(rLnParent[0]) != *pFPObj->value->val.pairs->end()) {
+									bParentFound = true;
+								} else {
+									path.push_back(pFPObj->name);
+								}
+							} else if (*pFPObj->value->isType(ARRAY)) {
+								try {
+									if (*pFPObj->value->size > stoi(*pFPObj->name)) {
+										bParentFound = true;
+									} else {
+										path.push_back(pFPObj->name);
+									}
+								} catch (Exception e) {
+								}
+							}
+							if (bParentFound) {
+								FFJSON* pParentRoot = pFPObj->value;
+								int iParentLnIndexer = 0;
+								do {
+									if (pParentRoot->isType(OBJECT)) {
+										pParentRoot = (*pParentRoot->val.pairs).
+												find(rLnParent[iParentIndexer++])
+												->second;
+									} else if (pParentRoot->isType(ARRAY)) {
+										try {
+											pParentRoot = (*pParentRoot->val.array)
+													[stoi(rLnParent[iParentIndexer++])];
+										} catch (Exception e) {
+											pParentRoot = null;
+										}
+									} else {
+										pParentRoot = null;
+									}
+									pParentRoot = (*pFPObj->value).val.pairs[rLnParent[iParentLnIndexer++]];
+								} while (pParentRoot && iParentLnIndexer < rLnParent.size());
+								if (pParentRoot) {
+									FFJSON* pffLink = new FFJSON();
+									pffLink->setType(LINK);
+									pffLink->val.fptr = this;
+									FeaturedMember cFM;
+									Link* pLnChild = new Link();
+									for (int i = path.size() - 1; i >= 0; i--) {
+										pLnChild->push_back(*path[i]);
+									}
+									cFM.link = pLnChld;
+									pffLink->insertFeaturedMember(cFM, FM_LINK);
+									if(!pParentRoot->isEFlagSet(HAS_CHILDREN)){
+										pParentRoot->setEFlag(HAS_CHILDREN);
+										FeaturedMember fmChildren;
+										fmChildren.m_pvChildren=new vector<FFJSON*>();
+										pParentRoot->insertFeaturedMember(fmChildren,FM_CHILDREN);
+									}
+									vector<FFJSON*>* pvfChildren=pParentRoot->
+											getFeaturedMember(FM_CHILDREN).m_pvChildren;
+									pvfChildren->push_back(pffLink);
+								}else{
+									pFPObjTemp = pFPObjTemp->pObj;
+								}
+							} else {
+								pFPObjTemp = pFPObjTemp->pObj;
+							}
+						}
 					} else {
 						return false;
 					}
@@ -2270,6 +2411,8 @@ bool FFJSON::inherit(FFJSON& obj) {
 				cFM.tabHead = m;
 				setEFlag(EXT_VIA_PARENT);
 				insertFeaturedMember(cFM, FM_TABHEAD);
+
+				cFM.m_pvChildren =
 				return true;
 			}
 		} else if (obj.isType(OBJECT)) {
