@@ -92,6 +92,7 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
     <itemPath>ExtensionTest.ffjson</itemPath>
+    <itemPath>MultiLevelInheritance.ffjson</itemPath>
     <itemPath>MultiLineArray.ffjson</itemPath>
     <itemPath>base.pc</itemPath>
     <itemPath>example.json</itemPath>
@@ -186,6 +187,8 @@
       <item path="JPEGImage.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="JPEGImage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MultiLevelInheritance.ffjson" ex="false" tool="3" flavor2="0">
       </item>
       <item path="MultiLineArray.ffjson" ex="false" tool="3" flavor2="0">
       </item>
@@ -376,6 +379,8 @@
       <item path="JPEGImage.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="JPEGImage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MultiLevelInheritance.ffjson" ex="false" tool="3" flavor2="0">
       </item>
       <item path="MultiLineArray.ffjson" ex="false" tool="3" flavor2="0">
       </item>
@@ -613,6 +618,8 @@
       <item path="JPEGImage.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="JPEGImage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MultiLevelInheritance.ffjson" ex="false" tool="3" flavor2="0">
       </item>
       <item path="MultiLineArray.ffjson" ex="false" tool="3" flavor2="0">
       </item>

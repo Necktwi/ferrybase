@@ -8,6 +8,8 @@
 #ifndef FFJSON_H
 #define	FFJSON_H
 
+#define MAX_ORDERED_MEMBERS 1000
+
 #include "myconverters.h"
 
 #include <string>
@@ -19,13 +21,15 @@
 #include <list>
 #include <stdint.h>
 
+using namespace std;
+
 class FFJSON {
 public:
 
-	class Exception : std::exception {
+	class Exception : exception {
 	public:
 
-		Exception(std::string e) : identifier(e) {
+		Exception(string e) : identifier(e) {
 
 		}
 
@@ -36,7 +40,7 @@ public:
 		~Exception() throw () {
 		}
 	private:
-		std::string identifier;
+		string identifier;
 	};
 
 	enum OBJ_TYPE : uint32_t {
@@ -84,7 +88,7 @@ public:
 
 	static const char OBJ_STR[8][15];
 
-	static std::map<std::string, uint8_t> STR_OBJ;
+	static map<string, uint8_t> STR_OBJ;
 
 	class Iterator {
 	public:
@@ -109,8 +113,8 @@ public:
 		void copy(const Iterator& i);
 
 		union {
-			std::map<std::string, FFJSON*>::iterator* pi;
-			std::vector<FFJSON*>::iterator* ai;
+			map<string, FFJSON*>::iterator* pi;
+			vector<FFJSON*>::iterator* ai;
 		} ui;
 	};
 
@@ -120,17 +124,18 @@ public:
 		FM_WIDTH = 1,
 		FM_LINK = 2,
 		FM_PARENT = 3,
-		FM_CHILDREN = 4
+		FM_CHILDREN = 4,
+		FM_MAP_SEQUENCE = 5
 	};
 
 	static const FeaturedMemType m_FM_LAST = FM_PARENT;
 
 	struct FeaturedMemHook;
 
-	typedef std::vector<string> Link;
+	typedef vector<string> Link;
 	union FeaturedMember {
 		Link* link;
-		std::map<string, int>* tabHead;
+		map<string, int>* tabHead;
 		FFJSON* m_pParent;
 		/**
 		 * used to store the number precision
@@ -148,7 +153,6 @@ public:
 		 * used for multiline buffer while parsing
 		 */
 		string* m_sMultiLnBuffer = NULL;
-
 		/**
 		 * used to mark a multi line array during init
 		 */
@@ -156,7 +160,11 @@ public:
 		/**
 		 * array of links of all children
 		 */
-		std::vector<FFJSON*>* m_pvChildren;
+		vector<FFJSON*>* m_pvChildren;
+		/**
+		 * Its a vector of names in a map for the order
+		 */
+		vector<map<string, FFJSON*>::iterator>* m_pvpsMapSequence;
 	};
 
 	struct FeaturedMemHook {
@@ -180,28 +188,37 @@ public:
 	};
 
 	struct FFJSONPObj {
-		const std::string* name;
+		const string* name;
 		FFJSON* value = NULL;
 		FFJSONPObj* pObj = NULL;
 	};
 
 	struct FFJSONPrettyPrintPObj : FFJSONPObj {
-		FFJSONPrettyPrintPObj(std::map<const string*, const string*>* m_mpDeps,
-				std::list<string>* m_lsFFPairLst,
-				std::map<string*, const string*>* m_mpMemKeyFFPairMap,
-				std::map<const string*, std::list<string>::iterator>*
+		FFJSONPrettyPrintPObj(map<const string*, const string*>* m_mpDeps,
+				list<string>* m_lsFFPairLst,
+				map<string*, const string*>* m_mpMemKeyFFPairMap,
+				map<const string*, list<string>::iterator>*
 				pKeyPrettyStringMap);
 		bool m_bHeaded = false;
 
 		/**
 		 * to get the parent of object
 		 */
-		std::map<const string*, const string*>* m_mpDeps = NULL;
-		std::list<string>* m_lsFFPairLst = NULL;
-		std::map<string*, const string*>* m_mpMemKeyFFPairMap = NULL;
-		std::map<const string*, std::list<string>::iterator>*
+		map<const string*, const string*>* m_mpDeps = NULL;
+		list<string>* m_lsFFPairLst = NULL;
+		map<string*, const string*>* m_mpMemKeyFFPairMap = NULL;
+		map<const string*, list<string>::iterator>*
 				m_pKeyPrettyStringItMap = NULL;
-		std::vector<int>* m_pvClWidths = NULL;
+		
+		/**
+		 * Holds column widths for tabular members
+		 */
+		map<string, vector<int> >* m_msviClWidths = NULL;
+		
+		/**
+		 * If this flag is set returns 1st line of string
+		 */
+		bool m_bGiveFirstLine = false;
 	};
 
 	/**
@@ -210,7 +227,7 @@ public:
 	 */
 	FFJSON();
 
-	//FFJSON(std::ifstream file);
+	//FFJSON(ifstream file);
 	/**
 	 * Copy constructor. Creates a copy of FFJSON object
 	 * @param orig is the object one wants to create a copy
@@ -223,9 +240,9 @@ public:
 	 * @param ci is the offset in FFJSON string to be considered. Its 0 by 
 	 * default.
 	 */
-	FFJSON(const std::string& ffjson, int* ci = NULL, int indent = 0,
+	FFJSON(const string& ffjson, int* ci = NULL, int indent = 0,
 			FFJSONPObj* pObj = NULL);
-	void init(const std::string& ffjson, int* ci = NULL, int indent = 0,
+	void init(const string& ffjson, int* ci = NULL, int indent = 0,
 			FFJSONPObj* pObj = NULL);
 
 	/**
@@ -284,13 +301,13 @@ public:
 	 * Removes leading and trailing white spaces; sapces and tabs from a string.
 	 * @param s
 	 */
-	static void trimWhites(std::string& s);
+	static void trimWhites(string& s);
 
 	/**
 	 * Removes leading and trailing quotes in a string.
 	 * @param s
 	 */
-	static void trimQuotes(std::string& s);
+	static void trimQuotes(string& s);
 
 	/**
 	 * Trying to read an object property that doesn't exist creates the property
@@ -304,13 +321,13 @@ public:
 	 * @param ffjson is the FFJSON string.
 	 * @return FFJSON object type.
 	 */
-	OBJ_TYPE objectType(std::string ffjson);
+	OBJ_TYPE objectType(string ffjson);
 
 	/**
 	 * Converts FFJSON object into FFJSON string.
 	 * @return FFJSON string.
 	 */
-	std::string stringify(bool json = false, FFJSONPrettyPrintPObj* pObj = NULL);
+	string stringify(bool json = false, FFJSONPrettyPrintPObj* pObj = NULL);
 
 	/**
 	 * Converts FFJSON object into FFJSON pretty string that has indents where
@@ -320,7 +337,7 @@ public:
 	 * an idea on what I'm saying, jst try it with non zero positive value.
 	 * @return A pretty string :)
 	 */
-	std::string prettyString(bool json = false, bool printComments = false, unsigned int indent = 0, FFJSONPrettyPrintPObj* pObj = NULL);
+	string prettyString(bool json = false, bool printComments = false, unsigned int indent = 0, FFJSONPrettyPrintPObj* pObj = NULL);
 
 	/**
 	 * Generates a query string which can be used to query a FFJSON tree. Query 
@@ -331,7 +348,7 @@ public:
 	 * and colors available!
 	 * @return Query string.
 	 */
-	std::string queryString();
+	string queryString();
 
 	/**
 	 * Generates an answer string for a query object from the FFJSON tree. Query
@@ -348,7 +365,7 @@ public:
 
 	FFJSON* answerObject(FFJSON* queryObject);
 
-	void erase(std::string name);
+	void erase(string name);
 
 	void erase(int index);
 
@@ -362,17 +379,17 @@ public:
 
 	union FFValue {
 		char * string;
-		std::vector<FFJSON*>* array;
-		std::map<std::string, FFJSON*>* pairs;
+		vector<FFJSON*>* array;
+		map<string, FFJSON*>* pairs;
 		double number;
 		bool boolean;
 		FFJSON* fptr;
 	} val;
 
 	FFJSON& operator[](const char* prop);
-	FFJSON& operator[](std::string prop);
+	FFJSON& operator[](string prop);
 	FFJSON& operator[](int index);
-	FFJSON& operator=(const std::string& s);
+	FFJSON& operator=(const string& s);
 	FFJSON& operator=(const int& i);
 	FFJSON& operator=(const unsigned int& i);
 	FFJSON& operator=(const double& d);
@@ -403,7 +420,7 @@ private:
 	static void strObjMapInit();
 	static bool inline isWhiteSpace(char c);
 	static bool inline isTerminatingChar(char c);
-	static FFJSON* returnNameIfDeclared(std::vector<string>& prop, FFJSONPObj* fpo);
+	static FFJSON* returnNameIfDeclared(vector<string>& prop, FFJSONPObj* fpo);
 	FFJSON* markTheNameIfExtended(FFJSONPrettyPrintPObj* fpo);
 	bool inherit(FFJSON& obj,FFJSONPObj* pFPObj);
 	void ReadMultiLinesInContainers(const string& ffjson, int& i, FFJSONPObj& pObj);
