@@ -133,6 +133,7 @@ public:
 	struct FeaturedMemHook;
 
 	typedef vector<string> Link;
+
 	union FeaturedMember {
 		Link* link;
 		map<string, int>* tabHead;
@@ -158,7 +159,8 @@ public:
 		 */
 		bool m_bIsMultiLineArray;
 		/**
-		 * array of links of all children
+		 * array of links of all children. these links must be deleted up on
+		 * change.
 		 */
 		vector<FFJSON*>* m_pvChildren;
 		/**
@@ -209,12 +211,12 @@ public:
 		map<string*, const string*>* m_mpMemKeyFFPairMap = NULL;
 		map<const string*, list<string>::iterator>*
 				m_pKeyPrettyStringItMap = NULL;
-		
+
 		/**
 		 * Holds column widths for tabular members
 		 */
 		map<string, vector<int> >* m_msviClWidths = NULL;
-		
+
 		/**
 		 * If this flag is set returns 1st line of string
 		 */
@@ -337,7 +339,8 @@ public:
 	 * an idea on what I'm saying, jst try it with non zero positive value.
 	 * @return A pretty string :)
 	 */
-	string prettyString(bool json = false, bool printComments = false, unsigned int indent = 0, FFJSONPrettyPrintPObj* pObj = NULL);
+	string prettyString(bool json = false, bool printComments = false,
+			unsigned int indent = 0, FFJSONPrettyPrintPObj* pObj = NULL);
 
 	/**
 	 * Generates a query string which can be used to query a FFJSON tree. Query 
@@ -380,7 +383,7 @@ public:
 	union FFValue {
 		char * string;
 		vector<FFJSON*>* array;
-		map<string, FFJSON*>* pairs;
+		map<std::string, FFJSON*>* pairs;
 		double number;
 		bool boolean;
 		FFJSON* fptr;
@@ -415,15 +418,19 @@ private:
 	////	uint8_t etype;
 	uint32_t flags;
 	FeaturedMember m_uFM;
-	void copy(const FFJSON& orig, COPY_FLAGS cf = COPY_NONE, FFJSONPObj* pObj = NULL);
+	void copy(const FFJSON& orig, COPY_FLAGS cf = COPY_NONE,
+			FFJSONPObj* pObj = NULL);
 	static int getIndent(const char* ffjson, int* ci, int indent);
 	static void strObjMapInit();
 	static bool inline isWhiteSpace(char c);
 	static bool inline isTerminatingChar(char c);
-	static FFJSON* returnNameIfDeclared(vector<string>& prop, FFJSONPObj* fpo);
+	FFJSON* returnNameIfDeclared(vector<string>& prop, FFJSONPObj* fpo);
 	FFJSON* markTheNameIfExtended(FFJSONPrettyPrintPObj* fpo);
-	bool inherit(FFJSON& obj,FFJSONPObj* pFPObj);
-	void ReadMultiLinesInContainers(const string& ffjson, int& i, FFJSONPObj& pObj);
+	bool inherit(FFJSON& obj, FFJSONPObj* pFPObj);
+	void ReadMultiLinesInContainers(const string& ffjson, int& i,
+			FFJSONPObj& pObj);
+	string ConstructMultiLineStringArray(vector<FFJSON*>& vpfMulLnStrs,
+			int indent, vector<int>& vClWidths);
 };
 
 #endif	/* FFJSON_H */

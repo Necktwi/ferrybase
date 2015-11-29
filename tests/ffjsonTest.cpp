@@ -220,7 +220,7 @@ void test5() {
 
 void test6() {
 	cout << "===================================================" << endl;
-	cout << "			ffjsonTest test 6 (testing extensions)		" << endl;
+	cout << "			ffjsonTest test 6 (testing MultiLineArray)		" << endl;
 	cout << "===================================================" << endl;
 	FFJSON f("file://MultiLineArray.ffjson");
 	cout << f.prettyString() << endl;
@@ -230,7 +230,7 @@ void test6() {
 
 void test7() {
 	cout << "===================================================" << endl;
-	cout << "			ffjsonTest test 7 (testing extensions)		" << endl;
+	cout << "			ffjsonTest test 7 (testing data type sizes)		" << endl;
 	cout << "===================================================" << endl;
 	std::map<string,FFJSON*> m;
 	std::pair<string,FFJSON*> p(std::string("gowtham"),(FFJSON*)NULL);
