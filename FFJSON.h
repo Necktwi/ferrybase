@@ -73,10 +73,12 @@ public:
 		COMMENT = 1 << 19,
 		HAS_COMMENT = 1 << 20,
 		EXTENDED = 1 << 21,
+		LONG_LAST_LN = 1 << 21, //STRING
 		PRECISION = 1 << 22, //NUMBER
 		EXT_VIA_PARENT = 1 << 22, //ARRAY N OBJECT
-		COLUMN_WIDTH = 1 << 22, //STRING
-		HAS_CHILDREN = 1 << 23
+		ONE_SHORT_LAST_LN = 1 << 22, //STRING
+		HAS_CHILDREN = 1 << 23,  //ARRAY N OBJECT
+		STRING_INIT = 1 << 23 //STRING
 	};
 
 	enum COPY_FLAGS : uint32_t {
@@ -125,7 +127,8 @@ public:
 		FM_LINK = 2,
 		FM_PARENT = 3,
 		FM_CHILDREN = 4,
-		FM_MAP_SEQUENCE = 5
+		FM_MAP_SEQUENCE = 5,
+		FM_MULTI_LN = 6
 	};
 
 	static const FeaturedMemType m_FM_LAST = FM_PARENT;
@@ -141,7 +144,7 @@ public:
 		/**
 		 * used to store the number precision
 		 */
-		unsigned int precision;
+		unsigned int precision = 0;
 		/**
 		 * used to store the width of the string
 		 */
@@ -153,7 +156,7 @@ public:
 		/**
 		 * used for multiline buffer while parsing
 		 */
-		string* m_sMultiLnBuffer = NULL;
+		string* m_psMultiLnBuffer;
 		/**
 		 * used to mark a multi line array during init
 		 */
@@ -185,6 +188,8 @@ public:
 
 	void destroyAllFeaturedMembers();
 
+	void deleteFeaturedMember(FeaturedMemType fmt);
+	
 	struct FFJSONExt {
 		FFJSON* base = NULL;
 	};
