@@ -225,15 +225,18 @@ void test6() {
 	FFJSON f("file://MultiLineArray.ffjson");
 	cout << f.prettyString() << endl;
 	FFJSON f2(f.prettyString());
-	cout << f2.stringify() << endl;
+	string sF2 = f2.stringify();
+	cout << sF2 << endl;
+	FFJSON f3(sF2);
+	cout << f3.prettyString() << endl;
 }
 
 void test7() {
 	cout << "===================================================" << endl;
 	cout << "			ffjsonTest test 7 (testing data type sizes)		" << endl;
 	cout << "===================================================" << endl;
-	std::map<string,FFJSON*> m;
-	std::pair<string,FFJSON*> p(std::string("gowtham"),(FFJSON*)NULL);
+	std::map<string, FFJSON*> m;
+	std::pair<string, FFJSON*> p(std::string("gowtham"), (FFJSON*) NULL);
 	cout << &p.first << endl;
 	m.insert(p);
 	cout << &(*m.find("gowtham")) << endl;
@@ -241,12 +244,12 @@ void test7() {
 	int i;
 	FFJSON f;
 	std::vector<string*> v;
-	std::map<string,FFJSON*>::iterator it;
-	cout << "map:" << sizeof(m) << endl;
-	cout << "int:" << sizeof(i) << endl;
-	cout << "ffjson:" << sizeof(f) << endl;
-	cout << "vector:" << sizeof(v) << endl;
-	cout << "iterator:" << sizeof(it) << endl;
+	std::map<string, FFJSON*>::iterator it;
+	cout << "map:" << sizeof (m) << endl;
+	cout << "int:" << sizeof (i) << endl;
+	cout << "ffjson:" << sizeof (f) << endl;
+	cout << "vector:" << sizeof (v) << endl;
+	cout << "iterator:" << sizeof (it) << endl;
 }
 
 int main(int argc, char** argv) {
@@ -257,7 +260,7 @@ int main(int argc, char** argv) {
 	timespec tsDiff = {0, 0};
 	timespec tsSuiteStart = {0, 0};
 	clock_gettime(CLOCK_REALTIME, &tsSuiteStart);
-	
+
 	//	std::cout << "%TEST_STARTED% test1 (ffjsonTest)" << std::endl;
 	//	test1();
 	//	std::cout << "%TEST_FINISHED% time=0 test1 (ffjsonTest)" << std::endl;
@@ -274,7 +277,7 @@ int main(int argc, char** argv) {
 	//	test4();
 	//	std::cout << "%TEST_FINISHED% time=0 test4 (ffjsonTest)" << std::endl;
 	//	
-	
+
 	//	std::cout << "%TEST_STARTED% test5 (ffjsonTest)\n" << std::endl;
 	//	tsStart = {0, 0};
 	//	clock_gettime(CLOCK_REALTIME, &tsStart);
@@ -292,17 +295,17 @@ int main(int argc, char** argv) {
 	clock_gettime(CLOCK_REALTIME, &tsEnd);
 	tsDiff = UTimeDiff(tsEnd, tsStart);
 	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." << tsDiff.tv_nsec << " test6 (ffjsonTest)" << std::endl;
-	
-//	std::cout << "%TEST_STARTED% test7 (ffjsonTest)\n" << std::endl;
-//	tsStart = {0, 0};
-//	clock_gettime(CLOCK_REALTIME, &tsStart);
-//	test7();
-//	tsEnd = {0, 0};
-//	clock_gettime(CLOCK_REALTIME, &tsEnd);
-//	tsDiff = UTimeDiff(tsEnd, tsStart);
-//	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." << tsDiff.tv_nsec << " test6 (ffjsonTest)" << std::endl;
-//	
-	
+
+	//	std::cout << "%TEST_STARTED% test7 (ffjsonTest)\n" << std::endl;
+	//	tsStart = {0, 0};
+	//	clock_gettime(CLOCK_REALTIME, &tsStart);
+	//	test7();
+	//	tsEnd = {0, 0};
+	//	clock_gettime(CLOCK_REALTIME, &tsEnd);
+	//	tsDiff = UTimeDiff(tsEnd, tsStart);
+	//	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." << tsDiff.tv_nsec << " test6 (ffjsonTest)" << std::endl;
+	//	
+
 	timespec tsSuiteEnd = {0, 0};
 	clock_gettime(CLOCK_REALTIME, &tsSuiteEnd);
 	tsDiff = UTimeDiff(tsSuiteEnd, tsSuiteStart);
