@@ -72,15 +72,15 @@ public:
 		B64ENCODE_STOP = 1 << 18,
 		COMMENT = 1 << 19,
 		HAS_COMMENT = 1 << 20,
-		
+
 		EXTENDED = 1 << 21, //ARRAY N OBJECT //FM
 		LONG_LAST_LN = 1 << 21, //STRING //NO_FM
-		
+
 		PRECISION = 1 << 22, //NUMBER //FM
 		EXT_VIA_PARENT = 1 << 22, //ARRAY N OBJECT //FM
 		ONE_SHORT_LAST_LN = 1 << 22, //STRING //NO_FM
-		
-		HAS_CHILDREN = 1 << 23,  //ARRAY N OBJECT //FM
+
+		HAS_CHILDREN = 1 << 23, //ARRAY N OBJECT //FM
 		STRING_INIT = 1 << 23 //STRING //FM
 	};
 
@@ -173,6 +173,9 @@ public:
 		 * Its a vector of names in a map for the order
 		 */
 		vector<map<string, FFJSON*>::iterator>* m_pvpsMapSequence;
+
+		FeaturedMember() : link{NULL} {
+		}
 	};
 
 	struct FeaturedMemHook {
@@ -192,7 +195,7 @@ public:
 	void destroyAllFeaturedMembers();
 
 	void deleteFeaturedMember(FeaturedMemType fmt);
-	
+
 	struct FFJSONExt {
 		FFJSON* base = NULL;
 	};
@@ -395,6 +398,9 @@ public:
 		double number;
 		bool boolean;
 		FFJSON* fptr;
+
+		FFValue() : string{NULL} {
+		}
 	} val;
 
 	FFJSON& operator[](const char* prop);
