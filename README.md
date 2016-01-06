@@ -48,7 +48,7 @@ output:
 	India
 	[
 		"C++",
-		"javascript",
+		"javascript"
 	]
 
 Installation
