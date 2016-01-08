@@ -6,22 +6,22 @@
  */
 
 #ifndef LOGGER_H
-#define	LOGGER_H
+#define LOGGER_H
 
 /**
  * 
  */
 enum _ff_log_type {
-    FFL_ERR = 1 << 0,
-    FFL_WARN = 1 << 1,
-    FFL_NOTICE = 1 << 2,
-    FFL_DEBUG = 1 << 3,
-    FFL_INFO = 1 << 4,
-    FFL_PARSER = 1 << 5,
-    FFL_HEADER = 1 << 6,
-    FFL_EXT = 1 << 7,
-    FFL_CLIENT = 1 << 8,
-    FFL_LATENCY = 1 << 9
+	FFL_ERR = 1 << 0,
+	FFL_WARN = 1 << 1,
+	FFL_NOTICE = 1 << 2,
+	FFL_DEBUG = 1 << 3,
+	FFL_INFO = 1 << 4,
+	FFL_PARSER = 1 << 5,
+	FFL_HEADER = 1 << 6,
+	FFL_EXT = 1 << 7,
+	FFL_CLIENT = 1 << 8,
+	FFL_LATENCY = 1 << 9
 };
 
 /**
@@ -31,17 +31,27 @@ extern int ff_log_type;
 extern unsigned int ff_log_level;
 
 int _ff_log(_ff_log_type t, const char* format, ...);
-int _ff_log(const char* func, _ff_log_type t, unsigned int l,
-        const char* format, ...);
-int _ff_log(_ff_log_type t, unsigned int l, const char* func,
-        const char* file_name, int line_no, const char* format, ...);
+int _ff_log(const char* func,
+		_ff_log_type allowedType,
+		_ff_log_type t,
+		unsigned int allowedLevel,
+		unsigned int l,
+		const char* format, ...);
+int _ff_log(_ff_log_type allowedType,
+		_ff_log_type t,
+		unsigned int allowedLevel,
+		unsigned int l,
+		const char* func,
+		const char* file_name,
+		int line_no,
+		const char* format, ...);
 int _ff_log_contnu(_ff_log_type t, unsigned int l, const char* format, ...);
 
 /* notice, warn and log are always compiled in */
-#define ffl_notice(level,...) _ff_log(__FUNCTION__, FFL_NOTICE, level, __VA_ARGS__)
-#define ffl_warn(level,...) _ff_log(__FUNCTION__, FFL_WARN, level, __VA_ARGS__)
-#define ffl_err(level,...) _ff_log(__FUNCTION__, FFL_ERR, level, __VA_ARGS__)
-#define ffl_info(level,...) _ff_log(__FUNCTION__, FFL_INFO, level, __VA_ARGS__)
+#define ffl_notice(allowedType,allowedLevel,level,...) _ff_log(__FUNCTION__, allowedType, FFL_NOTICE, allowedLevel, level, __VA_ARGS__)
+#define ffl_warn(allowedType,allowedLevel,level,...) _ff_log(__FUNCTION__, allowedType, FFL_WARN, allowedLevel, level, __VA_ARGS__)
+#define ffl_err(allowedType,allowedLevel,level,...) _ff_log(__FUNCTION__, allowedType, FFL_ERR, allowedLevel, level, __VA_ARGS__)
+#define ffl_info(allowedType,allowedLevel,level,...) _ff_log(__FUNCTION__, allowedType, FFL_INFO, allowedLevel, level, __VA_ARGS__)
 
 /*
  *  weaker logging can be deselected at configure time using --disable-debug
@@ -50,7 +60,7 @@ int _ff_log_contnu(_ff_log_type t, unsigned int l, const char* format, ...);
  */
 #ifdef _DEBUG
 
-#define ffl_debug(level,...) _ff_log(FFL_DEBUG, level, __FUNCTION__, __FILE__, __LINE__, __VA_ARGS__)
+#define ffl_debug(allowedType,allowedLevel,level,...) _ff_log(allowedType,FFL_DEBUG, allowedLevel, level, __FUNCTION__, __FILE__, __LINE__, __VA_ARGS__)
 #define ffl_parser(...) _ff_log(FFL_PARSER, __VA_ARGS__)
 #define ffl_header(...)  _ff_log(FFL_HEADER, __VA_ARGS__)
 #define ffl_ext(...)  _ff_log(FFL_EXT, __VA_ARGS__)
@@ -110,5 +120,5 @@ bool _ffl_level(_ff_log_type t, unsigned int l);
 #define ffl_debug_lvl(level) _ffl_level(FFL_DEBUG, level)
 
 
-#endif	/* LOGGER_H */
+#endif /* LOGGER_H */
 

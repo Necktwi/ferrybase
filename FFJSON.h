@@ -6,11 +6,12 @@
  */
 
 #ifndef FFJSON_H
-#define	FFJSON_H
+#define FFJSON_H
 
 #define MAX_ORDERED_MEMBERS 1000
 
 #include "myconverters.h"
+#include "logger.h"
 
 #include <string>
 #include <iostream>
@@ -174,7 +175,7 @@ public:
 		 */
 		vector<map<string, FFJSON*>::iterator>* m_pvpsMapSequence;
 
-		FeaturedMember() : link {
+		FeaturedMember() : link{
 			NULL
 		}
 		{
@@ -403,7 +404,7 @@ public:
 		bool boolean;
 		FFJSON* fptr;
 
-		FFValue() : string {
+		FFValue() : string{
 			NULL
 		}
 		{
@@ -461,4 +462,29 @@ private:
 
 ostream& operator<<(ostream& out, const FFJSON& f);
 
-#endif	/* FFJSON_H */
+extern _ff_log_type ffj_log_type;
+extern unsigned int ffj_log_level;
+
+
+#define ffj_notice(level,...) ffl_notice(ffj_log_type,ffj_log_level,level,__VA_ARGS__)
+#define ffj_warn(level,...) ffl_warn(ffj_log_type,ffj_log_level,level,__VA_ARGS__)
+#define ffj_err(level,...) ffl_err(ffj_log_type,ffj_log_level,level,__VA_ARGS__)
+#define ffj_info(level,...) ffl_info(ffj_log_type,ffj_log_level,level,__VA_ARGS__)
+
+/*
+ *  weaker logging can be deselected at configure time using --disable-debug
+ *  that gets rid of the overhead of checking while keeping _warn and _err
+ *  active
+ */
+#ifdef _DEBUG
+
+#define ffj_debug(level,...) ffl_debug(ffj_log_type,ffj_log_level,level,__VA_ARGS__)
+#define ffl_parser(...) _ff_log(FFL_PARSER, __VA_ARGS__)
+#define ffl_header(...)  _ff_log(FFL_HEADER, __VA_ARGS__)
+#define ffl_ext(...)  _ff_log(FFL_EXT, __VA_ARGS__)
+#define ffl_client(...) _ff_log(FFL_CLIENT, __VA_ARGS__)
+#define ffl_latency(...) _ff_log(FFL_LATENCY, __VA_ARGS__)
+
+#endif /* _DEBUG */
+
+#endif /* FFJSON_H */
