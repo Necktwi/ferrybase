@@ -1154,93 +1154,93 @@ void DeleteChildLinks(vector<FFJSON*>* childLinks) {
 }
 
 void FFJSON::destroyAllFeaturedMembers() {
-	FeaturedMember* pFMS = &m_uFM;
+	FeaturedMember fmHolder = m_uFM;
 	uint32_t iFMCount = flags >> 28;
 	uint32_t iFMTraversed = 0;
 	if (isType(STRING) && isEFlagSet(STRING_INIT)) {
 		if (iFMCount - iFMTraversed == 1) {
 			//Deletion of the multilinebuf is responsibility of me
-			//delete pFMS->m_psMultiLnBuffer;
+			//delete fmHolder.m_psMultiLnBuffer;
 		} else {
 			//Deletion of the multilinebuf is responsibility of me
-			//delete pFMS->m_pFMH->m_uFM.m_psMultiLnBuffer;
-			FeaturedMember* pTempFMS = &pFMS->m_pFMH->m_pFMH;
-			delete pFMS->m_pFMH;
-			pFMS = pTempFMS;
+			//delete fmHolder.m_pFMH->m_uFM.m_psMultiLnBuffer;
+			FeaturedMemHook* pFMHHolder = fmHolder.m_pFMH;
+			fmHolder = fmHolder.m_pFMH->m_pFMH;
+			delete pFMHHolder;
 		}
 		clearEFlag(STRING_INIT);
 		iFMTraversed++;
 	}
 	if (isType(STRING)) {
 		if (iFMCount - iFMTraversed == 1) {
-			pFMS->width = 0;
+			fmHolder.width = 0;
 		} else {
-			pFMS->m_pFMH->m_uFM.width = 0;
-			FeaturedMember* pTempFMS = &pFMS->m_pFMH->m_pFMH;
-			delete pFMS->m_pFMH;
-			pFMS = pTempFMS;
+			fmHolder.m_pFMH->m_uFM.width = 0;
+			FeaturedMemHook* pFMHHolder = fmHolder.m_pFMH;
+			fmHolder = fmHolder.m_pFMH->m_pFMH;
+			delete pFMHHolder;
 		}
 		setType(UNDEFINED);
 		iFMTraversed++;
 	}
 	if (isType(OBJECT)) {
 		if (iFMCount - iFMTraversed == 1) {
-			delete pFMS->m_pvpsMapSequence;
+			delete fmHolder.m_pvpsMapSequence;
 		} else {
-			delete pFMS->m_pFMH->m_uFM.m_pvpsMapSequence;
-			FeaturedMember* pTempFMS = &pFMS->m_pFMH->m_pFMH;
-			delete pFMS->m_pFMH;
-			pFMS = pTempFMS;
+			delete fmHolder.m_pFMH->m_uFM.m_pvpsMapSequence;
+			FeaturedMemHook* pFMHHolder = fmHolder.m_pFMH;
+			fmHolder = fmHolder.m_pFMH->m_pFMH;
+			delete pFMHHolder;
 		}
 		iFMTraversed++;
 	}
 	if (isEFlagSet(EXT_VIA_PARENT) && !isType(STRING)) {
 		if (iFMCount - iFMTraversed == 1) {
 			if (isEFlagSet(EXTENDED) && getType() != NUMBER) {
-				delete pFMS->tabHead;
+				delete fmHolder.tabHead;
 			}
 		} else {
 			if (isEFlagSet(EXTENDED) && getType() != NUMBER) {
-				delete pFMS->m_pFMH->m_uFM.tabHead;
+				delete fmHolder.m_pFMH->m_uFM.tabHead;
 			}
-			FeaturedMember* pTempFMS = &pFMS->m_pFMH->m_pFMH;
-			delete pFMS->m_pFMH;
-			pFMS = pTempFMS;
+			FeaturedMemHook* pFMHHolder = fmHolder.m_pFMH;
+			fmHolder = fmHolder.m_pFMH->m_pFMH;
+			delete pFMHHolder;
 		}
 		iFMTraversed++;
 	}
 	if (isType(LINK)) {
 		if (iFMCount - iFMTraversed == 1) {
-			delete pFMS->link;
+			delete fmHolder.link;
 		} else {
-			delete pFMS->m_pFMH->m_uFM.tabHead;
-			FeaturedMember* pTempFMS = &pFMS->m_pFMH->m_pFMH;
-			delete pFMS->m_pFMH;
-			pFMS = pTempFMS;
+			delete fmHolder.m_pFMH->m_uFM.tabHead;
+			FeaturedMemHook* pFMHHolder = fmHolder.m_pFMH;
+			fmHolder = fmHolder.m_pFMH->m_pFMH;
+			delete pFMHHolder;
 		}
 		iFMTraversed++;
 	}
 	if (isEFlagSet(EXTENDED) && (isType(OBJECT) || isType(ARRAY))) {
 		if (iFMCount - iFMTraversed == 1) {
-			delete pFMS->m_pParent;
+			delete fmHolder.m_pParent;
 		} else {
-			delete pFMS->m_pFMH->m_uFM.m_pParent;
-			FeaturedMember* pTempFMS = &pFMS->m_pFMH->m_pFMH;
-			delete pFMS->m_pFMH;
-			pFMS = pTempFMS;
+			delete fmHolder.m_pFMH->m_uFM.m_pParent;
+			FeaturedMemHook* pFMHHolder = fmHolder.m_pFMH;
+			fmHolder = fmHolder.m_pFMH->m_pFMH;
+			delete pFMHHolder;
 		}
 		iFMTraversed++;
 	}
 	if (isEFlagSet(HAS_CHILDREN) && (isType(OBJECT) || isType(ARRAY))) {
 		if (iFMCount - iFMTraversed == 1) {
-			DeleteChildLinks(pFMS->m_pvChildren);
-			delete pFMS->m_pvChildren;
+			DeleteChildLinks(fmHolder.m_pvChildren);
+			delete fmHolder.m_pvChildren;
 		} else {
-			DeleteChildLinks(pFMS->m_pFMH->m_uFM.m_pvChildren);
-			delete pFMS->m_pFMH->m_uFM.m_pvChildren;
-			FeaturedMember* pTempFMS = &pFMS->m_pFMH->m_pFMH;
-			delete pFMS->m_pFMH;
-			pFMS = pTempFMS;
+			DeleteChildLinks(fmHolder.m_pFMH->m_uFM.m_pvChildren);
+			delete fmHolder.m_pFMH->m_uFM.m_pvChildren;
+			FeaturedMemHook* pFMHHolder = fmHolder.m_pFMH;
+			fmHolder = fmHolder.m_pFMH->m_pFMH;
+			delete pFMHHolder;
 		}
 		iFMTraversed++;
 	}
@@ -1365,7 +1365,8 @@ void FFJSON::deleteFeaturedMember(FeaturedMemType fmt) {
 	}
 }
 
-FFJSON* FFJSON::returnNameIfDeclared(vector<string>& prop, FFJSON::FFJSONPObj * fpo) {
+FFJSON* FFJSON::returnNameIfDeclared(vector<string>& prop,
+		FFJSON::FFJSONPObj * fpo) const {
 	int j = 0;
 	while (fpo != NULL) {
 		FFJSON* fp = fpo->value;
@@ -1659,7 +1660,7 @@ FFJSON & FFJSON::operator[](int index) {
  * @param encode_to_base64 if true then the binary data is base64 encoded
  * @return json string of this FFJSON object
  */
-string FFJSON::stringify(bool json, FFJSONPrettyPrintPObj* pObj) {
+string FFJSON::stringify(bool json, FFJSONPrettyPrintPObj* pObj) const {
 	string ffs;
 	if (isType(OBJ_TYPE::STRING)) {
 		string s;
@@ -1733,7 +1734,7 @@ string FFJSON::stringify(bool json, FFJSONPrettyPrintPObj* pObj) {
 		map<const string*, list<string>::iterator> mpKeyPrettyStringItMap;
 		FFJSONPrettyPrintPObj lfpo(&deps, &ffPairLst, &memKeyFFPairMap, &mpKeyPrettyStringItMap);
 		lfpo.pObj = pObj;
-		lfpo.value = this;
+		lfpo.value = const_cast<FFJSON*> (this);
 		lfpo.m_lsFFPairLst = &ffPairLst;
 		lfpo.m_mpMemKeyFFPairMap = &memKeyFFPairMap;
 		lfpo.m_mpDeps = &deps;
@@ -1775,7 +1776,7 @@ string FFJSON::stringify(bool json, FFJSONPrettyPrintPObj* pObj) {
 			}
 		}
 		ffPairLst.pop_back();
-		headTheHeader(lfpo);
+		//headTheHeader(lfpo);
 		if (ffPairLst.size() > 0) {
 			string& rLastKeyValStr = ffPairLst.back();
 			rLastKeyValStr.erase(rLastKeyValStr.length() - 1);
@@ -1792,7 +1793,7 @@ string FFJSON::stringify(bool json, FFJSONPrettyPrintPObj* pObj) {
 		int i = 0;
 		FFJSONPrettyPrintPObj lfpo(NULL, NULL, NULL, NULL);
 		lfpo.pObj = pObj;
-		lfpo.value = this;
+		lfpo.value = const_cast<FFJSON*> (this);
 		while (i < objarr.size()) {
 			uint32_t t = objarr[i] ? objarr[i]->getType() : NUL;
 			if (t == NUL) {
@@ -1839,7 +1840,7 @@ string FFJSON::stringify(bool json, FFJSONPrettyPrintPObj* pObj) {
 }
 
 string FFJSON::prettyString(bool json, bool printComments, unsigned int indent,
-		FFJSONPrettyPrintPObj* pObj) {
+		FFJSONPrettyPrintPObj* pObj) const {
 	string ps;
 	if (isType(OBJ_TYPE::STRING)) {
 		ps = "\"";
@@ -1923,7 +1924,7 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent,
 		map<const string*, list<string>::iterator> mpKeyPrettyStringItMap;
 		FFJSONPrettyPrintPObj lfpo(&deps, &ffPairLst, &memKeyFFPairMap, &mpKeyPrettyStringItMap);
 		lfpo.pObj = pObj;
-		lfpo.value = this;
+		lfpo.value = const_cast<FFJSON*> (this);
 		lfpo.m_lsFFPairLst = &ffPairLst;
 		lfpo.m_mpMemKeyFFPairMap = &memKeyFFPairMap;
 		lfpo.m_mpDeps = &deps;
@@ -1989,7 +1990,7 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent,
 			}
 		}
 		ffPairLst.pop_back();
-		headTheHeader(lfpo);
+		//headTheHeader(lfpo);
 		if (ffPairLst.size() > 0) {
 			string& rLastKeyValStr = ffPairLst.back();
 			if (printComments && (*val.pairs)[*memKeyFFPairMap[&rLastKeyValStr]]->isEFlagSet(HAS_COMMENT)) {
@@ -2012,7 +2013,7 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent,
 		vector<int> vClWidths;
 		FFJSONPrettyPrintPObj lfpo(NULL, NULL, NULL, NULL);
 		lfpo.pObj = pObj;
-		lfpo.value = this;
+		lfpo.value = const_cast<FFJSON*> (this);
 		if (isEFlagSet(EXT_VIA_PARENT)) {
 			if (isEFlagSet(EXTENDED)) {
 				ps = "[\n";
@@ -2167,7 +2168,7 @@ string FFJSON::prettyString(bool json, bool printComments, unsigned int indent,
 }
 
 string FFJSON::ConstructMultiLineStringArray(vector<FFJSON*>& vpfMulLnStrs,
-		int indent, vector<int>& vClWidths) {
+		int indent, vector<int>& vClWidths) const {
 	string sProduct;
 	int iLineIndex = 1;
 	bool bAreMulLnStrsRemained = false;
@@ -3147,3 +3148,22 @@ void FFJSON::headTheHeader(FFJSONPrettyPrintPObj& lfpo) {
 		itFFPL = itFFPLNext;
 	}
 }
+
+//ostream& FFJSON::operator<<(ostream& out) {
+//	out << prettyString();
+//	return out;
+//}
+//
+//istream& FFJSON::operator>>(istream& in) {
+//	string sFFJSON;
+//	in >> sFFJSON;
+//	freeObj();
+//	init(sFFJSON);
+//	return in;
+//}
+
+ostream& operator<<(ostream& out, const FFJSON& f) {
+	out << f.prettyString();
+	return out;
+}
+

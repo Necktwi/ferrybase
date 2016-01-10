@@ -174,7 +174,10 @@ public:
 		 */
 		vector<map<string, FFJSON*>::iterator>* m_pvpsMapSequence;
 
-		FeaturedMember() : link{NULL} {
+		FeaturedMember() : link {
+			NULL
+		}
+		{
 		}
 	};
 
@@ -340,7 +343,8 @@ public:
 	 * Converts FFJSON object into FFJSON string.
 	 * @return FFJSON string.
 	 */
-	string stringify(bool json = false, FFJSONPrettyPrintPObj* pObj = NULL);
+	string stringify(bool json = false, FFJSONPrettyPrintPObj* pObj = NULL)
+	const;
 
 	/**
 	 * Converts FFJSON object into FFJSON pretty string that has indents where
@@ -351,7 +355,7 @@ public:
 	 * @return A pretty string :)
 	 */
 	string prettyString(bool json = false, bool printComments = false,
-			unsigned int indent = 0, FFJSONPrettyPrintPObj* pObj = NULL);
+			unsigned int indent = 0, FFJSONPrettyPrintPObj* pObj = NULL) const;
 
 	/**
 	 * Generates a query string which can be used to query a FFJSON tree. Query 
@@ -399,7 +403,10 @@ public:
 		bool boolean;
 		FFJSON* fptr;
 
-		FFValue() : string{NULL} {
+		FFValue() : string {
+			NULL
+		}
+		{
 		}
 	} val;
 
@@ -415,12 +422,17 @@ public:
 	FFJSON& operator=(const long& l);
 	FFJSON& operator=(const FFJSON& f);
 	FFJSON& operator=(FFJSON* f);
+
 	operator const char*();
 	operator double();
 	operator float();
 	operator bool();
 	operator int();
 	operator unsigned int();
+
+	//ostream& operator<<(ostream &out);
+	//istream& operator>>(istream &in);
+
 
 private:
 
@@ -438,13 +450,15 @@ private:
 	static void strObjMapInit();
 	static bool inline isWhiteSpace(char c);
 	static bool inline isTerminatingChar(char c);
-	FFJSON* returnNameIfDeclared(vector<string>& prop, FFJSONPObj* fpo);
+	FFJSON* returnNameIfDeclared(vector<string>& prop, FFJSONPObj* fpo) const;
 	FFJSON* markTheNameIfExtended(FFJSONPrettyPrintPObj* fpo);
 	bool inherit(FFJSON& obj, FFJSONPObj* pFPObj);
 	void ReadMultiLinesInContainers(const string& ffjson, int& i,
 			FFJSONPObj& pObj);
 	string ConstructMultiLineStringArray(vector<FFJSON*>& vpfMulLnStrs,
-			int indent, vector<int>& vClWidths);
+			int indent, vector<int>& vClWidths) const;
 };
+
+ostream& operator<<(ostream& out, const FFJSON& f);
 
 #endif	/* FFJSON_H */
