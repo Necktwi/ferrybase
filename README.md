@@ -15,11 +15,24 @@ I recursively hacked it to extract as many features as I could and I will contin
 
 code at a glance:
 -----------------
+	Employee.json
+	-------------
+	{
+		"name":	"Gowtham",
+		"id": 1729,
+		"isProgrammer":	true,
+		"favLanguages":	["C++", "Javascript"],
+		"address": {
+			"town": "KAKINADA",
+			"country": "India"
+		}
+	}
+	
+	main.cpp
+	--------
 	#include <base/FFJSON.h>
 
-	FFJSON obj("{\"name\":\"Gowtham\",\"id\":1729,\"isProgrammer\":true,"
-		"\"favLanguages\":[\"C++\",\"javascript\"],"
-		"\"address\":{\"town\":\"KAKINADA\",\"country\":\"India\"}}");
+	FFJSON obj("file://Employee.json");
 	
 	cout << obj["name"] << endl;
 	cout << (int)obj["id"] << endl;
@@ -35,7 +48,7 @@ output:
 	India
 	[
 		"C++",
-		"javascript",
+		"javascript"
 	]
 
 Installation
