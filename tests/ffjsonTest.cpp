@@ -303,16 +303,16 @@ int main(int argc, char** argv) {
 	timespec tsSuiteStart = {0, 0};
 	clock_gettime(CLOCK_REALTIME, &tsSuiteStart);
 
-	//	std::cout << "%TEST_STARTED% test1 (ffjsonTest)" << std::endl;
-	//	tsStart = {0, 0};
-	//	clock_gettime(CLOCK_REALTIME, &tsStart);
-	//	test1();
-	//	tsEnd = {0, 0};
-	//	clock_gettime(CLOCK_REALTIME, &tsEnd);
-	//	tsDiff = UTimeDiff(tsEnd, tsStart);
-	//	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
-	//			tsDiff.tv_nsec << " test1 (ffjsonTest)" << std::endl;
-	//
+	std::cout << "%TEST_STARTED% test1 (ffjsonTest)" << std::endl;
+	tsStart = {0, 0};
+	clock_gettime(CLOCK_REALTIME, &tsStart);
+	test1();
+	tsEnd = {0, 0};
+	clock_gettime(CLOCK_REALTIME, &tsEnd);
+	tsDiff = UTimeDiff(tsEnd, tsStart);
+	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
+			tsDiff.tv_nsec << " test1 (ffjsonTest)" << std::endl;
+	
 	//	std::cout << "%TEST_STARTED% test2 (ffjsonTest)\n" << std::endl;
 	//	tsStart = {0, 0};
 	//	clock_gettime(CLOCK_REALTIME, &tsStart);

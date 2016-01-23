@@ -121,4 +121,3 @@ bool _ffl_level(_ff_log_type t, unsigned int l);
 
 
 #endif /* LOGGER_H */
-
