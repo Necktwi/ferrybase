@@ -91,6 +91,23 @@
       <itemPath>.gitignore</itemPath>
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f2"
+                     displayName="ffjsonTest"
+                     projectFiles="true"
+                     kind="TEST">
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>.gitignore</itemPath>
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
     <itemPath>ExtensionTest.ffjson</itemPath>
     <itemPath>MultiLevelInheritance.ffjson</itemPath>
     <itemPath>MultiLineArray.ffjson</itemPath>
@@ -99,6 +116,8 @@
     <itemPath>sample.ffjson</itemPath>
   </logicalFolder>
   <sourceRootList>
+    <Elem>debian</Elem>
+    <Elem>nbproject</Elem>
     <Elem>debian</Elem>
     <Elem>nbproject</Elem>
   </sourceRootList>

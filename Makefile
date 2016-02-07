@@ -51,7 +51,7 @@ CCADMIN=CCadmin
 APPNAME=base
 MAJOR_VERSION=1
 MINOR_VERSION=0.0
-
+DESTSUBDIR=/usr/local
 # build
 build: .build-post
 
@@ -131,18 +131,27 @@ include nbproject/Makefile-variables.mk
 
 install:
 	pwd_var=$(pwd)
-	test -d "$(DESTDIR)/usr/lib" || mkdir -p "$(DESTDIR)/usr/lib" && test -d "$(DESTDIR)/usr/lib/ferryfair" || mkdir -p "$(DESTDIR)/usr/lib/ferryfair"
-	#install -D ${CND_ARTIFACT_PATH_${CONF}} $(DESTDIR)/usr/lib/ferryfair/${CND_ARTIFACT_NAME_${CONF}}.$(version).0.0
-	#install -D ${CND_ARTIFACT_PATH_DebugStatic} $(DESTDIR)/usr/lib/ferryfair/${CND_ARTIFACT_NAME_DebugStatic}
-	install -D ${CND_ARTIFACT_PATH_DebugStatic} $(DESTDIR)/usr/lib/${CND_ARTIFACT_NAME_DebugStatic}
-	install -D ${CND_ARTIFACT_PATH_${CONF}} $(DESTDIR)/usr/lib/${CND_ARTIFACT_NAME_${CONF}}
-	cd $(DESTDIR)/usr/lib/
-	ln -sf ${CND_ARTIFACT_NAME_${CONF}} $(DESTDIR)/usr/lib/lib${APPNAME}.so.${MAJOR_VERSION}
-	ln -sf lib${APPNAME}.so.${MAJOR_VERSION} $(DESTDIR)/usr/lib/lib${APPNAME}.so
-	#ln -s ./ferryfair/${CND_ARTIFACT_NAME_DebugStatic} $(DESTDIR)/usr/lib/${CND_ARTIFACT_NAME_DebugStatic}
+	test -d "$(DESTDIR)/usr/lib" || mkdir -p "$(DESTDIR)$(DESTSUBDIR)/lib" && test -d "$(DESTDIR)/usr/lib/ferryfair" || mkdir -p "$(DESTDIR)/usr/lib/ferryfair"
+	#install -D ${CND_ARTIFACT_PATH_${CONF}} $(DESTDIR)$(DESTSUBDIR)/lib/ferryfair/${CND_ARTIFACT_NAME_${CONF}}.$(version).0.0
+	#install -D ${CND_ARTIFACT_PATH_DebugStatic} $(DESTDIR)$(DESTSUBDIR)/lib/ferryfair/${CND_ARTIFACT_NAME_DebugStatic}
+	install -D ${CND_ARTIFACT_PATH_DebugStatic} $(DESTDIR)$(DESTSUBDIR)/lib/${CND_ARTIFACT_NAME_DebugStatic}
+	install -D ${CND_ARTIFACT_PATH_${CONF}} $(DESTDIR)$(DESTSUBDIR)/lib/${CND_ARTIFACT_NAME_${CONF}}
+	cd $(DESTDIR)$(DESTSUBDIR)/lib/
+	ln -sf ${CND_ARTIFACT_NAME_${CONF}} $(DESTDIR)$(DESTSUBDIR)/lib/lib${APPNAME}.so.${MAJOR_VERSION}
+	ln -sf lib${APPNAME}.so.${MAJOR_VERSION} $(DESTDIR)$(DESTSUBDIR)/lib/lib${APPNAME}.so
+	#ln -s ./ferryfair/${CND_ARTIFACT_NAME_DebugStatic} $(DESTDIR)$(DESTSUBDIR)/lib/${CND_ARTIFACT_NAME_DebugStatic}
 	cd $(pwd_var)
-	test -d "$(DESTDIR)/usr/include/ferryfair" || mkdir -p "$(DESTDIR)/usr/include/ferryfair" && mkdir -p "$(DESTDIR)/usr/include/ferryfair/base"
-	install -D *.h $(DESTDIR)/usr/include/ferryfair/base
-	test -d "$(DESTDIR)/usr/lib/pkgconfig/" || mkdir -p "$(DESTDIR)/usr/lib/pkgconfig/"
-	install -m=644 -D "${APPNAME}.pc" $(DESTDIR)/usr/lib/pkgconfig/lib$(APPNAME).pc
-	install -m=644 -D "${APPNAME}.pc" $(DESTDIR)/usr/share/pkgconfig/lib$(APPNAME).pc
+	test -d "$(DESTDIR)$(DESTSUBDIR)/include/ferryfair" || mkdir -p "$(DESTDIR)$(DESTSUBDIR)/include/ferryfair" && mkdir -p "$(DESTDIR)$(DESTSUBDIR)/include/ferryfair/base"
+	install -D *.h $(DESTDIR)$(DESTSUBDIR)/include/ferryfair/base
+	test -d "$(DESTDIR)$(DESTSUBDIR)/lib/pkgconfig/" || mkdir -p "$(DESTDIR)$(DESTSUBDIR)/lib/pkgconfig/"
+	install -m 644 -D "${APPNAME}.pc" $(DESTDIR)$(DESTSUBDIR)/lib/pkgconfig/lib$(APPNAME).pc
+	install -m 644 -D "${APPNAME}.pc" $(DESTDIR)$(DESTSUBDIR)/share/pkgconfig/lib$(APPNAME).pc
+
+uninstall:
+	rm $(DESTDIR)$(DESTSUBDIR)/lib/${CND_ARTIFACT_NAME_DebugStatic}
+	rm $(DESTDIR)$(DESTSUBDIR)/lib/${CND_ARTIFACT_NAME_${CONF}}
+	rm $(DESTDIR)$(DESTSUBDIR)/lib/lib${APPNAME}.so.${MAJOR_VERSION}
+	rm $(DESTDIR)$(DESTSUBDIR)/lib/lib${APPNAME}.so
+	rm -R $(DESTDIR)$(DESTSUBDIR)/include/ferryfair/base
+	rm $(DESTDIR)$(DESTSUBDIR)/lib/pkgconfig/lib$(APPNAME).pc
+	rm $(DESTDIR)$(DESTSUBDIR)/share/pkgconfig/lib$(APPNAME).pc

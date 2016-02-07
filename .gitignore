@@ -5,3 +5,11 @@ dist/
 nbproject/private/private.xml
 .DS_Store
 nbproject/.DS_Store
+
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml

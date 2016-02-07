@@ -12,6 +12,8 @@
             <sourceRootList>
                 <sourceRootElem>debian</sourceRootElem>
                 <sourceRootElem>nbproject</sourceRootElem>
+                <sourceRootElem>debian</sourceRootElem>
+                <sourceRootElem>nbproject</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>
