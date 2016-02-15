@@ -38,7 +38,7 @@ code at a glance:
 	cout << (int)obj["id"] << endl;
 	cout << obj["address"]["country"] << endl;
 	if(obj["isProgrammer"]){
-		cout << obj["favLanguages"].prettyString() << endl;
+		cout << obj["favLanguages"] << endl;
 	}
 
 output:
