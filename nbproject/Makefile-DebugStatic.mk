@@ -51,7 +51,7 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 
 # Test Files
 TESTFILES= \
-	${TESTDIR}/TestFiles/f2
+	${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/base
 
 # Test Object Files
 TESTOBJECTFILES= \
@@ -140,9 +140,9 @@ ${OBJECTDIR}/myxml.o: myxml.cpp
 .build-tests-conf: .build-tests-subprojects .build-conf ${TESTFILES}
 .build-tests-subprojects:
 
-${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/ffjsonTest.o ${OBJECTFILES:%.o=%_nomain.o}
-	${MKDIR} -p ${TESTDIR}/TestFiles
-	${LINK.cc}   -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} 
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/base: ${TESTDIR}/tests/ffjsonTest.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
+	${LINK.cc}   -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/base $^ ${LDLIBSOPTIONS} 
 
 
 ${TESTDIR}/tests/ffjsonTest.o: tests/ffjsonTest.cpp 
@@ -285,7 +285,7 @@ ${OBJECTDIR}/myxml_nomain.o: ${OBJECTDIR}/myxml.o myxml.cpp
 .test-conf:
 	@if [ "${TEST}" = "" ]; \
 	then  \
-	    ${TESTDIR}/TestFiles/f2 || true; \
+	    ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/base || true; \
 	else  \
 	    ./${TEST} || true; \
 	fi

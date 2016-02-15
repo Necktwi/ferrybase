@@ -27,9 +27,6 @@ enum _ff_log_type {
 /**
  * initiate ff_log_type ff_log_level them in your project
  */
-extern int ff_log_type;
-extern unsigned int ff_log_level;
-
 int _ff_log(_ff_log_type t, const char* format, ...);
 int _ff_log(const char* func,
 		_ff_log_type allowedType,
@@ -45,7 +42,10 @@ int _ff_log(_ff_log_type allowedType,
 		const char* file_name,
 		int line_no,
 		const char* format, ...);
-int _ff_log_contnu(_ff_log_type t, unsigned int l, const char* format, ...);
+int _ff_log_contnu(_ff_log_type allowedType, _ff_log_type t,
+		unsigned int allowedLevel,
+		unsigned int l,
+		const char* format, ...);
 
 /* notice, warn and log are always compiled in */
 #define ffl_notice(allowedType,allowedLevel,level,...) _ff_log(__FUNCTION__, allowedType, FFL_NOTICE, allowedLevel, level, __VA_ARGS__)
@@ -80,10 +80,10 @@ int _ff_log_contnu(_ff_log_type t, unsigned int l, const char* format, ...);
 
 #endif
 
-#define ffl_notice_contnu(level,...) _ff_log_contnu(FFL_NOTICE, level, __VA_ARGS__)
-#define ffl_warn_contnu(level,...) _ff_log_contnu(FFL_WARN, level, __VA_ARGS__)
-#define ffl_err_contnu(level,...) _ff_log_contnu(FFL_ERR, level, __VA_ARGS__)
-#define ffl_info_contnu(level,...) _ff_log_contnu(FFL_INFO, level, __VA_ARGS__)
+#define ffl_notice_contnu(allowedType,allowedLevel,level,...) _ff_log_contnu(allowedType,FFL_NOTICE, allowedLevel, level, __VA_ARGS__)
+#define ffl_warn_contnu(allowedType,allowedLevel,level,...) _ff_log_contnu(allowedType,FFL_WARN, allowedLevel, level, __VA_ARGS__)
+#define ffl_err_contnu(allowedType,allowedLevel,level,...) _ff_log_contnu(allowedType,FFL_ERR, allowedLevel, level, __VA_ARGS__)
+#define ffl_info_contnu(allowedType,allowedLevel,level,...) _ff_log_contnu(allowedType,FFL_INFO, allowedLevel, level, __VA_ARGS__)
 
 /*
  *  weaker logging can be deselected at configure time using --disable-debug
@@ -92,7 +92,7 @@ int _ff_log_contnu(_ff_log_type t, unsigned int l, const char* format, ...);
  */
 #ifdef _DEBUG
 
-#define ffl_debug_contnu(level,...) _ff_log_contnu(FFL_DEBUG, level, __VA_ARGS__)
+#define ffl_debug_contnu(level,...) _ff_log_contnu(allowedType, FFL_DEBUG, allowedLevel, level, __VA_ARGS__)
 #define ffl_parser_contnu(...) _ff_log_contnu(FFL_PARSER, __VA_ARGS__)
 #define ffl_header_contnu(...)  _ff_log_contnu(FFL_HEADER, __VA_ARGS__)
 #define ffl_ext_contnu(...)  _ff_log_contnu(FFL_EXT, __VA_ARGS__)
@@ -112,12 +112,14 @@ int _ff_log_contnu(_ff_log_type t, unsigned int l, const char* format, ...);
 
 #endif
 
-bool _ffl_level(_ff_log_type t, unsigned int l);
+bool _ffl_level(_ff_log_type allowedType, _ff_log_type t,
+		unsigned int allowedLevel,
+		unsigned int l);
 
 #define ffl_notice_lvl(level) _ffl_level(FFL_NOTICE, level)
 #define ffl_warn_lvl(level) _ffl_level(FFL_WARN, level)
 #define ffl_err_lvl(level) _ffl_level(FFL_ERR, level)
-#define ffl_debug_lvl(level) _ffl_level(FFL_DEBUG, level)
+#define ffl_debug_lvl(level) _ffl_level(FFL_DEBUG,  level)
 
 
 #endif /* LOGGER_H */

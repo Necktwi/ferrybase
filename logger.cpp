@@ -144,14 +144,18 @@ int _ff_log(_ff_log_type allowedType,
 	return 0;
 };
 
-int _ff_log_contnu(_ff_log_type t, unsigned int l, const char* format, ...) {
+int _ff_log_contnu(_ff_log_type allowedType, _ff_log_type t,
+		unsigned int allowedLevel,
+		unsigned int l,
+		const char* format,
+		...) {
 	char buf[1000];
 	unsigned int nnl = 1 << 31;
 	bool no_new_line = (l & nnl) == nnl;
 	l &= ~nnl;
 	va_list ap;
 
-	if (!(ff_log_type & t) || !(ff_log_level & l))
+	if (!(allowedType & t) || !(allowedLevel & l))
 		return 0;
 
 	va_start(ap, format);
@@ -168,8 +172,10 @@ int _ff_log_contnu(_ff_log_type t, unsigned int l, const char* format, ...) {
 	return 0;
 };
 
-bool _ffl_level(_ff_log_type t, unsigned int l) {
-	if ((ff_log_type & t == t)&&(ff_log_level & l == l)) {
+bool _ffl_level(_ff_log_type allowedType, _ff_log_type t,
+		unsigned int allowedLevel,
+		unsigned int l) {
+	if ((allowedType & t == t)&&(allowedLevel & l == l)) {
 		return true;
 	}
 	return false;
