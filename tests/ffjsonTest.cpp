@@ -394,15 +394,15 @@ int main(int argc, char** argv) {
 		std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
 				tsDiff.tv_nsec << " test8 (ffjsonTest)" << std::endl;
 
-	std::cout << "%TEST_STARTED% test9\n" << std::endl;
-	tsStart = {0, 0};
-	clock_gettime(CLOCK_REALTIME, &tsStart);
-	test9();
-	tsEnd = {0, 0};
-	clock_gettime(CLOCK_REALTIME, &tsEnd);
-	tsDiff = UTimeDiff(tsEnd, tsStart);
-	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
-			tsDiff.tv_nsec << " test9 " << std::endl;
+//	std::cout << "%TEST_STARTED% test9\n" << std::endl;
+//	tsStart = {0, 0};
+//	clock_gettime(CLOCK_REALTIME, &tsStart);
+//	test9();
+//	tsEnd = {0, 0};
+//	clock_gettime(CLOCK_REALTIME, &tsEnd);
+//	tsDiff = UTimeDiff(tsEnd, tsStart);
+//	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
+//			tsDiff.tv_nsec << " test9 " << std::endl;
 
 	timespec tsSuiteEnd = {0, 0};
 	clock_gettime(CLOCK_REALTIME, &tsSuiteEnd);
