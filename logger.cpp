@@ -125,7 +125,8 @@ int _ff_log(_ff_log_type allowedType,
 	for (n = 0; n < FFLT_COUNT; n++)
 		if (t == (1 << n)) {
 			//now = time_in_microseconds() / 100;
-			sprintf(buf2, "[%s %s %05d %s:%s:%d]: ", (const char*) getuTime().c_str(), log_type_names[n],
+			sprintf(buf2, "[%s %s %05d %s:%s:%d]: ", (const char*) getuTime().
+					c_str(), log_type_names[n],
 #ifdef __CYGWIN__
 					pthread_self(),
 #else

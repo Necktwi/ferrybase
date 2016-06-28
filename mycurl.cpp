@@ -100,14 +100,16 @@ string SOAPReq(string hostname, string port, string requestPath, string SOAPActi
 	return res2;
 }
 
-string HTTPReq(string hostname, string requestPath, string port, string content, Socket::SOCKET_TYPE socketType, std::string trustedCA, std::string privatecert, std::string privatekey) {
+string HTTPReq(string hostname, string requestPath, string port, string content,
+		Socket::SOCKET_TYPE socketType, std::string trustedCA,
+		std::string privatecert, std::string privatekey) {
 	int cl = content.length();
 	ostringstream ss;
 	ss << cl;
 	string ccl = ss.str();
-	string req1 = "POST " + requestPath + " HTTP/1.1\r\n"
-			"User-Agent: ferryport\r\n"
-			"Content-Type: text/xml; charset=utf-8\r\n"
+	string req1 = "POST " + requestPath + " HTTP/1.0\r\n"
+			"User-Agent: MyCURL\r\n"
+			"Content-Type: text/json; charset=utf-8\r\n"
 			"Host: " + hostname + "\r\n"
 			"Content-Length: " + ccl + "\r\n"
 			"Connection: Keep-Alive\r\n\r\n"
@@ -132,10 +134,16 @@ string HTTPReq(string hostname, string requestPath, string port, string content,
 				response += resbuf;
 				if (!s) {
 					int si = (int) response.find("Content-Length: ", 0) + 16;
-					l = (int) response.find("\r\n", si) - si;
-					string len = response.substr(si, l);
-					l = atoi(len.c_str())+(int) response.find("\r\n\r\n") + 4;
-					s = true;
+					if (si <= 15) {
+						si = (int) response.find("content-length: ", 0) + 16;
+					}
+					if (si > 15) {
+						l = (int) response.find("\r\n", si) - si;
+						string len = response.substr(si, l);
+						l = atoi(len.c_str())+(int) response.find("\r\n\r\n") +
+								4;
+						s = true;
+					}
 				}
 			} catch (SocketException&) {
 				return "CONNECTION ERROR";
@@ -146,6 +154,9 @@ string HTTPReq(string hostname, string requestPath, string port, string content,
 		return "CONNECTION ERROR";
 	}
 	int si = (int) response.find("Content-Length: ", 0) + 16;
+	if (si <= 15) {
+		si = (int) response.find("content-length: ", 0) + 16;
+	}
 	int l = (int) response.find("\r\n", si) - si;
 	string len = response.substr(si, l);
 	l = atoi(len.c_str());

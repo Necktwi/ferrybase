@@ -44,7 +44,7 @@ public:
 		string identifier;
 	};
 
-	enum OBJ_TYPE : uint32_t {
+	enum OBJ_TYPE : uint8_t {
 		UNDEFINED,
 		STRING,
 		XML,
@@ -53,6 +53,7 @@ public:
 		OBJECT,
 		ARRAY,
 		LINK,
+		BINARY,
 		NUL
 	};
 
@@ -92,7 +93,7 @@ public:
 		COPY_ALL = 0xffffffff
 	};
 
-	static const char OBJ_STR[8][15];
+	static const char OBJ_STR[9][15];
 
 	static map<string, uint8_t> STR_OBJ;
 
@@ -403,7 +404,7 @@ public:
 		double number;
 		bool boolean;
 		FFJSON* fptr;
-
+		void* vptr;
 		FFValue() : string{
 			NULL
 		}

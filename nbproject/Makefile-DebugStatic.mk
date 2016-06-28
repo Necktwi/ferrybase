@@ -148,7 +148,7 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/base: ${TESTDIR}/tests/ffjsonTest.o $
 ${TESTDIR}/tests/ffjsonTest.o: tests/ffjsonTest.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -I. -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/ffjsonTest.o tests/ffjsonTest.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/ffjsonTest.o tests/ffjsonTest.cpp
 
 
 ${OBJECTDIR}/ClientSocket_nomain.o: ${OBJECTDIR}/ClientSocket.o ClientSocket.cpp 

@@ -159,7 +159,8 @@ void test1() {
 	ffo2a = ffo2ao.prettyString();
 	cout << ffo2a << endl;
 	delete ao;
-	cout << "3rd students Maths marks: " << ffo2["studentsMarks"][2]["Maths"].prettyString() << endl;
+	cout << "3rd students Maths marks: " <<
+			ffo2["studentsMarks"][2]["Maths"].prettyString() << endl;
 	cout << "end of test" << endl;
 	return;
 }
@@ -283,7 +284,7 @@ void test8() {
 	cout << "===================================================" << endl;
 	cout << "			ffjsonTest test 8 sample.ffjson			" << endl;
 	cout << "===================================================" << endl;
-	FFJSON f("file://sample.ffjson");
+	FFJSON f("file://example.json");
 	cout << f.prettyString() << endl;
 	FFJSON f2(f.prettyString());
 	string sF2 = f2.stringify();
@@ -291,6 +292,15 @@ void test8() {
 	FFJSON f3(sF2);
 	string sF3 = f3.prettyString();
 	cout << sF3 << endl;
+
+}
+
+void test9() {
+	cout << "===================================================" << endl;
+	cout << "						erase test					" << endl;
+	cout << "===================================================" << endl;
+	FFJSON f("{}");
+	f["cameras"].erase(string("cam"));
 
 }
 
@@ -303,65 +313,65 @@ int main(int argc, char** argv) {
 	timespec tsSuiteStart = {0, 0};
 	clock_gettime(CLOCK_REALTIME, &tsSuiteStart);
 
-	std::cout << "%TEST_STARTED% test1 (ffjsonTest)" << std::endl;
-	tsStart = {0, 0};
-	clock_gettime(CLOCK_REALTIME, &tsStart);
-	test1();
-	tsEnd = {0, 0};
-	clock_gettime(CLOCK_REALTIME, &tsEnd);
-	tsDiff = UTimeDiff(tsEnd, tsStart);
-	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
-			tsDiff.tv_nsec << " test1 (ffjsonTest)" << std::endl;
+		std::cout << "%TEST_STARTED% test1 (ffjsonTest)" << std::endl;
+		tsStart = {0, 0};
+		clock_gettime(CLOCK_REALTIME, &tsStart);
+		test1();
+		tsEnd = {0, 0};
+		clock_gettime(CLOCK_REALTIME, &tsEnd);
+		tsDiff = UTimeDiff(tsEnd, tsStart);
+		std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
+				tsDiff.tv_nsec << " test1 (ffjsonTest)" << std::endl;
+
+		std::cout << "%TEST_STARTED% test2 (ffjsonTest)\n" << std::endl;
+		tsStart = {0, 0};
+		clock_gettime(CLOCK_REALTIME, &tsStart);
+		test2();
+		tsEnd = {0, 0};
+		clock_gettime(CLOCK_REALTIME, &tsEnd);
+		tsDiff = UTimeDiff(tsEnd, tsStart);
+		std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
+				tsDiff.tv_nsec << " test2 (ffjsonTest)" << std::endl;
 	
-	//	std::cout << "%TEST_STARTED% test2 (ffjsonTest)\n" << std::endl;
-	//	tsStart = {0, 0};
-	//	clock_gettime(CLOCK_REALTIME, &tsStart);
-	//	test2();
-	//	tsEnd = {0, 0};
-	//	clock_gettime(CLOCK_REALTIME, &tsEnd);
-	//	tsDiff = UTimeDiff(tsEnd, tsStart);
-	//	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
-	//			tsDiff.tv_nsec << " test2 (ffjsonTest)" << std::endl;
-	//
-	//	std::cout << "%TEST_STARTED% test3 (ffjsonTest)\n" << std::endl;
-	//	tsStart = {0, 0};
-	//	clock_gettime(CLOCK_REALTIME, &tsStart);
-	//	test3();
-	//	tsEnd = {0, 0};
-	//	clock_gettime(CLOCK_REALTIME, &tsEnd);
-	//	tsDiff = UTimeDiff(tsEnd, tsStart);
-	//	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
-	//			tsDiff.tv_nsec << " test3 (ffjsonTest)" << std::endl;
-	//
-	//	std::cout << "%TEST_STARTED% test4 (ffjsonTest)\n" << std::endl;
-	//	tsStart = {0, 0};
-	//	clock_gettime(CLOCK_REALTIME, &tsStart);
-	//	test4();
-	//	tsEnd = {0, 0};
-	//	clock_gettime(CLOCK_REALTIME, &tsEnd);
-	//	tsDiff = UTimeDiff(tsEnd, tsStart);
-	//	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
-	//			tsDiff.tv_nsec << " test4 (ffjsonTest)" << std::endl;
+		std::cout << "%TEST_STARTED% test3 (ffjsonTest)\n" << std::endl;
+		tsStart = {0, 0};
+		clock_gettime(CLOCK_REALTIME, &tsStart);
+		test3();
+		tsEnd = {0, 0};
+		clock_gettime(CLOCK_REALTIME, &tsEnd);
+		tsDiff = UTimeDiff(tsEnd, tsStart);
+		std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
+				tsDiff.tv_nsec << " test3 (ffjsonTest)" << std::endl;
+	
+		std::cout << "%TEST_STARTED% test4 (ffjsonTest)\n" << std::endl;
+		tsStart = {0, 0};
+		clock_gettime(CLOCK_REALTIME, &tsStart);
+		test4();
+		tsEnd = {0, 0};
+		clock_gettime(CLOCK_REALTIME, &tsEnd);
+		tsDiff = UTimeDiff(tsEnd, tsStart);
+		std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
+				tsDiff.tv_nsec << " test4 (ffjsonTest)" << std::endl;
 
-	std::cout << "%TEST_STARTED% test5 (ffjsonTest)\n" << std::endl;
-	tsStart = {0, 0};
-	clock_gettime(CLOCK_REALTIME, &tsStart);
-	test5();
-	tsEnd = {0, 0};
-	clock_gettime(CLOCK_REALTIME, &tsEnd);
-	tsDiff = UTimeDiff(tsEnd, tsStart);
-	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
-			tsDiff.tv_nsec << " test5 (ffjsonTest)" << std::endl;
+		std::cout << "%TEST_STARTED% test5 (ffjsonTest)\n" << std::endl;
+		tsStart = {0, 0};
+		clock_gettime(CLOCK_REALTIME, &tsStart);
+		test5();
+		tsEnd = {0, 0};
+		clock_gettime(CLOCK_REALTIME, &tsEnd);
+		tsDiff = UTimeDiff(tsEnd, tsStart);
+		std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
+				tsDiff.tv_nsec << " test5 (ffjsonTest)" << std::endl;
 
-	//	std::cout << "%TEST_STARTED% test6 (ffjsonTest)\n" << std::endl;
-	//	tsStart = {0, 0};
-	//	clock_gettime(CLOCK_REALTIME, &tsStart);
-	//	test6();
-	//	tsEnd = {0, 0};
-	//	clock_gettime(CLOCK_REALTIME, &tsEnd);
-	//	tsDiff = UTimeDiff(tsEnd, tsStart);
-	//	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
-	//			tsDiff.tv_nsec << " test6 (ffjsonTest)" << std::endl;
+		std::cout << "%TEST_STARTED% test6 (ffjsonTest)\n" << std::endl;
+		tsStart = {0, 0};
+		clock_gettime(CLOCK_REALTIME, &tsStart);
+		test6();
+		tsEnd = {0, 0};
+		clock_gettime(CLOCK_REALTIME, &tsEnd);
+		tsDiff = UTimeDiff(tsEnd, tsStart);
+		std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
+				tsDiff.tv_nsec << " test6 (ffjsonTest)" << std::endl;
 
 	std::cout << "%TEST_STARTED% test7 (ffjsonTest)\n" << std::endl;
 	tsStart = {0, 0};
@@ -374,15 +384,25 @@ int main(int argc, char** argv) {
 			tsDiff.tv_nsec << " test7 (ffjsonTest)" << std::endl;
 
 
-	//	std::cout << "%TEST_STARTED% test8 (ffjsonTest)\n" << std::endl;
-	//	tsStart = {0, 0};
-	//	clock_gettime(CLOCK_REALTIME, &tsStart);
-	//	test8();
-	//	tsEnd = {0, 0};
-	//	clock_gettime(CLOCK_REALTIME, &tsEnd);
-	//	tsDiff = UTimeDiff(tsEnd, tsStart);
-	//	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
-	//			tsDiff.tv_nsec << " test8 (ffjsonTest)" << std::endl;
+		std::cout << "%TEST_STARTED% test8 (ffjsonTest)\n" << std::endl;
+		tsStart = {0, 0};
+		clock_gettime(CLOCK_REALTIME, &tsStart);
+		test8();
+		tsEnd = {0, 0};
+		clock_gettime(CLOCK_REALTIME, &tsEnd);
+		tsDiff = UTimeDiff(tsEnd, tsStart);
+		std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
+				tsDiff.tv_nsec << " test8 (ffjsonTest)" << std::endl;
+
+	std::cout << "%TEST_STARTED% test9\n" << std::endl;
+	tsStart = {0, 0};
+	clock_gettime(CLOCK_REALTIME, &tsStart);
+	test9();
+	tsEnd = {0, 0};
+	clock_gettime(CLOCK_REALTIME, &tsEnd);
+	tsDiff = UTimeDiff(tsEnd, tsStart);
+	std::cout << "%TEST_FINISHED% time= " << tsDiff.tv_sec << "." <<
+			tsDiff.tv_nsec << " test9 " << std::endl;
 
 	timespec tsSuiteEnd = {0, 0};
 	clock_gettime(CLOCK_REALTIME, &tsSuiteEnd);
