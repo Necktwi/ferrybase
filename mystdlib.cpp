@@ -1,6 +1,5 @@
 #include "mystdlib.h"
 #include "myconverters.h"
-#include "logger.h"
 #include <termios.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -166,7 +165,7 @@ spawn::spawn(std::string command, bool daemon, void (*onStopHandler)(spawn*), bo
 			if (!freeChild) {
 #ifdef linux
 				prctl(PR_SET_PDEATHSIG, SIGHUP);
-#elif _WIN32			
+#elif _WIN32   
 #elif __APPLE__
 #elif __CYGWIN__
 #endif
@@ -612,14 +611,16 @@ char const * sperm(__mode_t mode) {
 }
 
 FerryTimeStamp::FerryTimeStamp() {
-	ferryTimesList.push_back(&this->t);
+	tv_sec = 0;
+	tv_nsec = 0;
+	ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
 };
 
 FerryTimeStamp::~FerryTimeStamp() {
 	std::list<time_t*>::iterator i;
 	i = ferryTimesList.begin();
 	while (i != ferryTimesList.end()) {
-		if (*i == &this->t) {
+		if (*i == static_cast<time_t*> (&tv_sec)) {
 			i = ferryTimesList.erase(i);
 			break;
 		}
@@ -647,21 +648,70 @@ timespec FerryTimeStamp::sub(timespec a, timespec b) {
 
 timespec FerryTimeStamp::add(timespec a, timespec b) {
 	timespec result = {0, 0};
-	result.tv_sec = a.tv_sec + a.tv_nsec;
+	result.tv_sec = a.tv_sec + b.tv_sec;
 	result.tv_nsec = (a.tv_nsec + b.tv_nsec) % 1000000000;
 	if (result.tv_nsec < a.tv_nsec || result.tv_nsec < b.tv_nsec) {
 		result.tv_sec++;
 	}
+	return result;
 }
 
-static char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+FerryTimeStamp FerryTimeStamp::operator+(FerryTimeStamp ftsAddand) {
+	FerryTimeStamp result;
+	result.tv_sec = tv_sec + ftsAddand.tv_nsec;
+	result.tv_nsec = (tv_nsec + ftsAddand.tv_nsec) % 1000000000;
+	if (result.tv_nsec < tv_nsec || result.tv_nsec < ftsAddand.tv_nsec) {
+		result.tv_sec++;
+	}
+	return result;
+}
+
+FerryTimeStamp FerryTimeStamp::operator-(FerryTimeStamp ftsSubtrahend) {
+	FerryTimeStamp result;
+	result.tv_sec = tv_sec - ftsSubtrahend.tv_sec;
+	if (ftsSubtrahend.tv_nsec > tv_nsec) {
+		if (tv_sec > ftsSubtrahend.tv_sec) {
+			result.tv_sec++;
+		} else {
+			result.tv_sec--;
+		}
+		result.tv_nsec = ftsSubtrahend.tv_nsec - tv_nsec;
+	} else {
+		result.tv_nsec = tv_nsec - ftsSubtrahend.tv_nsec;
+	}
+	return result;
+}
+
+bool FerryTimeStamp::operator<(const FerryTimeStamp competer) {
+	if (tv_sec < competer.tv_sec) {
+		return true;
+	} else if (tv_sec == competer.tv_sec) {
+		if (tv_nsec < competer.tv_nsec) {
+			return true;
+		}
+		return false;
+	}
+	return false;
+}
+
+FerryTimeStamp& FerryTimeStamp::operator=(time_t t) {
+	tv_sec = t;
+}
+
+FerryTimeStamp::operator time_t() {
+	return (time_t) tv_sec;
+}
+
+static char encoding_table[] = {
+	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
 	'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
 	'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
 	'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
 	'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
 	'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
 	'w', 'x', 'y', 'z', '0', '1', '2', '3',
-	'4', '5', '6', '7', '8', '9', '+', '/'};
+	'4', '5', '6', '7', '8', '9', '+', '/'
+};
 static char *decoding_table = NULL;
 static int mod_table[] = {0, 2, 1};
 

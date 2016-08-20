@@ -6,7 +6,7 @@
  */
 
 #ifndef MYSTDLIB_H
-#define	MYSTDLIB_H
+#define MYSTDLIB_H
 #include <sys/types.h>
 #include <string>
 #include <signal.h>
@@ -44,12 +44,15 @@ char const * sperm(__mode_t mode);
 timespec UTimeDiff(timespec& tsEnd, timespec& tsStart);
 
 /*Corrected on system time change*/
-class FerryTimeStamp {
+class FerryTimeStamp : timespec {
 public:
-	timespec ts = {0, 0};
-	time_t& t = (time_t&) ts.tv_sec;
 	FerryTimeStamp();
 	~FerryTimeStamp();
+	FerryTimeStamp& operator=(time_t t);
+	operator time_t();
+	bool operator<(const FerryTimeStamp competer);
+	FerryTimeStamp operator+(FerryTimeStamp ftsAddand);
+	FerryTimeStamp operator-(FerryTimeStamp ftsSubtrahend);
 	static timespec sub(timespec a, timespec b);
 	static timespec add(timespec a, timespec b);
 	static std::list<time_t*> ferryTimesList;
@@ -82,13 +85,30 @@ public:
 };
 extern std::map<pid_t, spawn*> processMap;
 
-char *base64_encode(const unsigned char *data,
+/**
+ * returns a string of base64 encoded data
+ * @param data:input string
+ * @param input_length: the length of the input string
+ * @param output_length: pointer to the variable that gets length of the output
+ * string.
+ * @return pointer to the string encoded in base65 and should be freed using 
+ * free() by the calling function.
+ */
+char* base64_encode(const unsigned char *data,
 		size_t input_length,
 		size_t *output_length);
-unsigned char *base64_decode(const char *data,
+
+/**
+ * @param data : input base64 encoded string
+ * @param input_length : length of the @param data
+ * @param output_length : pointer to the variable that gets filled with length 
+ * returned binary value.
+ * @return binary block; should be freed by calling function using free().
+ */
+unsigned char* base64_decode(const char *data,
 		size_t input_length,
 		size_t *output_length);
 void base64_cleanup();
 void build_decoding_table();
-#endif	/* MYSTDLIB_H */
+#endif /* MYSTDLIB_H */
 

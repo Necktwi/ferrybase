@@ -2,7 +2,6 @@
 
 #include "ClientSocket.h"
 #include "SocketException.h"
-#include "logger.h"
 #ifndef __APPLE__
 #ifndef __MACH__
 #include <malloc.h>

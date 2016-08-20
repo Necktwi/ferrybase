@@ -22,12 +22,10 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>ClientSocket.h</itemPath>
-      <itemPath>FFJSON.h</itemPath>
       <itemPath>JPEGImage.h</itemPath>
       <itemPath>ServerSocket.h</itemPath>
       <itemPath>Socket.h</itemPath>
       <itemPath>SocketException.h</itemPath>
-      <itemPath>logger.h</itemPath>
       <itemPath>myconverters.h</itemPath>
       <itemPath>mycurl.h</itemPath>
       <itemPath>mystdlib.h</itemPath>
@@ -63,11 +61,9 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>ClientSocket.cpp</itemPath>
-      <itemPath>FFJSON.cpp</itemPath>
       <itemPath>JPEGImage.cpp</itemPath>
       <itemPath>ServerSocket.cpp</itemPath>
       <itemPath>Socket.cpp</itemPath>
-      <itemPath>logger.cpp</itemPath>
       <itemPath>myconverters.cpp</itemPath>
       <itemPath>mycurl.cpp</itemPath>
       <itemPath>mystdlib.cpp</itemPath>
@@ -81,6 +77,7 @@
                      displayName="ffjsonTest"
                      projectFiles="true"
                      kind="TEST">
+        <itemPath>UpdateTest.json</itemPath>
         <itemPath>tests/ffjsonTest.cpp</itemPath>
       </logicalFolder>
     </logicalFolder>
@@ -183,10 +180,6 @@
       </item>
       <item path="ExtensionTest.ffjson" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="FFJSON.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="FFJSON.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="JPEGImage.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="JPEGImage.h" ex="false" tool="3" flavor2="0">
@@ -204,6 +197,8 @@
       <item path="Socket.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="SocketException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="UpdateTest.json" ex="false" tool="3" flavor2="0">
       </item>
       <item path="base.pc" ex="false" tool="3" flavor2="0">
       </item>
@@ -234,10 +229,6 @@
       <item path="debian/source/format" ex="false" tool="3" flavor2="0">
       </item>
       <item path="example.json" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="logger.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="logger.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="myconverters.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -370,10 +361,6 @@
       </item>
       <item path="ExtensionTest.ffjson" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="FFJSON.cpp" ex="false" tool="1" flavor2="8">
-      </item>
-      <item path="FFJSON.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="JPEGImage.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="JPEGImage.h" ex="false" tool="3" flavor2="0">
@@ -391,6 +378,8 @@
       <item path="Socket.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="SocketException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="UpdateTest.json" ex="false" tool="3" flavor2="0">
       </item>
       <item path="base.pc" ex="false" tool="3" flavor2="0">
       </item>
@@ -421,10 +410,6 @@
       <item path="debian/source/format" ex="false" tool="3" flavor2="0">
       </item>
       <item path="example.json" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="logger.cpp" ex="false" tool="1" flavor2="8">
-      </item>
-      <item path="logger.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="myconverters.cpp" ex="false" tool="1" flavor2="8">
       </item>
@@ -592,10 +577,6 @@
       </item>
       <item path="ExtensionTest.ffjson" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="FFJSON.cpp" ex="false" tool="1" flavor2="8">
-      </item>
-      <item path="FFJSON.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="JPEGImage.cpp" ex="false" tool="1" flavor2="8">
       </item>
       <item path="JPEGImage.h" ex="false" tool="3" flavor2="0">
@@ -613,6 +594,8 @@
       <item path="Socket.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="SocketException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="UpdateTest.json" ex="false" tool="3" flavor2="0">
       </item>
       <item path="base.pc" ex="false" tool="3" flavor2="0">
       </item>
@@ -643,10 +626,6 @@
       <item path="debian/source/format" ex="false" tool="3" flavor2="0">
       </item>
       <item path="example.json" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="logger.cpp" ex="false" tool="1" flavor2="8">
-      </item>
-      <item path="logger.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="myconverters.cpp" ex="false" tool="1" flavor2="8">
       </item>

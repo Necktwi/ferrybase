@@ -3,7 +3,6 @@
 
 
 #include "Socket.h"
-#include "logger.h"
 #include <string.h>
 #include <string>
 #include <errno.h>
@@ -42,8 +41,8 @@ void Socket::ShutdownSSL(SSL* ssl) {
 Socket::Socket() :
 m_sock(-1), socketType(DEFAULT) {
 	memset(&m_addr,
-		0,
-		sizeof ( m_addr));
+			0,
+			sizeof ( m_addr));
 }
 
 Socket::Socket(SOCKET_TYPE socketType, std::string trustedCA, std::string privatecert, std::string privatekey) :
@@ -61,8 +60,8 @@ Socket::~Socket() {
 
 bool Socket::create(int timeout_sec) {
 	m_sock = socket(AF_INET,
-		SOCK_STREAM,
-		0);
+			SOCK_STREAM,
+			0);
 
 	if (!is_valid())
 		return false;
@@ -71,7 +70,7 @@ bool Socket::create(int timeout_sec) {
 	// TIME_WAIT - argh
 	int on = 1;
 	if (setsockopt(m_sock, SOL_SOCKET, SO_REUSEADDR,
-		(const char*) &on, sizeof ( on)) == -1)
+			(const char*) &on, sizeof ( on)) == -1)
 		return false;
 
 	struct timeval timeout;
@@ -90,7 +89,7 @@ bool Socket::create(int timeout_sec) {
 		sslctx = SSL_CTX_new(TLSv1_method());
 #else
 		sslctx = SSL_CTX_new(TLSv1_1_method());
-#endif		
+#endif  
 		SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
 		/*----- Load a client certificate into the SSL_CTX structure -----*/
 		if (SSL_CTX_use_certificate_file(sslctx, (char*) CLIENT_CERT.c_str(), SSL_FILETYPE_PEM) <= 0) {
