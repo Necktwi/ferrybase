@@ -44,16 +44,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/mystdlib.o \
 	${OBJECTDIR}/myxml.o
 
-# Test Directory
-TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
-
-# Test Files
-TESTFILES= \
-	${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.${CND_DLIB_EXT}
-
-# Test Object Files
-TESTOBJECTFILES= \
-	${TESTDIR}/tests/ffjsonTest.o
 
 # C Compiler Flags
 CFLAGS=-O0
@@ -73,187 +63,59 @@ LDLIBSOPTIONS=-lxml2 -lpthread -lssl -lcrypto -lz -lrt
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${TESTDIR}/TestFiles/f1
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.${CND_DLIB_EXT}
 
-${TESTDIR}/TestFiles/f1: ${OBJECTFILES}
-	${MKDIR} -p ${TESTDIR}/TestFiles
-	g++ -o ${TESTDIR}/TestFiles/f1 ${OBJECTFILES} ${LDLIBSOPTIONS} -Wl,-soname,lib${APPNAME}.so.${MAJOR_VERSION} -shared -fPIC
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.${CND_DLIB_EXT}: ${OBJECTFILES}
+	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
+	g++ -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.${CND_DLIB_EXT} ${OBJECTFILES} ${LDLIBSOPTIONS} -Wl,-soname,lib${APPNAME}.so.${MAJOR_VERSION} -shared -fPIC
 
 ${OBJECTDIR}/ClientSocket.o: ClientSocket.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ClientSocket.o ClientSocket.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ClientSocket.o ClientSocket.cpp
 
 ${OBJECTDIR}/JPEGImage.o: JPEGImage.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/JPEGImage.o JPEGImage.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/JPEGImage.o JPEGImage.cpp
 
 ${OBJECTDIR}/ServerSocket.o: ServerSocket.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ServerSocket.o ServerSocket.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ServerSocket.o ServerSocket.cpp
 
 ${OBJECTDIR}/Socket.o: Socket.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Socket.o Socket.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Socket.o Socket.cpp
 
 ${OBJECTDIR}/myconverters.o: myconverters.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/myconverters.o myconverters.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/myconverters.o myconverters.cpp
 
 ${OBJECTDIR}/mycurl.o: mycurl.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mycurl.o mycurl.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mycurl.o mycurl.cpp
 
 ${OBJECTDIR}/mystdlib.o: mystdlib.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mystdlib.o mystdlib.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mystdlib.o mystdlib.cpp
 
 ${OBJECTDIR}/myxml.o: myxml.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/myxml.o myxml.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/myxml.o myxml.cpp
 
 # Subprojects
 .build-subprojects:
 
-# Build Test Targets
-.build-tests-conf: .build-tests-subprojects .build-conf ${TESTFILES}
-.build-tests-subprojects:
-
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.${CND_DLIB_EXT}: ${TESTDIR}/tests/ffjsonTest.o ${OBJECTFILES:%.o=%_nomain.o}
-	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc}   -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.${CND_DLIB_EXT} $^ ${LDLIBSOPTIONS} 
-
-
-${TESTDIR}/tests/ffjsonTest.o: tests/ffjsonTest.cpp 
-	${MKDIR} -p ${TESTDIR}/tests
-	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/ffjsonTest.o tests/ffjsonTest.cpp
-
-
-${OBJECTDIR}/ClientSocket_nomain.o: ${OBJECTDIR}/ClientSocket.o ClientSocket.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/ClientSocket.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ClientSocket_nomain.o ClientSocket.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/ClientSocket.o ${OBJECTDIR}/ClientSocket_nomain.o;\
-	fi
-
-${OBJECTDIR}/JPEGImage_nomain.o: ${OBJECTDIR}/JPEGImage.o JPEGImage.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/JPEGImage.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/JPEGImage_nomain.o JPEGImage.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/JPEGImage.o ${OBJECTDIR}/JPEGImage_nomain.o;\
-	fi
-
-${OBJECTDIR}/ServerSocket_nomain.o: ${OBJECTDIR}/ServerSocket.o ServerSocket.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/ServerSocket.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ServerSocket_nomain.o ServerSocket.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/ServerSocket.o ${OBJECTDIR}/ServerSocket_nomain.o;\
-	fi
-
-${OBJECTDIR}/Socket_nomain.o: ${OBJECTDIR}/Socket.o Socket.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/Socket.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Socket_nomain.o Socket.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/Socket.o ${OBJECTDIR}/Socket_nomain.o;\
-	fi
-
-${OBJECTDIR}/myconverters_nomain.o: ${OBJECTDIR}/myconverters.o myconverters.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/myconverters.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/myconverters_nomain.o myconverters.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/myconverters.o ${OBJECTDIR}/myconverters_nomain.o;\
-	fi
-
-${OBJECTDIR}/mycurl_nomain.o: ${OBJECTDIR}/mycurl.o mycurl.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/mycurl.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mycurl_nomain.o mycurl.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/mycurl.o ${OBJECTDIR}/mycurl_nomain.o;\
-	fi
-
-${OBJECTDIR}/mystdlib_nomain.o: ${OBJECTDIR}/mystdlib.o mystdlib.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/mystdlib.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mystdlib_nomain.o mystdlib.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/mystdlib.o ${OBJECTDIR}/mystdlib_nomain.o;\
-	fi
-
-${OBJECTDIR}/myxml_nomain.o: ${OBJECTDIR}/myxml.o myxml.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/myxml.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/myxml_nomain.o myxml.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/myxml.o ${OBJECTDIR}/myxml_nomain.o;\
-	fi
-
-# Run Test Targets
-.test-conf:
-	@if [ "${TEST}" = "" ]; \
-	then  \
-	    ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.${CND_DLIB_EXT} || true; \
-	else  \
-	    ./${TEST} || true; \
-	fi
-
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${TESTDIR}/TestFiles/f1
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.${CND_DLIB_EXT}
 
 # Subprojects
 .clean-subprojects:

@@ -36,14 +36,9 @@
 #include <signal.h>
 #include <list>
 #include <map>
+#include <iomanip>
 
-#ifdef WINDOWS
-#include <direct.h>
-#define GetCurrentDir _getcwd
-#else
-#include <unistd.h>
-#define GetCurrentDir getcwd
-#endif
+using namespace std;
 
 std::map<pid_t, spawn*> processMap;
 
@@ -614,7 +609,17 @@ FerryTimeStamp::FerryTimeStamp() {
 	tv_sec = 0;
 	tv_nsec = 0;
 	ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
-};
+}
+
+FerryTimeStamp::FerryTimeStamp(const string& sFTS) {
+	assign(sFTS);
+	ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
+}
+
+FerryTimeStamp& FerryTimeStamp::operator=(const string& sFTS) {
+	assign(sFTS);
+	ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
+}
 
 FerryTimeStamp::~FerryTimeStamp() {
 	std::list<time_t*>::iterator i;
@@ -700,6 +705,27 @@ FerryTimeStamp& FerryTimeStamp::operator=(time_t t) {
 
 FerryTimeStamp::operator time_t() {
 	return (time_t) tv_sec;
+}
+
+FerryTimeStamp::operator std::string() {
+	return std::to_string(tv_sec) + "." + std::to_string(tv_nsec);
+}
+
+void FerryTimeStamp::Update() {
+	clock_gettime(CLOCK_REALTIME, this);
+}
+
+void FerryTimeStamp::assign(const std::string& sTS) {
+	size_t iPeriodNail = sTS.find('.');
+	if (iPeriodNail == string::npos) return;
+	tv_sec = stol(sTS.substr(0, iPeriodNail));
+	tv_nsec = stol(sTS.substr(iPeriodNail + 1));
+}
+
+ostream& operator<<(ostream& out, const FerryTimeStamp& f) {
+	out << setfill('0') << setw(10) << f.tv_sec << '.' << left << setw(9) <<
+			f.tv_nsec;
+	return out;
 }
 
 static char encoding_table[] = {

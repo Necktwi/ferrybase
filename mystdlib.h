@@ -12,6 +12,7 @@
 #include <signal.h>
 #include <list>
 #include <map>
+#include <iostream>
 
 #if defined(__APPLE__) || defined(__CYGWIN__)
 #if defined(__MACH__) || defined(__CYGWIN__)
@@ -20,6 +21,14 @@ typedef mode_t __mode_t;
 #endif
 
 #define NELEMS(x)  (sizeof(x) / sizeof(x[0]))
+
+#ifdef WINDOWS
+#include <direct.h>
+#define GetCurrentDir _getcwd
+#else
+#include <unistd.h>
+#define GetCurrentDir getcwd
+#endif
 
 void initTermios(int echo);
 void resetTermios(void);
@@ -44,11 +53,13 @@ char const * sperm(__mode_t mode);
 timespec UTimeDiff(timespec& tsEnd, timespec& tsStart);
 
 /*Corrected on system time change*/
-class FerryTimeStamp : timespec {
-public:
+struct FerryTimeStamp : public timespec {
 	FerryTimeStamp();
+	FerryTimeStamp(const std::string& sTS);
 	~FerryTimeStamp();
 	FerryTimeStamp& operator=(time_t t);
+	FerryTimeStamp& operator=(const std::string& sTS);
+	void assign(const std::string& sTS);
 	operator time_t();
 	bool operator<(const FerryTimeStamp competer);
 	FerryTimeStamp operator+(FerryTimeStamp ftsAddand);
@@ -56,8 +67,11 @@ public:
 	static timespec sub(timespec a, timespec b);
 	static timespec add(timespec a, timespec b);
 	static std::list<time_t*> ferryTimesList;
+	void Update();
+	operator std::string();
 };
 
+std::ostream& operator<<(std::ostream& out, const FerryTimeStamp& f);
 extern int child_exit_status;
 
 class spawn {
