@@ -2,9 +2,11 @@
 .bzr/
 build/
 dist/
+QtBuild/
 nbproject/private/private.xml
 .DS_Store
 nbproject/.DS_Store
+*.user
 
 nbproject/private/
 build/

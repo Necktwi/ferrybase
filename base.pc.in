@@ -1,10 +1,10 @@
 prefix=/usr
 exec_prefix=${prefix}
-includedir=${prefix}/include/ferryfair
+includedir=${prefix}/include/@Umbrella@
 libdir=${exec_prefix}/lib
 
-Name: base
+Name: @PROJECT_NAME@
 Description: Logging functions that provides formatting and timestamping
-Version: 1.0.0
+Version: @base_VERSION_MAJOR@.@base_VERSION_MINOR@
 Cflags: -I${includedir}
-Libs: -L${libdir} -lbase
+Libs: -L${libdir} -l@PROJECT_NAME@
