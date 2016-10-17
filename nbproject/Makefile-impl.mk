@@ -31,7 +31,7 @@ DEFAULTCONF=DebugDynamic
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=DebugDynamic armhfDebugDynamic DebugStatic 
+ALLCONFS=DebugDynamic DebugStatic armhfDebugDynamic 
 
 
 # build

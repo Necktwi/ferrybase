@@ -13,9 +13,9 @@ CND_BUILDDIR=build
 CND_DLIB_EXT=so
 NBTMPDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.a
-OUTPUT_BASENAME=libbase.a
-PACKAGE_TOP_DIR=/usr/
+OUTPUT_PATH=${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.a
+OUTPUT_BASENAME=lib${APPNAME}.a
+PACKAGE_TOP_DIR=base/
 
 # Functions
 function checkReturnCode
@@ -60,33 +60,16 @@ mkdir -p ${NBTMPDIR}
 
 # Copy files and create directories and links
 cd "${TOP}"
-makeDirectory "${NBTMPDIR}//usr/lib"
+makeDirectory "${NBTMPDIR}/base/lib"
 copyFileToTmpDir "${OUTPUT_PATH}" "${NBTMPDIR}/${PACKAGE_TOP_DIR}lib/${OUTPUT_BASENAME}" 0644
 
 
-# Create control file
+# Generate tar file
 cd "${TOP}"
-CONTROL_FILE=${NBTMPDIR}/DEBIAN/control
-rm -f ${CONTROL_FILE}
-mkdir -p ${NBTMPDIR}/DEBIAN
-
-cd "${TOP}"
-echo 'Package: libbase.so' >> ${CONTROL_FILE}
-echo 'Version: 1.0' >> ${CONTROL_FILE}
-echo 'Architecture: i386' >> ${CONTROL_FILE}
-echo 'Maintainer: Gowtham' >> ${CONTROL_FILE}
-echo 'Description: ...' >> ${CONTROL_FILE}
-
-# Create Debian Package
-cd "${TOP}"
-cd "${NBTMPDIR}/.."
-dpkg-deb  --build ${TMPDIRNAME}
+rm -f ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/base.tar
+cd ${NBTMPDIR}
+tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/base.tar *
 checkReturnCode
-cd "${TOP}"
-mkdir -p  ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package
-mv ${NBTMPDIR}.deb ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/libbase.deb
-checkReturnCode
-echo Debian: ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/libbase.deb
 
 # Cleanup
 cd "${TOP}"

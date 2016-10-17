@@ -63,51 +63,51 @@ LDLIBSOPTIONS=-lxml2 -lpthread -lssl -lcrypto -lz -lrt
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.${CND_DLIB_EXT}
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${TESTDIR}/TestFiles/f1
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.${CND_DLIB_EXT}: ${OBJECTFILES}
-	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	g++ -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.${CND_DLIB_EXT} ${OBJECTFILES} ${LDLIBSOPTIONS} -Wl,-soname,lib${APPNAME}.so.${MAJOR_VERSION} -shared -fPIC
+${TESTDIR}/TestFiles/f1: ${OBJECTFILES}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	g++ -o ${TESTDIR}/TestFiles/f1 ${OBJECTFILES} ${LDLIBSOPTIONS} -Wl,-soname,lib${APPNAME}.so.${MAJOR_VERSION} -shared -fPIC
 
 ${OBJECTDIR}/ClientSocket.o: ClientSocket.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ClientSocket.o ClientSocket.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ClientSocket.o ClientSocket.cpp
 
 ${OBJECTDIR}/JPEGImage.o: JPEGImage.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/JPEGImage.o JPEGImage.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/JPEGImage.o JPEGImage.cpp
 
 ${OBJECTDIR}/ServerSocket.o: ServerSocket.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ServerSocket.o ServerSocket.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ServerSocket.o ServerSocket.cpp
 
 ${OBJECTDIR}/Socket.o: Socket.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Socket.o Socket.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Socket.o Socket.cpp
 
 ${OBJECTDIR}/myconverters.o: myconverters.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/myconverters.o myconverters.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/myconverters.o myconverters.cpp
 
 ${OBJECTDIR}/mycurl.o: mycurl.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mycurl.o mycurl.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mycurl.o mycurl.cpp
 
 ${OBJECTDIR}/mystdlib.o: mystdlib.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mystdlib.o mystdlib.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mystdlib.o mystdlib.cpp
 
 ${OBJECTDIR}/myxml.o: myxml.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/myxml.o myxml.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/myxml.o myxml.cpp
 
 # Subprojects
 .build-subprojects:
@@ -115,7 +115,7 @@ ${OBJECTDIR}/myxml.o: myxml.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.${CND_DLIB_EXT}
+	${RM} ${TESTDIR}/TestFiles/f1
 
 # Subprojects
 .clean-subprojects:

@@ -8,12 +8,20 @@ CND_BUILDDIR=build
 CND_DISTDIR=dist
 # DebugDynamic configuration
 CND_PLATFORM_DebugDynamic=GNU-Linux
-CND_ARTIFACT_DIR_DebugDynamic=dist/DebugDynamic/GNU-Linux
-CND_ARTIFACT_NAME_DebugDynamic=libbase.so
-CND_ARTIFACT_PATH_DebugDynamic=dist/DebugDynamic/GNU-Linux/libbase.so
+CND_ARTIFACT_DIR_DebugDynamic=build/DebugDynamic/GNU-Linux/tests/TestFiles
+CND_ARTIFACT_NAME_DebugDynamic=f1
+CND_ARTIFACT_PATH_DebugDynamic=build/DebugDynamic/GNU-Linux/tests/TestFiles/f1
 CND_PACKAGE_DIR_DebugDynamic=dist/DebugDynamic/GNU-Linux/package
 CND_PACKAGE_NAME_DebugDynamic=libbase.deb
 CND_PACKAGE_PATH_DebugDynamic=dist/DebugDynamic/GNU-Linux/package/libbase.deb
+# DebugStatic configuration
+CND_PLATFORM_DebugStatic=GNU-Linux
+CND_ARTIFACT_DIR_DebugStatic=dist/DebugStatic/GNU-Linux
+CND_ARTIFACT_NAME_DebugStatic=lib${APPNAME}.a
+CND_ARTIFACT_PATH_DebugStatic=dist/DebugStatic/GNU-Linux/lib${APPNAME}.a
+CND_PACKAGE_DIR_DebugStatic=dist/DebugStatic/GNU-Linux/package
+CND_PACKAGE_NAME_DebugStatic=base.tar
+CND_PACKAGE_PATH_DebugStatic=dist/DebugStatic/GNU-Linux/package/base.tar
 # armhfDebugDynamic configuration
 CND_PLATFORM_armhfDebugDynamic=arm-linux-gnueabihf-Linux-x86
 CND_ARTIFACT_DIR_armhfDebugDynamic=dist/armhfDebugDynamic/arm-linux-gnueabihf-Linux-x86
@@ -22,14 +30,6 @@ CND_ARTIFACT_PATH_armhfDebugDynamic=dist/armhfDebugDynamic/arm-linux-gnueabihf-L
 CND_PACKAGE_DIR_armhfDebugDynamic=dist/armhfDebugDynamic/arm-linux-gnueabihf-Linux-x86/package
 CND_PACKAGE_NAME_armhfDebugDynamic=libbase.deb
 CND_PACKAGE_PATH_armhfDebugDynamic=dist/armhfDebugDynamic/arm-linux-gnueabihf-Linux-x86/package/libbase.deb
-# DebugStatic configuration
-CND_PLATFORM_DebugStatic=GNU-Linux
-CND_ARTIFACT_DIR_DebugStatic=dist/DebugStatic/GNU-Linux
-CND_ARTIFACT_NAME_DebugStatic=libbase.a
-CND_ARTIFACT_PATH_DebugStatic=dist/DebugStatic/GNU-Linux/libbase.a
-CND_PACKAGE_DIR_DebugStatic=dist/DebugStatic/GNU-Linux/package
-CND_PACKAGE_NAME_DebugStatic=libbase.deb
-CND_PACKAGE_PATH_DebugStatic=dist/DebugStatic/GNU-Linux/package/libbase.deb
 #
 # include compiler specific variables
 #

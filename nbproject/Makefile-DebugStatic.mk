@@ -46,11 +46,11 @@ OBJECTFILES= \
 
 
 # C Compiler Flags
-CFLAGS=-O0
+CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-g -O0
-CXXFLAGS=-g -O0
+CCFLAGS=
+CXXFLAGS=
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -63,53 +63,53 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.a
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.a
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.a: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.a: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.a
-	${AR} -rv ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.a ${OBJECTFILES} 
-	$(RANLIB) ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.a
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.a
+	${AR} -rv ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.a ${OBJECTFILES} 
+	$(RANLIB) ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.a
 
 ${OBJECTDIR}/ClientSocket.o: ClientSocket.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ClientSocket.o ClientSocket.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ClientSocket.o ClientSocket.cpp
 
 ${OBJECTDIR}/JPEGImage.o: JPEGImage.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/JPEGImage.o JPEGImage.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/JPEGImage.o JPEGImage.cpp
 
 ${OBJECTDIR}/ServerSocket.o: ServerSocket.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ServerSocket.o ServerSocket.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ServerSocket.o ServerSocket.cpp
 
 ${OBJECTDIR}/Socket.o: Socket.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Socket.o Socket.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Socket.o Socket.cpp
 
 ${OBJECTDIR}/myconverters.o: myconverters.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/myconverters.o myconverters.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/myconverters.o myconverters.cpp
 
 ${OBJECTDIR}/mycurl.o: mycurl.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mycurl.o mycurl.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mycurl.o mycurl.cpp
 
 ${OBJECTDIR}/mystdlib.o: mystdlib.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mystdlib.o mystdlib.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mystdlib.o mystdlib.cpp
 
 ${OBJECTDIR}/myxml.o: myxml.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/myxml.o myxml.cpp
+	$(COMPILE.cc) -D_DEBUG -I/usr/include/libxml2 -I. -I. -I. -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/myxml.o myxml.cpp
 
 # Subprojects
 .build-subprojects:
@@ -117,7 +117,7 @@ ${OBJECTDIR}/myxml.o: myxml.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbase.a
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lib${APPNAME}.a
 
 # Subprojects
 .clean-subprojects:
