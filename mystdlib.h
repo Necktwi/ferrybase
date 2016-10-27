@@ -30,6 +30,7 @@ typedef mode_t __mode_t;
 #define GetCurrentDir getcwd
 #endif
 
+#ifndef __APPLE__
 void initTermios(int echo);
 void resetTermios(void);
 char getch_(int echo);
@@ -42,36 +43,13 @@ int rmmydir(std::string dirn);
 std::string inputPass();
 std::string inputText();
 std::string getStdoutFromCommand(std::string cmd);
-std::string getTime();
-std::string getuTime();
 std::string get_command_line(pid_t pid);
 int poke(std::string ip);
 int getIp();
 std::string GetPrimaryIp();
 std::string get_fd_contents(int fd);
 char const * sperm(__mode_t mode);
-timespec UTimeDiff(timespec& tsEnd, timespec& tsStart);
 
-/*Corrected on system time change*/
-struct FerryTimeStamp : public timespec {
-	FerryTimeStamp();
-	FerryTimeStamp(const std::string& sTS);
-	~FerryTimeStamp();
-	FerryTimeStamp& operator=(time_t t);
-	FerryTimeStamp& operator=(const std::string& sTS);
-	void assign(const std::string& sTS);
-	operator time_t();
-	bool operator<(const FerryTimeStamp competer);
-	FerryTimeStamp operator+(FerryTimeStamp ftsAddand);
-	FerryTimeStamp operator-(FerryTimeStamp ftsSubtrahend);
-	static timespec sub(timespec a, timespec b);
-	static timespec add(timespec a, timespec b);
-	static std::list<time_t*> ferryTimesList;
-	void Update();
-	operator std::string();
-};
-
-std::ostream& operator<<(std::ostream& out, const FerryTimeStamp& f);
 extern int child_exit_status;
 
 class spawn {
@@ -98,31 +76,6 @@ public:
 	int pkill(int signal = SIGTERM);
 };
 extern std::map<pid_t, spawn*> processMap;
-
-/**
- * returns a string of base64 encoded data
- * @param data:input string
- * @param input_length: the length of the input string
- * @param output_length: pointer to the variable that gets length of the output
- * string.
- * @return pointer to the string encoded in base65 and should be freed using 
- * free() by the calling function.
- */
-char* base64_encode(const unsigned char *data,
-		size_t input_length,
-		size_t *output_length);
-
-/**
- * @param data : input base64 encoded string
- * @param input_length : length of the @param data
- * @param output_length : pointer to the variable that gets filled with length 
- * returned binary value.
- * @return binary block; should be freed by calling function using free().
- */
-unsigned char* base64_decode(const char *data,
-		size_t input_length,
-		size_t *output_length);
-void base64_cleanup();
-void build_decoding_table();
+#endif /* __APPLE__ */
 #endif /* MYSTDLIB_H */
 

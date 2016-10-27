@@ -1,8 +1,12 @@
-cmake_minimum_required (VERSION 2.6)
-project (base)
+cmake_minimum_required (VERSION 3.6 FATAL_ERROR)
+project (base CXX)
 set (base_VERSION_MAJOR 1)
 set (base_VERSION_MINOR 0)
 set (Umbrella "ferryfair")
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+# Mac OS X specific code
+SET(macOS ON)
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # configure a header file to pass some of the CMake settings
 # to the source code
 configure_file (
@@ -22,9 +26,15 @@ set (GCC_COVERAGE_LINK_FLAGS "-lxml2 -lpthread -lssl -lcrypto -lz -lrt")
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} "/usr/include/libxml2")
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
+if(macOS)
+set(SOURCES FerryTimeStamp.cpp myconverters.cpp mystdlib.cpp)
+set(HEADERS FerryTimeStamp.h myconverters.h mystdlib.h)
+else(macOS)
 file(GLOB SOURCES *.cpp)
-add_library(baseStatic STATIC ${SOURCES})
-add_library(base SHARED ${SOURCES})
+file(GLOB HEADERS *.h)
+endif(macOS)
+add_library(baseStatic STATIC ${SOURCES} ${HEADERS})
+add_library(base SHARED ${SOURCES} ${HEADERS})
 set_target_properties(baseStatic PROPERTIES OUTPUT_NAME base)
 set_target_properties(base
     PROPERTIES
@@ -37,7 +47,6 @@ set_target_properties(baseStatic
     SOVERSION ${base_VERSION_MAJOR}
     )
 install(TARGETS ${PROJECT_NAME} DESTINATION lib)
-file(GLOB HEADERS *.h)
 install(FILES ${HEADERS} DESTINATION include/${Umbrella}/${PROJECT_NAME})
 install(FILES "${PROJECT_BINARY_DIR}/baseConfig.h"
     DESTINATION include/${Umbrella}/${PROJECT_NAME})

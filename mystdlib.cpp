@@ -20,8 +20,9 @@
 #endif
 #include <signal.h>
 #include <vector>
-#include <wait.h>
 #ifndef __APPLE__
+#include <ext/stdio_filebuf.h>
+#include <wait.h>
 #include <malloc.h>
 #endif
 #include <sys/socket.h>
@@ -32,14 +33,14 @@
 #include <assert.h>
 #include <sstream>
 #include <cerrno>
-#include <ext/stdio_filebuf.h>
 #include <signal.h>
 #include <list>
 #include <map>
 #include <iomanip>
+#include <time.h>
 
 using namespace std;
-
+#ifndef __APPLE__
 std::map<pid_t, spawn*> processMap;
 
 static struct termios old, mnew;
@@ -411,40 +412,6 @@ std::string getStdoutFromCommand(std::string cmd) {
 	return data;
 }
 
-std::string getTime() {
-	struct tm * timeinfo;
-	char tb[20];
-	time_t ct;
-	time(&ct);
-	timeinfo = localtime(&ct);
-	strftime(tb, 20, "%Y-%m-%d %H:%M:%S", timeinfo);
-	return std::string(tb);
-}
-
-std::string getuTime() {
-	char tb[20];
-	char buf[23];
-	struct tm ti;
-	struct timespec t = {0, 0};
-	clock_gettime(CLOCK_REALTIME, &t);
-	localtime_r(&t.tv_sec, &ti);
-	strftime(tb, 20, "%d%b%H:%M:%S", &ti);
-	sprintf(buf, "%s.%09ld", tb, t.tv_nsec);
-	return std::string(buf);
-}
-
-timespec UTimeDiff(timespec& tsEnd, timespec& tsStart) {
-	timespec tsTemp;
-	if (tsEnd.tv_nsec > tsStart.tv_nsec) {
-		tsTemp.tv_nsec = tsEnd.tv_nsec - tsStart.tv_nsec;
-		tsTemp.tv_sec = tsEnd.tv_sec - tsStart.tv_sec;
-	} else {
-		tsTemp.tv_nsec = tsStart.tv_nsec - tsEnd.tv_nsec;
-		tsTemp.tv_sec = tsEnd.tv_sec - tsStart.tv_sec - 1;
-	}
-	return tsTemp;
-}
-
 std::string get_command_line(pid_t pid) {
 	FILE *f;
 	char file[256], cmdline[256] = {0};
@@ -604,215 +571,4 @@ char const * sperm(__mode_t mode) {
 	else local_buff[i] = '-';
 	return local_buff;
 }
-
-FerryTimeStamp::FerryTimeStamp() {
-	tv_sec = 0;
-	tv_nsec = 0;
-	ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
-}
-
-FerryTimeStamp::FerryTimeStamp(const string& sFTS) {
-	assign(sFTS);
-	ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
-}
-
-FerryTimeStamp& FerryTimeStamp::operator=(const string& sFTS) {
-	assign(sFTS);
-	ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
-}
-
-FerryTimeStamp::~FerryTimeStamp() {
-	std::list<time_t*>::iterator i;
-	i = ferryTimesList.begin();
-	while (i != ferryTimesList.end()) {
-		if (*i == static_cast<time_t*> (&tv_sec)) {
-			i = ferryTimesList.erase(i);
-			break;
-		}
-		i++;
-	}
-};
-
-std::list<time_t*> FerryTimeStamp::ferryTimesList;
-
-timespec FerryTimeStamp::sub(timespec a, timespec b) {
-	timespec result = {0, 0};
-	result.tv_sec = a.tv_sec - b.tv_sec;
-	if (b.tv_nsec > a.tv_nsec) {
-		if (a.tv_sec > b.tv_sec) {
-			result.tv_sec++;
-		} else {
-			result.tv_sec--;
-		}
-		result.tv_nsec = b.tv_nsec - a.tv_nsec;
-	} else {
-		result.tv_nsec = a.tv_nsec - b.tv_nsec;
-	}
-	return result;
-};
-
-timespec FerryTimeStamp::add(timespec a, timespec b) {
-	timespec result = {0, 0};
-	result.tv_sec = a.tv_sec + b.tv_sec;
-	result.tv_nsec = (a.tv_nsec + b.tv_nsec) % 1000000000;
-	if (result.tv_nsec < a.tv_nsec || result.tv_nsec < b.tv_nsec) {
-		result.tv_sec++;
-	}
-	return result;
-}
-
-FerryTimeStamp FerryTimeStamp::operator+(FerryTimeStamp ftsAddand) {
-	FerryTimeStamp result;
-	result.tv_sec = tv_sec + ftsAddand.tv_nsec;
-	result.tv_nsec = (tv_nsec + ftsAddand.tv_nsec) % 1000000000;
-	if (result.tv_nsec < tv_nsec || result.tv_nsec < ftsAddand.tv_nsec) {
-		result.tv_sec++;
-	}
-	return result;
-}
-
-FerryTimeStamp FerryTimeStamp::operator-(FerryTimeStamp ftsSubtrahend) {
-	FerryTimeStamp result;
-	result.tv_sec = tv_sec - ftsSubtrahend.tv_sec;
-	if (ftsSubtrahend.tv_nsec > tv_nsec) {
-		if (tv_sec > ftsSubtrahend.tv_sec) {
-			result.tv_sec++;
-		} else {
-			result.tv_sec--;
-		}
-		result.tv_nsec = ftsSubtrahend.tv_nsec - tv_nsec;
-	} else {
-		result.tv_nsec = tv_nsec - ftsSubtrahend.tv_nsec;
-	}
-	return result;
-}
-
-bool FerryTimeStamp::operator<(const FerryTimeStamp competer) {
-	if (tv_sec < competer.tv_sec) {
-		return true;
-	} else if (tv_sec == competer.tv_sec) {
-		if (tv_nsec < competer.tv_nsec) {
-			return true;
-		}
-		return false;
-	}
-	return false;
-}
-
-FerryTimeStamp& FerryTimeStamp::operator=(time_t t) {
-	tv_sec = t;
-}
-
-FerryTimeStamp::operator time_t() {
-	return (time_t) tv_sec;
-}
-
-FerryTimeStamp::operator std::string() {
-	return std::to_string(tv_sec) + "." + std::to_string(tv_nsec);
-}
-
-void FerryTimeStamp::Update() {
-	clock_gettime(CLOCK_REALTIME, this);
-}
-
-void FerryTimeStamp::assign(const std::string& sTS) {
-	size_t iPeriodNail = sTS.find('.');
-	if (iPeriodNail == string::npos) return;
-	tv_sec = stol(sTS.substr(0, iPeriodNail));
-	tv_nsec = stol(sTS.substr(iPeriodNail + 1));
-}
-
-ostream& operator<<(ostream& out, const FerryTimeStamp& f) {
-	out << setfill('0') << setw(10) << f.tv_sec << '.' << left << setw(9) <<
-			f.tv_nsec;
-	return out;
-}
-
-static char encoding_table[] = {
-	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
-	'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-	'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
-	'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
-	'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-	'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-	'w', 'x', 'y', 'z', '0', '1', '2', '3',
-	'4', '5', '6', '7', '8', '9', '+', '/'
-};
-static char *decoding_table = NULL;
-static int mod_table[] = {0, 2, 1};
-
-char *base64_encode(const unsigned char *data,
-		size_t input_length,
-		size_t *output_length) {
-
-	*output_length = 4 * ((input_length + 2) / 3);
-
-	char *encoded_data = (char*) malloc(*output_length);
-	if (encoded_data == NULL) return NULL;
-
-	for (int i = 0, j = 0; i < input_length;) {
-
-		uint32_t octet_a = i < input_length ? data[i++] : 0;
-		uint32_t octet_b = i < input_length ? data[i++] : 0;
-		uint32_t octet_c = i < input_length ? data[i++] : 0;
-
-		uint32_t triple = (octet_a << 0x10) + (octet_b << 0x08) + octet_c;
-
-		encoded_data[j++] = encoding_table[(triple >> 3 * 6) & 0x3F];
-		encoded_data[j++] = encoding_table[(triple >> 2 * 6) & 0x3F];
-		encoded_data[j++] = encoding_table[(triple >> 1 * 6) & 0x3F];
-		encoded_data[j++] = encoding_table[(triple >> 0 * 6) & 0x3F];
-	}
-
-	for (int i = 0; i < mod_table[input_length % 3]; i++)
-		encoded_data[*output_length - 1 - i] = '=';
-
-	return encoded_data;
-}
-
-unsigned char *base64_decode(const char *data,
-		size_t input_length,
-		size_t *output_length) {
-
-	if (decoding_table == NULL) build_decoding_table();
-
-	if (input_length % 4 != 0) return NULL;
-
-	*output_length = input_length / 4 * 3;
-	if (data[input_length - 1] == '=') (*output_length)--;
-	if (data[input_length - 2] == '=') (*output_length)--;
-
-	unsigned char *decoded_data = (unsigned char *) malloc(*output_length);
-	if (decoded_data == NULL) return NULL;
-
-	for (int i = 0, j = 0; i < input_length;) {
-
-		uint32_t sextet_a = data[i] == '=' ? 0 & i++ : decoding_table[data[i++]];
-		uint32_t sextet_b = data[i] == '=' ? 0 & i++ : decoding_table[data[i++]];
-		uint32_t sextet_c = data[i] == '=' ? 0 & i++ : decoding_table[data[i++]];
-		uint32_t sextet_d = data[i] == '=' ? 0 & i++ : decoding_table[data[i++]];
-
-		uint32_t triple = (sextet_a << 3 * 6)
-				+ (sextet_b << 2 * 6)
-				+ (sextet_c << 1 * 6)
-				+ (sextet_d << 0 * 6);
-
-		if (j < *output_length) decoded_data[j++] = (triple >> 2 * 8) & 0xFF;
-		if (j < *output_length) decoded_data[j++] = (triple >> 1 * 8) & 0xFF;
-		if (j < *output_length) decoded_data[j++] = (triple >> 0 * 8) & 0xFF;
-	}
-
-	return decoded_data;
-}
-
-void build_decoding_table() {
-
-	decoding_table = (char*) malloc(256);
-
-	for (int i = 0; i < 64; i++)
-		decoding_table[(unsigned char) encoding_table[i]] = i;
-}
-
-void base64_cleanup() {
-	free(decoding_table);
-}
+#endif /* __APPLE__ */

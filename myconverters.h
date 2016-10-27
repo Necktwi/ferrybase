@@ -56,6 +56,31 @@ template < typename T > std::string to_string(const T& n);
 int stoi(const string& s, size_t* t = NULL);
 double stod(const string& s, size_t* t = NULL);
 #endif
+/**
+ * returns a string of base64 encoded data
+ * @param data:input string
+ * @param input_length: the length of the input string
+ * @param output_length: pointer to the variable that gets length of the output
+ * string.
+ * @return pointer to the string encoded in base65 and should be freed using
+ * free() by the calling function.
+ */
+char* base64_encode(const unsigned char *data,
+                    size_t input_length,
+                    size_t *output_length);
+
+/**
+ * @param data : input base64 encoded string
+ * @param input_length : length of the @param data
+ * @param output_length : pointer to the variable that gets filled with length
+ * returned binary value.
+ * @return binary block; should be freed by calling function using free().
+ */
+unsigned char* base64_decode(const char *data,
+                             size_t input_length,
+                             size_t *output_length);
+void base64_cleanup();
+void build_decoding_table();
 
 #endif	/* MYCONVERTERS_H */
 
