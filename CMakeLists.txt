@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.6 FATAL_ERROR)
+cmake_minimum_required (VERSION 3.5 FATAL_ERROR)
 project (base CXX)
 set (base_VERSION_MAJOR 1)
 set (base_VERSION_MINOR 0)
