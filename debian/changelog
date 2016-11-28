@@ -1,7 +1,0 @@
-base (1.1-0ubuntu3) xenial; urgency=medium
-
-  * FFJSON and logger seperated (Closes: #1)
-   - update implemented
-   - FFJSON and logger seperated
-
- -- Satya Gowtham Kudupudi (necktwi) <satyagowtham.k@gmail.com>  Sun, 27 Nov 2016 00:14:07 +0530
