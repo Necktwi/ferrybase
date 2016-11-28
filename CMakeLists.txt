@@ -1,7 +1,11 @@
 cmake_minimum_required (VERSION 3.5 FATAL_ERROR)
+include(TargetArch.cmake)
+include(GNUInstallDirs)
+target_architecture(arch)
 project (base CXX)
+set (CMAKE_USE_RELATIVE_PATHS 1)
 set (base_VERSION_MAJOR 1)
-set (base_VERSION_MINOR 0)
+set (base_VERSION_MINOR 1)
 set (Umbrella "ferryfair")
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # Mac OS X specific code
@@ -46,12 +50,12 @@ set_target_properties(baseStatic
     VERSION ${base_VERSION_MAJOR}.${base_VERSION_MINOR}
     SOVERSION ${base_VERSION_MAJOR}
     )
-install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(FILES ${HEADERS} DESTINATION include/${Umbrella}/${PROJECT_NAME})
 install(FILES "${PROJECT_BINARY_DIR}/baseConfig.h"
     DESTINATION include/${Umbrella}/${PROJECT_NAME})
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.pc"
-    DESTINATION lib/pkgconfig
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
     RENAME "lib${PROJECT_NAME}.pc")
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.pc"
     DESTINATION share/pkgconfig

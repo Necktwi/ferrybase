@@ -1,7 +1,7 @@
-base (1.1-0ubuntu6) trusty; urgency=low
+base (1.1-0ubuntu3) xenial; urgency=medium
 
-  * FFJSON copy corrected (Closes: #1)
-   - question n answer implemented.
-   - json null implemented
+  * FFJSON and logger seperated (Closes: #1)
+   - update implemented
+   - FFJSON and logger seperated
 
- -- Satya Gowtham Kudupudi (necktwi) <satyagowtham.k@gmail.com>  Mon, 3 Nov 2014 21:36:07 +0530
+ -- Satya Gowtham Kudupudi (necktwi) <satyagowtham.k@gmail.com>  Sun, 27 Nov 2016 00:14:07 +0530
