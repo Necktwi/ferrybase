@@ -1,0 +1,7 @@
+libbase (1.0-0ubuntu1) xenial; urgency=medium
+
+  * FFJSON and logger separated (Closes: #2001)
+   - update implemented
+   - FFJSON and logger separated
+
+ -- Satya Gowtham Kudupudi (necktwi) <satyagowtham.k@gmail.com>  Sun, 27 Nov 2016 00:14:07 +0530
