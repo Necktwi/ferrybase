@@ -1,9 +1,9 @@
 cmake_minimum_required (VERSION 3.5 FATAL_ERROR)
 include(GNUInstallDirs)
-project (base CXX)
+project (ferrybase CXX)
 set (CMAKE_USE_RELATIVE_PATHS 1)
-set (base_VERSION_MAJOR 1)
-set (base_VERSION_MINOR 1)
+set (VERSION_MAJOR 1)
+set (VERSION_MINOR 0)
 set (Umbrella "ferryfair")
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # Mac OS X specific code
@@ -12,12 +12,12 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # configure a header file to pass some of the CMake settings
 # to the source code
 configure_file (
-    "${PROJECT_SOURCE_DIR}/${PROJECT_NAME}Config.h.in"
-    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.h"
+    "${PROJECT_SOURCE_DIR}/config.h.in"
+    "${PROJECT_BINARY_DIR}/config.h"
     )
 configure_file(
-    "${PROJECT_SOURCE_DIR}/${PROJECT_NAME}.pc.in"
-    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}.pc"
+    "${PROJECT_SOURCE_DIR}/pkgconfig.pc.in"
+    "${PROJECT_BINARY_DIR}/pkgconfig.pc"
     )
 # add the binary tree to the search path for include files
 # so that we will find TutorialConfig.h
@@ -35,26 +35,28 @@ else(macOS)
 file(GLOB SOURCES *.cpp)
 file(GLOB HEADERS *.h)
 endif(macOS)
-add_library(baseStatic STATIC ${SOURCES} ${HEADERS})
-add_library(base SHARED ${SOURCES} ${HEADERS})
-set_target_properties(baseStatic PROPERTIES OUTPUT_NAME base)
-set_target_properties(base
+add_library(${PROJECT_NAME}Static STATIC ${SOURCES} ${HEADERS})
+add_library(${PROJECT_NAME} SHARED ${SOURCES} ${HEADERS})
+set_target_properties(${PROJECT_NAME}Static PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
+set_target_properties(${PROJECT_NAME}
     PROPERTIES
-    VERSION ${base_VERSION_MAJOR}.${base_VERSION_MINOR}
-    SOVERSION ${base_VERSION_MAJOR}
+    VERSION ${VERSION_MAJOR}.${VERSION_MINOR}
+    SOVERSION ${VERSION_MAJOR}
     )
-set_target_properties(baseStatic
+set_target_properties(${PROJECT_NAME}Static
     PROPERTIES
-    VERSION ${base_VERSION_MAJOR}.${base_VERSION_MINOR}
-    SOVERSION ${base_VERSION_MAJOR}
+    VERSION ${VERSION_MAJOR}.${VERSION_MINOR}
+    SOVERSION ${VERSION_MAJOR}
     )
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(FILES ${HEADERS} DESTINATION include/${Umbrella}/${PROJECT_NAME})
-install(FILES "${PROJECT_BINARY_DIR}/baseConfig.h"
-    DESTINATION include/${Umbrella}/${PROJECT_NAME})
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.pc"
+install(TARGETS ${PROJECT_NAME}Static DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${Umbrella}/${PROJECT_NAME})
+install(FILES "${PROJECT_BINARY_DIR}/config.h"
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${Umbrella}/${PROJECT_NAME}
+    RENAME ${PROJECT_NAME}Config.h)
+install(FILES "${PROJECT_BINARY_DIR}/pkgconfig.pc"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
-    RENAME "lib${PROJECT_NAME}.pc")
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.pc"
-    DESTINATION share/pkgconfig
-    RENAME "lib${PROJECT_NAME}.pc")
+    RENAME "${PROJECT_NAME}.pc")
+install(FILES "${PROJECT_BINARY_DIR}/pkgconfig.pc"
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig
+    RENAME "${PROJECT_NAME}.pc")
