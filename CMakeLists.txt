@@ -1,7 +1,5 @@
 cmake_minimum_required (VERSION 3.5 FATAL_ERROR)
-include(TargetArch.cmake)
 include(GNUInstallDirs)
-target_architecture(arch)
 project (base CXX)
 set (CMAKE_USE_RELATIVE_PATHS 1)
 set (base_VERSION_MAJOR 1)
