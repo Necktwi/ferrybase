@@ -1,7 +1,6 @@
-cmake_minimum_required (VERSION 3.5 FATAL_ERROR)
+cmake_minimum_required (VERSION 3.5)
 include(GNUInstallDirs)
-project (ferrybase CXX)
-set (CMAKE_USE_RELATIVE_PATHS 1)
+project (ferrybase)
 set (VERSION_MAJOR 1)
 set (VERSION_MINOR 0)
 set (Umbrella "ferryfair")
@@ -19,13 +18,7 @@ configure_file(
     "${PROJECT_SOURCE_DIR}/pkgconfig.pc.in"
     "${PROJECT_BINARY_DIR}/pkgconfig.pc"
     )
-# add the binary tree to the search path for include files
-# so that we will find TutorialConfig.h
-include_directories("${PROJECT_BINARY_DIR}")
-
-set (GCC_COVERAGE_COMPILE_FLAGS "-g -O0 -std=c++14")
-set (GCC_COVERAGE_LINK_FLAGS "-lxml2 -lpthread -lssl -lcrypto -lz -lrt")
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} "/usr/include/libxml2")
+set (GCC_COVERAGE_COMPILE_FLAGS "-std=c++14")
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
 if(macOS)
@@ -35,6 +28,7 @@ else(macOS)
 file(GLOB SOURCES *.cpp)
 file(GLOB HEADERS *.h)
 endif(macOS)
+include_directories(${PROJECT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_INSTALL_FULL_INCLUDEDIR}/${Umbrell
 add_library(${PROJECT_NAME}Static STATIC ${SOURCES} ${HEADERS})
 add_library(${PROJECT_NAME} SHARED ${SOURCES} ${HEADERS})
 set_target_properties(${PROJECT_NAME}Static PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
@@ -48,6 +42,11 @@ set_target_properties(${PROJECT_NAME}Static
     VERSION ${VERSION_MAJOR}.${VERSION_MINOR}
     SOVERSION ${VERSION_MAJOR}
     )
+if(macOS)
+else(macOS)
+target_link_libraries(${PROJECT_NAME}Static xml2 pthread ssl crypto z rt)
+target_link_libraries(${PROJECT_NAME} xml2 pthread ssl crypto z rt)
+endif(macOS)
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(TARGETS ${PROJECT_NAME}Static DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${Umbrella}/${PROJECT_NAME})
