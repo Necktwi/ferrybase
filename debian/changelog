@@ -1,7 +1,7 @@
-libferrybase (1.0-1ubuntu1) xenial; urgency=medium
+libferrybase (1.0-2ubuntu1) xenial; urgency=medium
 
   * FFJSON and logger separated (Closes: #2001)
    - update implemented
    - FFJSON and logger separated
 
- -- Satya Gowtham Kudupudi (necktwi) <satyagowtham.k@gmail.com>  Fri, 02 Dec 2016 00:14:07 +0530
+ -- Satya Gowtham Kudupudi (necktwi) <satyagowtham.k@gmail.com>  Sat, 03 Dec 2016 09:14:07 +0530
