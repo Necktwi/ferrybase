@@ -38,6 +38,12 @@
 #include <map>
 #include <iomanip>
 #include <time.h>
+#include <cstdio>
+#include <iostream>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <array>
 
 using namespace std;
 #ifndef __APPLE__
@@ -390,26 +396,15 @@ std::string inputPass() {
 }
 
 std::string getStdoutFromCommand(std::string cmd) {
-	std::string data;
-	FILE * stream = NULL;
-	const int max_buffer = 256;
-	char buffer[max_buffer];
-	cmd.append(" 2>&1"); // Do we want STDERR?
-#ifdef linux
-	stream = popen(cmd.c_str(), "r");
-#elif _WIN32
-#elif __APPLE__
-#endif
-	if (stream) {
-		while (!feof(stream))
-			if (fgets(buffer, max_buffer, stream) != NULL) data.append(buffer);
-#ifdef linux
-		pclose(stream);
-#elif _WIN32
-#elif __APPLE__
-#endif
-	}
-	return data;
+    std::array<char, 128> buffer;
+        std::string result;
+        std::shared_ptr<FILE> pipe(popen(cmd.c_str(), "r"), pclose);
+        if (!pipe) throw std::runtime_error("popen() failed!");
+        while (!feof(pipe.get())) {
+            if (fgets(buffer.data(), 128, pipe.get()) != NULL)
+                result += buffer.data();
+        }
+        return result;
 }
 
 std::string get_command_line(pid_t pid) {
