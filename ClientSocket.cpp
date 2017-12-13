@@ -7,7 +7,9 @@
 #include <malloc.h>
 #endif
 #endif
+#if defined(unix) || defined(__unix__) || defined(__unix)
 #include <pthread.h>
+#endif
 
 #ifdef __APPLE__
 #ifdef __MACH__
@@ -15,9 +17,12 @@
 #endif
 #endif
 ClientSocket::ClientSocket(std::string host, int port,
-		Socket::SOCKET_TYPE socketType, std::string trustedCA,
-		std::string privatecert, std::string privatekey) :
-host(host), port(port), Socket(socketType, trustedCA, privatecert, privatekey) {
+  Socket::SOCKET_TYPE socketType, std::string trustedCA,
+	std::string privatecert, std::string privatekey
+) :
+  host(host), port(port),
+  Socket(socketType, trustedCA, privatecert, privatekey)
+{
 	this->m_sock = -1;
 	//soc = socketType == Socket::DEFAULT ? new Socket() : new Socket(socketType, trustedCA, privatecert, privatekey);
 	if (!this->create()) {
@@ -33,13 +38,17 @@ host(host), port(port), Socket(socketType, trustedCA, privatecert, privatekey) {
 void ClientSocket::asyncsend(std::string payload, AftermathObj* aftermath_obj) {
 	aftermath_obj->payload = payload;
 	aftermath_obj->cs = this;
+#if defined(unix) || defined(__unix__) || defined(__unix)
 	pthread_create(&aftermath_obj->t, NULL, (void*(*)(void*)) & ClientSocket::socsend, aftermath_obj);
+#endif
 }
 
 void ClientSocket::asyncsend(std::string* payload, AftermathObj* aftermath_obj) {
 	aftermath_obj->payloadPTR = payload;
 	aftermath_obj->cs = this;
+#if defined(unix) || defined(__unix__) || defined(__unix)
 	pthread_create(&aftermath_obj->t, NULL, (void*(*)(void*)) & ClientSocket::socsend, aftermath_obj);
+#endif
 }
 
 const ClientSocket& ClientSocket::operator<<(const std::string& s) const {
@@ -66,6 +75,7 @@ void * ClientSocket::socsend(void* args) {
 	}
 	ssta->aftermath(ssta->aftermathDS, isSuccess);
 	delete ssta;
+  return NULL;
 }
 
 bool ClientSocket::send(const std::string s, int __flags) const {
@@ -73,7 +83,10 @@ bool ClientSocket::send(const std::string s, int __flags) const {
 }
 
 bool ClientSocket::send(const std::string s) const {
+#if defined(unix) || defined(__unix__) || defined(__unix)
 	return send(&s, MSG_NOSIGNAL);
+#endif
+  return false;
 }
 
 bool ClientSocket::send(const std::string* s, int __flags) const {
@@ -92,11 +105,13 @@ ClientSocket::~ClientSocket() {
  * @return void
  */
 void ClientSocket::reconnect() {
+#if defined(unix) || defined(__unix__) || defined(__unix)
 	if (is_valid())::close(m_sock);
 	if (socketType == SOCKET_TYPE::TLS1_1) {
 		ShutdownSSL(cSSL);
 		DestroySSL();
 	}
+#endif
 	if (!this->create()) {
 		throw SocketException("Could not create client socket.");
 	}
@@ -111,9 +126,11 @@ void ClientSocket::reconnect() {
  * @return void
  */
 void ClientSocket::disconnect() {
+#if defined(unix) || defined(__unix__) || defined(__unix)
 	if (is_valid())::close(m_sock);
 	if (socketType == SOCKET_TYPE::TLS1_1) {
 		ShutdownSSL(cSSL);
 		DestroySSL();
 	}
+#endif
 }

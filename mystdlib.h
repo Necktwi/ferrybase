@@ -1,10 +1,8 @@
 /* 
- * File:   mystdlib.h
- * Author: Satya Gowtham Kudupudi
- *
- * Created on 26 March, 2013, 10:25 AM
+ * Gowtham Kudupudi 26/03/2013
+ * MIT License
  */
-
+                                                                               
 #ifndef MYSTDLIB_H
 #define MYSTDLIB_H
 #include <sys/types.h>
@@ -22,7 +20,7 @@ typedef mode_t __mode_t;
 
 #define NELEMS(x)  (sizeof(x) / sizeof(x[0]))
 
-#ifdef WINDOWS
+#if defined(_WIN32) || defined(_WIN64)
 #include <direct.h>
 #define GetCurrentDir _getcwd
 #else
@@ -30,7 +28,7 @@ typedef mode_t __mode_t;
 #define GetCurrentDir getcwd
 #endif
 
-#ifndef __APPLE__
+#if defined(__linux__)
 void initTermios(int echo);
 void resetTermios(void);
 char getch_(int echo);
@@ -76,6 +74,6 @@ public:
 	int pkill(int signal = SIGTERM);
 };
 extern std::map<pid_t, spawn*> processMap;
-#endif /* __APPLE__ */
+#endif /* __linux__ */
 #endif /* MYSTDLIB_H */
 

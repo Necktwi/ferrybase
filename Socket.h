@@ -3,15 +3,16 @@
 #ifndef SOCKET_H
 #define SOCKET_H
 
+#include <string>
 #include <sys/types.h>
+#if defined(unix) || defined(__unix__) || defined(__unix)
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
 #include <unistd.h>
-#include <string>
 #include <arpa/inet.h>
 #include <openssl/ossl_typ.h>
-
+#endif
 
 const int MAXHOSTNAME = 200;
 const int MAXCONNECTIONS = 5;
@@ -35,7 +36,9 @@ public:
     bool bind(const int port);
     bool listen() const;
     int accept() const;
+#if defined(unix) || defined(__unix__) || defined(__unix)
     int accept(sockaddr* s_addr, SSL* cssl, SOCKET_TYPE socketType) const;
+#endif
     bool connect(const std::string host, const int port);
     bool send(const std::string s, int __flags) const;
     bool send(const std::string* s, int __flags) const;
@@ -44,15 +47,19 @@ public:
     void set_non_blocking(const bool);
     static void InitializeSSL();
     static void DestroySSL();
+#if defined(unix) || defined(__unix__) || defined(__unix)
     static void ShutdownSSL(SSL* ssl);
+#endif
     static std::string getIpAddr(int fd);
     static int getPort(int fd);
     
 protected:
     int m_sock = -1;
+#if defined(unix) || defined(__unix__) || defined(__unix)
     sockaddr_in m_addr;
     SSL_CTX *sslctx;
     SSL *cSSL;
+#endif
     std::string trustedCA;
     std::string privatecert;
     std::string privatekey;

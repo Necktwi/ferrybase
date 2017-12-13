@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <string>
 #include <list>
+#include <time.h>
 
 /*Corrected on system time change*/
 struct FerryTimeStamp : public timespec {
@@ -39,5 +40,11 @@ struct FerryTimeStamp : public timespec {
 
 std::ostream& operator<<(std::ostream& out, const FerryTimeStamp& f);
 FerryTimeStamp::DateFormat& operator<<(std::ostream& out, const FerryTimeStamp::DateFormat& f);
+
+#if defined(_WIN64) || defined(_WIN32)
+#define CLOCK_REALTIME 1
+int clock_gettime(int, timespec *spec);
+inline struct tm* localtime_r(const time_t *clock, struct tm *result);
+#endif
 
 #endif /* FerryTimeStamp_h */

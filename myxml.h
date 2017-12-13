@@ -12,12 +12,13 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
+#if defined(unix) || defined(__unix__) || defined(__unix)
 #include <libxml/xpath.h>
 #include <libxml/parser.h>
 
     void print_node(xmlNode *n);
     void print_xpath_nodes(xmlNodeSetPtr nodes, FILE* output);
-
+#endif
 #ifdef	__cplusplus
 }
 #endif

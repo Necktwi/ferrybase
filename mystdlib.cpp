@@ -1,10 +1,8 @@
 #include "mystdlib.h"
 #include "myconverters.h"
-#include <termios.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <netdb.h>
 #include <iostream>
 #include <fstream>
 #include <istream>
@@ -13,23 +11,18 @@
 #include <errno.h>
 #include <string>
 #include <sys/stat.h> 
-#include <ftw.h>
-#include <unistd.h>
 #ifdef linux
 #include <sys/prctl.h>
 #endif
 #include <signal.h>
 #include <vector>
 #ifndef __APPLE__
+#if defined(unix) || defined(__unix__) || defined(__unix)
 #include <ext/stdio_filebuf.h>
 #include <wait.h>
+#endif
 #include <malloc.h>
 #endif
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <ifaddrs.h>
-#include <netinet/in.h> 
-#include <arpa/inet.h>
 #include <assert.h>
 #include <sstream>
 #include <cerrno>
@@ -44,8 +37,20 @@
 #include <stdexcept>
 #include <string>
 #include <array>
+#if defined(unix) || defined(__unix__) || defined(__unix)
+#include <termios.h>
+#include <netdb.h>
+#include <ftw.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <ifaddrs.h>
+#include <netinet/in.h> 
+#include <arpa/inet.h>
+#endif
 
 using namespace std;
+#if defined(unix) || defined(__unix__) || defined(__unix)
 #ifndef __APPLE__
 std::map<pid_t, spawn*> processMap;
 
@@ -567,3 +572,4 @@ char const * sperm(__mode_t mode) {
 	return local_buff;
 }
 #endif /* __APPLE__ */
+#endif /*defined(unix) || defined(__unix__) || defined(__unix)*/

@@ -2,6 +2,7 @@
 
 #ifndef SERVERSOCKET_H
 #define SERVERSOCKET_H
+#if defined(unix) || defined(__unix__) || defined(__unix)
 
 #include "Socket.h"
 #include "SocketException.h"
@@ -105,4 +106,5 @@ private:
 };
 
 
+#endif
 #endif

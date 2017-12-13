@@ -16,7 +16,9 @@ public:
         std::string* payloadPTR;
         std::string error;
         int __flags;
+#if defined(unix) || defined(__unix__) || defined(__unix)
         pthread_t t;
+#endif
         ClientSocket* cs;
 
         AftermathObj() {
@@ -51,8 +53,9 @@ private:
         void* (&aftermath)(void* aftermathDS);
         void* aftermathDS;
     };
+#if defined(unix) || defined(__unix__) || defined(__unix)
     pthread_key_t socket_thread_key;
+#endif
 };
-
 
 #endif

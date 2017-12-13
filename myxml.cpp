@@ -1,3 +1,4 @@
+#if defined(unix) || defined(__unix__) || defined(__unix)
 #include<stdio.h>
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
@@ -58,5 +59,5 @@ void print_xpath_nodes(xmlNodeSetPtr nodes, FILE* output) {
     }
 }
 
-
+#endif
 

@@ -1,6 +1,6 @@
 .bzrignore
 .bzr/
-build/
+build*/
 dist/
 QtBuild/
 BuildXcode/
