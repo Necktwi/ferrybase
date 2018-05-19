@@ -1,0 +1,33 @@
+language: cpp
+env:
+  global:
+   - #DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+matrix:
+  include:
+    # works on Precise and Trusty
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+sudo: true
+dist: "xenial"
+before_install:
+   - |
+     if [ $TRAVIS_OS_NAME = linux ]; then
+      sudo apt-get install libboost-dev libssl-dev libxml2-dev bluez zlib1g-dev
+     fi
+     if [ $TRAVIS_OS_NAME = osx ]; then
+      brew install boost
+     fi
+     pwd
+     cd ..
+     pwd
+script:
+   - |
+     cd ${TRAVIS_BUILD_DIR}
+     mkdir -p build && cd build && cmake .. && make
