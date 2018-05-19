@@ -11,12 +11,12 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-7
+            - g++-8
       env:
-         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+         - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
 sudo: true
 #dist: "xenial"
-before_install:
+install:
    - |
      if [ $TRAVIS_OS_NAME = linux ]; then
       sudo apt-get install libboost-dev libssl-dev libxml2-dev bluez zlib1g-dev
