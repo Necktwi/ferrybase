@@ -19,7 +19,7 @@ sudo: true
 install:
    - |
      if [ $TRAVIS_OS_NAME = linux ]; then
-      sudo apt-get install libboost-dev libssl-dev libxml2-dev bluez zlib1g-dev
+      sudo apt-get install libboost-dev libssl-dev libxml2-dev bluez zlib1g-dev cmake-data
      fi
      if [ $TRAVIS_OS_NAME = osx ]; then
       brew install boost
