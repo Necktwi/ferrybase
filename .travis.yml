@@ -28,6 +28,9 @@ before_install:
      cd ..
      pwd
 script:
-   - |
-     cd ${TRAVIS_BUILD_DIR}
-     mkdir -p build && cd build && cmake .. && make
+   - cd ${TRAVIS_BUILD_DIR}
+   - pwd
+   - mkdir -p build
+   - cd build
+   - cmake ..
+   - make
