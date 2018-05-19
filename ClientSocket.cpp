@@ -107,7 +107,7 @@ ClientSocket::~ClientSocket() {
 void ClientSocket::reconnect() {
 #if defined(unix) || defined(__unix__) || defined(__unix)
 	if (is_valid())::close(m_sock);
-	if (socketType == Socket::SOCKET_TYPE::TLS1_1) {
+	if (socketType == SOCKET_TYPE::TLS1_1) {
 		ShutdownSSL(cSSL);
 		DestroySSL();
 	}
@@ -128,7 +128,7 @@ void ClientSocket::reconnect() {
 void ClientSocket::disconnect() {
 #if defined(unix) || defined(__unix__) || defined(__unix)
 	if (is_valid())::close(m_sock);
-	if (socketType == Socket::SOCKET_TYPE::TLS1_1) {
+	if (socketType == SOCKET_TYPE::TLS1_1) {
 		ShutdownSSL(cSSL);
 		DestroySSL();
 	}
