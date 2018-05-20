@@ -7,7 +7,7 @@ matrix:
     # works on Precise and Trusty
     - os: linux
       sudo: true
-      dist: "xenial"
+      #dist: "xenial"
       addons:
         apt:
           sources:
