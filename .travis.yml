@@ -28,6 +28,7 @@ install:
      cd ..
      pwd
 script:
+   - g++ -v
    - cd ${TRAVIS_BUILD_DIR}
    - pwd
    - mkdir -p build
