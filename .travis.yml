@@ -6,6 +6,7 @@ matrix:
   include:
     # works on Precise and Trusty
     - os: linux
+      sudo: true
       addons:
         apt:
           sources:
@@ -13,8 +14,10 @@ matrix:
           packages:
             - g++-8
       env:
-         - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
-sudo: true
+        - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
+    - os: osx
+      osx_image: xcode8.3
+
 #dist: "xenial"
 install:
    - |
@@ -29,10 +32,17 @@ install:
      cd ..
      pwd
 script:
-   - g++ -v
-   - cd ${TRAVIS_BUILD_DIR}
-   - pwd
-   - mkdir -p build
-   - cd build
-   - cmake ..
-   - make
+   - |
+     g++ -v
+     cd ${TRAVIS_BUILD_DIR}
+     pwd
+     mkdir -p build
+     cd build
+     if [ $TRAVIS_OS_NAME = linux ]; then
+       cmake ..
+       make
+     fi
+     if [ $TRAVIS_OS_NAME = osx ]; then
+       cmake .. -G Xcode
+       xcodebuild
+     fi
