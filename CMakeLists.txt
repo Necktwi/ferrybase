@@ -40,25 +40,34 @@ set (GCC_COVERAGE_COMPILE_FLAGS "-pthread")
 set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 MESSAGE( STATUS "CMAKE_CXX_COMPILER: " ${CMAKE_CXX_COMPILER} )
-set (GCC_COVERAGE_LINK_FLAGS "-fPIC -Wl,-unresolved-symbols=ignore-in-shared-libs")
+set (GCC_COVERAGE_LINK_FLAGS 
+   "-fPIC -Wl,-unresolved-symbols=ignore-in-shared-libs")
 if (DEFINED _DEBUG)
   set (GCC_COVERAGE_COMPILE_FLAGS "${GCC_COVERAGE_COMPILE_FLAGS} -g -O0")
   set (GCC_COVERAGE_LINK_FLAGS "${GCC_COVERAGE_LINK_FLAGS} -g -O0")
 endif ()
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
-set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
+set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} 
+   ${GCC_COVERAGE_LINK_FLAGS}")
 if(macOS OR Windows)
-  set(SOURCES FerryTimeStamp.cpp myconverters.cpp mystdlib.cpp)
-  set(HEADERS FerryTimeStamp.h myconverters.h mystdlib.h)
+  set(SOURCES FerryTimeStamp.cpp myconverters.cpp mystdlib.cpp 
+   ServerSocket.cpp Socket.cpp)
+  set(HEADERS FerryTimeStamp.h myconverters.h mystdlib.h ServerSocket.h Socket.h
+   SocketException.h)
 else(macOS OR Windows)
   file(GLOB SOURCES *.cpp)
   file(GLOB HEADERS *.h)
 endif()
-list(APPEND HEADERS "config.h.in")
+list(APPEND HEADERS "config.h.in"  ${PROJECT_BINARY_DIR}/config.h)
 include_directories(${PROJECT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_INSTALL_FULL_INCLUDEDIR}/${Umbrella} /usr/include/libxml2
 )
+if (macOS)
+   include_directories(/usr/local/opt/openssl/include)
+   link_directories(/usr/local/opt/openssl/lib)
+endif ()
+
 if (${LINKAGE} MATCHES "STATIC")
   add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
   set_target_properties(${PROJECT_NAME}

@@ -7,7 +7,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <iostream>
-#if defined(unix) || defined(__unix__) || defined(__unix)
+#if defined(unix) || defined(__unix__) || defined(__unix) || defined(__APPLE__)
 #include <openssl/bio.h> 
 #include <openssl/ssl.h> 
 #include <openssl/err.h> 
@@ -105,8 +105,8 @@ bool Socket::create(int timeout_sec) {
 	if (socketType == Socket::TLS1_1) {
 		InitializeSSL();
 #if defined(__APPLE__)
-		sslctx = SSL_CTX_new(TLSv1_method());
-#elseif defined(unix) || defined(__unix__) || defined(__unix)
+		sslctx = SSL_CTX_new(TLSv1_1_method());
+#elif defined(unix) || defined(__unix__) || defined(__unix)
 		sslctx = SSL_CTX_new(TLSv1_1_method());
 #endif  
 #if defined(unix) || defined(__unix__) || defined(__unix)

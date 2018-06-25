@@ -99,9 +99,13 @@ spawn::spawn() {
 
 }
 
-spawn::spawn(std::string command, bool daemon, void (*onStopHandler)(spawn*), bool freeChild, bool block) {
+spawn::spawn(std::string command, bool daemon, void (*onStopHandler)(spawn*), 
+   bool freeChild, bool block
+) {
 	sigset_t chldmask;
-	if ((sigemptyset(&chldmask) == -1) || (sigaddset(&chldmask, SIGCHLD) == -1)) {
+   if ((sigemptyset(&chldmask) == -1) || 
+      (sigaddset(&chldmask, SIGCHLD) == -1)
+   ) {
 		throw "Failed to initialize the signal mask.";
 	}
 	pipe(this->cpstdinp);
@@ -196,7 +200,8 @@ spawn::spawn(std::string command, bool daemon, void (*onStopHandler)(spawn*), bo
 					dup2(stdoutfd, 1);
 					dup2(stdoutfd, 2);
 				}
-				std::cout << "\n" + getTime() + " spawn : daemon=" + std::string(itoa(daemon)) + "\n";
+				std::cout << "\n" + getTime() + " spawn : daemon=" +
+               std::string(itoa(daemon)) + "\n";
 				fflush(stdout);
 			} else if (daemon) {
 				close(this->cpstdinp[0]);
@@ -210,7 +215,8 @@ spawn::spawn(std::string command, bool daemon, void (*onStopHandler)(spawn*), bo
 			this->childExitStatus = child_exit_status;
 #ifdef DEBUG
 			if ((debug & 32) == 32) {
-				std::cout << "\n" << getTime() << " spawn: process " << getpid() << " spawned " << this->cmdName << " with pid:" << this->cpid << "\n";
+				std::cout << "\n" << getTime() << " spawn: process " << getpid() << 
+            " spawned " << this->cmdName << " with pid:" << this->cpid << "\n";
 				fflush(stdout);
 			}
 #endif
@@ -232,7 +238,9 @@ wait_till_child_exit:
 					if (waitpid(this->cpid, &this->childExitStatus, WNOHANG) == 0) {
 #ifdef DEBUG
 						if ((debug & 32) == 32) {
-							std::cout << "\n" << getTime() << " spawn: process " << getpid() << " received a signal during cmd: " << this->cmdName << "\n";
+							std::cout << "\n" << getTime() << " spawn: process " << 
+                     getpid() << " received a signal during cmd: " << 
+                     this->cmdName << "\n";
 							fflush(stdout);
 						}
 #endif

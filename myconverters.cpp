@@ -103,7 +103,9 @@ std::vector<std::string> explode(const std::string delimiter, const std::string 
     return arr;
 }
 
-void explode(const std::string delimiter, const std::string &str, std::vector<std::string>& shrapnel) {
+void explode(const std::string delimiter, const std::string &str,
+   std::vector<std::string>& shrapnel
+) {
     int strleng = str.length();
     int delleng = delimiter.length();
     if (delleng == 0)
