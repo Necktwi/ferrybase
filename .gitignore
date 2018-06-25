@@ -5,8 +5,8 @@ dist/
 QtBuild/
 BuildXcode/
 nbproject/private/private.xml
-.DS_Store
-nbproject/.DS_Store
+**/.DS_Store
+**/._*
 *.user
 
 nbproject/private/

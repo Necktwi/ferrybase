@@ -11,6 +11,7 @@
 #include <list>
 #include <map>
 #include <iostream>
+#include <fstream>
 
 #if defined(__APPLE__) || defined(__CYGWIN__)
 #if defined(__MACH__) || defined(__CYGWIN__)
@@ -69,11 +70,25 @@ public:
 	void (*onStopHandler)(spawn*);
 
 	spawn();
-	spawn(std::string command, bool daemon = false, void (*onStopHandler)(spawn*) = NULL, bool freeChild = false, bool block = false);
+	spawn (std::string command, bool daemon = false, 
+      void (*onStopHandler)(spawn*) = NULL, bool freeChild = false,
+      bool block = false
+   );
 	int getChildExitStatus();
 	int pkill(int signal = SIGTERM);
 };
 extern std::map<pid_t, spawn*> processMap;
+
 #endif /* __linux__ */
+struct cfout_ : std::ofstream {
+   cfout_ (const std::string& fileName) : std::ofstream(fileName) {};
+};
+
+template <typename Input_>
+cfout_& operator<<(cfout_& strm, const Input_& var) {
+    std::cout << var;
+    static_cast<std::ofstream&>(strm) << var;
+    return strm;
+};
 #endif /* MYSTDLIB_H */
 
