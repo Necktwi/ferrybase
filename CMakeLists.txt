@@ -64,6 +64,7 @@ include_directories(${PROJECT_BINARY_DIR}
   ${CMAKE_INSTALL_FULL_INCLUDEDIR}/${Umbrella} /usr/include/libxml2
 )
 if (macOS)
+   message("openssl include")
    include_directories(/usr/local/opt/openssl/include)
    link_directories(/usr/local/opt/openssl/lib)
 endif ()
@@ -79,6 +80,7 @@ if (${LINKAGE} MATCHES "STATIC")
     SOVERSION ${VERSION_MAJOR}
   )
   if (macOS)
+      target_link_libraries(${PROJECT_NAME} ssl crypto)
   elseif (Windows)
   else ()
       target_link_libraries(${PROJECT_NAME} xml2 pthread ssl crypto z rt)
@@ -90,11 +92,18 @@ else ()
     VERSION ${VERSION_MAJOR}.${VERSION_MINOR}
     SOVERSION ${VERSION_MAJOR}
   )
-  if (macOS)
-  elseif (Windows)
+   if (macOS)
+      message("openssl include")
+      include_directories(/usr/local/opt/openssl/include)
+      link_directories(/usr/local/opt/openssl/lib)
+   endif ()
+   if (macOS)
+      target_link_libraries(${PROJECT_NAME} ssl crypto)
+   elseif (Windows)
   else (macOS)
     target_link_libraries(${PROJECT_NAME} xml2 pthread ssl crypto z rt)
   endif ()
+  
 endif ()
 install (TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install (FILES ${HEADERS}
