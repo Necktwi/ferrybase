@@ -357,6 +357,7 @@ std::string getMachineName() {
 
 static int jgjg(const char *fpath, const struct stat *sb, int tflag, struct FTW * ftwbuf) {
 	unlink(fpath);
+   return 0;
 }
 
 int rmmydir(std::string dirn) {

@@ -4,12 +4,13 @@
 #include "SocketException.h"
 #include "mycurl.h"
 #include "Socket.h"
-#include<string>
-#include<string.h>
-#include<stdio.h>
-#include<sstream>
-#include<iostream>
-#include<stdlib.h>
+#include <string>
+#include <string.h>
+#include <stdio.h>
+#include <sstream>
+#include <iostream>
+#include <stdlib.h>
+
 using namespace std;
 
 /*static int wait_on_socket(curl_socket_t sockfd, int for_recv, long timeout_ms) {
@@ -24,7 +25,7 @@ using namespace std;
 	FD_ZERO(&outfd);
 	FD_ZERO(&errfd);
 
-	FD_SET(sockfd, &errfd); //* always check for error 
+	FD_SET(sockfd, &errfd); // always check for error
 
 	if (for_recv) {
 		FD_SET(sockfd, &infd);
@@ -32,7 +33,7 @@ using namespace std;
 		FD_SET(sockfd, &outfd);
 	}
 
-	//* select() returns the number of signalled sockets or -1
+	// select() returns the number of signalled sockets or -1
 	res = select(sockfd + 1, &infd, &outfd, &errfd, &tv);
 	return res;
 }*/
@@ -175,7 +176,7 @@ string HTTPReq(string hostname, string requestPath, string port, string content,
 	string req1 = method + " " + requestPath + " HTTP/1.0\r\nHost: " + hostname + "\r\nContent-Type:" + contentType + "\r\n" + ((cl > 0) ? "Content-Length:" + ccl + "\r\n" : "") + "\r\n" + content;
 	char* request = (char*) req1.c_str();
 	string response;
-	curl_socket_t sockfd; //* socket 
+	curl_socket_t sockfd; // socket
 	long sockextr;
 	size_t iolen;
 	curl_off_t nread;
@@ -184,7 +185,7 @@ string HTTPReq(string hostname, string requestPath, string port, string content,
 	if (curl) {
 		string url = "http://" + hostname + ":" + port;
 		curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-		//* Do not do the transfer - only connect to host 
+		// Do not do the transfer - only connect to host
 		curl_easy_setopt(curl, CURLOPT_CONNECT_ONLY, 1L);
 		res = curl_easy_perform(curl);
 
@@ -193,9 +194,9 @@ string HTTPReq(string hostname, string requestPath, string port, string content,
 			return "";
 		}
 
-		//* Extract the socket from the curl handle - we'll need it for waiting.
-		 //* Note that this API takes a pointer to a 'long' while we use
-		 // curl_socket_t for sockets otherwise.
+		// Extract the socket from the curl handle - we'll need it for waiting.
+      // Note that this API takes a pointer to a 'long' while we use
+      // curl_socket_t for sockets otherwise.
 	 
 		res = curl_easy_getinfo(curl, CURLINFO_LASTSOCKET, &sockextr);
 
@@ -206,15 +207,15 @@ string HTTPReq(string hostname, string requestPath, string port, string content,
 
 		sockfd = sockextr;
 
-		//* wait for the socket to become ready for sending
+		// wait for the socket to become ready for sending
 		if (!wait_on_socket(sockfd, 0, 60000L)) {
 			//printf("Error: timeout.\n");
 			return NULL;
 		}
 
 		//puts("Sending request.");
-		//* Send the request. Real applications should check the iolen
-		 //* to see if all the request has been sent 
+		// Send the request. Real applications should check the iolen
+      // to see if all the request has been sent
 		res = curl_easy_send(curl, request, strlen(request), &iolen);
 
 		if (CURLE_OK != res) {
@@ -223,7 +224,7 @@ string HTTPReq(string hostname, string requestPath, string port, string content,
 		}
 		//puts("Reading response.");
 
-		//* read the response 
+		// read the response
 		for (;;) {
 			string buf2;
 			char buf[2048];
@@ -241,7 +242,7 @@ string HTTPReq(string hostname, string requestPath, string port, string content,
 			response += buf2;
 		}
 
-		//* always cleanup 
+		// always cleanup
 		curl_easy_cleanup(curl);
 	}
 	int si = response.find("Content-Length: ", 0) + 16;
