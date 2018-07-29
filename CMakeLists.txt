@@ -55,8 +55,8 @@ if(macOS OR Windows)
   set(HEADERS FerryTimeStamp.h myconverters.h mystdlib.h ServerSocket.h Socket.h
    SocketException.h)
 else(macOS OR Windows)
-  file(GLOB SOURCES *.cpp)
-  file(GLOB HEADERS *.h)
+   file(GLOB HEADERS [a-zA-Z0-9_]*.h)
+   file(GLOB SOURCES [a-zA-Z0-9_]*.cpp)
 endif()
 list(APPEND HEADERS "config.h.in"  ${PROJECT_BINARY_DIR}/config.h)
 include_directories(${PROJECT_BINARY_DIR}
