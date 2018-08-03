@@ -4,6 +4,17 @@ include(GNUInstallDirs)
 project (ferrybase)
 message ("Generating build procedure for ${PROJECT_NAME} ...")
 
+message ("Extropolating build type ...")
+string (REPLACE ${CMAKE_CURRENT_SOURCE_DIR} "" SRC_RLTV_BLD_DIR
+   ${PROJECT_BINARY_DIR}
+)
+message ("SRC_RLTV_BLD_DIR: ${SRC_RLTV_BLD_DIR}")
+string (REPLACE "/Build" "" BUILD_TARGET ${SRC_RLTV_BLD_DIR})
+if (${SRC_RLTV_BLD_DIR})
+   string (REPLACE "/build" "" BUILD_TARGET ${BUILD_TARGET})
+endif ()
+message ("BUILD_TARGET: ${BUILD_TARGET}")
+
 if (DEFINED _DEBUG)
   ADD_DEFINITIONS(-D_DEBUG=${_DEBUG})
 endif()
