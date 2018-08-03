@@ -15,7 +15,6 @@ if (${SRC_RLTV_BLD_DIR})
 endif ()
 message ("BUILD_TARGET: ${BUILD_TARGET}")
 
-
 if (DEFINED _DEBUG)
   ADD_DEFINITIONS(-D_DEBUG=${_DEBUG})
 endif()
