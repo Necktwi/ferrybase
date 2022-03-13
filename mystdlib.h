@@ -13,11 +13,11 @@
 #include <iostream>
 #include <fstream>
 
-#if ! defined(__mode_t)
-#  if defined(mode_t)
+//#if !defined(__mode_t)
+#  if defined(__NEED_mode_t)
 typedef mode_t __mode_t;
 #  endif
-#endif
+//#endif
 
 #define NELEMS(x)  (sizeof(x) / sizeof(x[0]))
 
