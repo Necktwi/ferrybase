@@ -90,5 +90,8 @@ cfout_& operator<<(cfout_& strm, const Input_& var) {
     static_cast<std::ofstream&>(strm) << var;
     return strm;
 };
+
+std::string random_alphnuma_string (int size = 16);
+
 #endif /* MYSTDLIB_H */
 

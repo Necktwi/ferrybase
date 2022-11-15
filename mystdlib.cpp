@@ -25,7 +25,9 @@
 #endif
 #include <assert.h>
 #include <sstream>
+#include <cstdlib>
 #include <cerrno>
+#include <ctime>
 #include <signal.h>
 #include <list>
 #include <map>
@@ -53,6 +55,17 @@ using namespace std;
 #if defined(unix) || defined(__unix__) || defined(__unix)
 #ifndef __APPLE__
 std::map<pid_t, spawn*> processMap;
+
+const char alphanum[] =
+   "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const int alphanum_length = sizeof(alphanum)-1;
+string random_alphnuma_string (int size) {
+   string rand_str;
+   srand(time(0));
+   for(int i = 0; i < size; i++)
+      rand_str += alphanum[rand() % alphanum_length];
+    return rand_str;
+}
 
 static struct termios old, mnew;
 
