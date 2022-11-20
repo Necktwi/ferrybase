@@ -9,6 +9,7 @@ nbproject/private/private.xml
 **/.DS_Store
 **/._*
 *.user
+tmp/
 
 nbproject/private/
 build/

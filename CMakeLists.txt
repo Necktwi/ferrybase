@@ -1,7 +1,7 @@
 # list does not recognize sub-command FILTER for version 3.5
 cmake_minimum_required (VERSION 3.5)
-include(GNUInstallDirs)
-project (ferrybase)
+project (ferrybase CXX C)
+include (GNUInstallDirs)
 message ("Generating build procedure for ${PROJECT_NAME} ...")
 
 message ("Extropolating build type ...")
