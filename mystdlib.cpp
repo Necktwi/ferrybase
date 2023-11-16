@@ -13,11 +13,12 @@
 #include <sys/stat.h> 
 #ifdef linux
 #include <sys/prctl.h>
+#include <sys/wait.h>
 #endif
 #include <signal.h>
 #include <vector>
 #ifndef __APPLE__
-#if defined(unix) || defined(__unix__) || defined(__unix)
+#if (defined(unix) || defined(__unix__) || defined(__unix)) && !defined(linux)
 #include <ext/stdio_filebuf.h>
 #include <wait.h>
 #endif
@@ -548,14 +549,14 @@ std::string GetPrimaryIp() {
 }
 
 std::string get_fd_contents(int fd) {
-	__gnu_cxx::stdio_filebuf<char> filebuf(fd, std::ios::in); // 1
-	std::istream is(&filebuf); // 2
-	std::string line;
-	std::string para;
-	while (!is.eof()) {
-		getline(is, line);
-		para += line;
-	}
+   std::string para;
+	char c[32];
+   ssize_t len = read(fd, c, 32);
+   para.append(c, len);
+   while(len==32) {
+      len = read(fd, c, 32);
+      para.append(c, len);
+   }
 	return para;
 }
 
