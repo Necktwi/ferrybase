@@ -3,6 +3,12 @@ cmake_minimum_required (VERSION 3.5)
 project (ferrybase CXX C)
 include (GNUInstallDirs)
 message ("Generating build procedure for ${PROJECT_NAME} ...")
+set(CMAKE_MODULE_PATH
+   "${CMAKE_CURRENT_SOURCE_DIR}"
+   ${CMAKE_MODULE_PATH})
+include(TargetArch)
+target_architecture(TARGET_ARCH)
+message ("TARGET_ARCH: ${TARGET_ARCH}")
 
 message ("Extropolating build type ...")
 string (REPLACE ${CMAKE_CURRENT_SOURCE_DIR} "" SRC_RLTV_BLD_DIR
@@ -71,6 +77,12 @@ include_directories(${PROJECT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_INSTALL_FULL_INCLUDEDIR}/${Umbrella} /usr/include/libxml2
 )
+if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../openssl/install/${TARGET_ARCH}")
+   link_directories ("${CMAKE_CURRENT_SOURCE_DIR}/../openssl/install/${TARGET_ARCH}/lib")
+   include_directories (
+      ${CMAKE_CURRENT_SOURCE_DIR}/../openssl/install/${TARGET_ARCH}/include
+   )
+endif()
 if (macOS)
    message("openssl include")
    include_directories(/usr/local/opt/openssl/include)
