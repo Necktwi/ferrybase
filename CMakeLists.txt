@@ -61,13 +61,13 @@ if (DEFINED _DEBUG)
   set (GCC_COVERAGE_LINK_FLAGS "${GCC_COVERAGE_LINK_FLAGS} -g -O0")
 endif ()
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
-set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} 
-   ${GCC_COVERAGE_LINK_FLAGS}")
+set (CMAKE_EXE_LINKER_FLAGS
+   "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
 if(macOS OR Windows)
-  set(SOURCES FerryTimeStamp.cpp myconverters.cpp mystdlib.cpp 
-   ServerSocket.cpp Socket.cpp)
-  set(HEADERS FerryTimeStamp.h myconverters.h mystdlib.h ServerSocket.h Socket.h
-   SocketException.h)
+   set(SOURCES FerryTimeStamp.cpp myconverters.cpp mystdlib.cpp
+      ServerSocket.cpp Socket.cpp)
+   set(HEADERS FerryTimeStamp.h myconverters.h mystdlib.h ServerSocket.h
+      Socket.h SocketException.h)
 else(macOS OR Windows)
    file(GLOB HEADERS [a-zA-Z0-9_]*.h)
    file(GLOB SOURCES [a-zA-Z0-9_]*.cpp)
@@ -78,10 +78,10 @@ include_directories(${PROJECT_BINARY_DIR}
   ${CMAKE_INSTALL_FULL_INCLUDEDIR}/${Umbrella} /usr/include/libxml2
 )
 if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../openssl/install/${TARGET_ARCH}")
-   link_directories ("${CMAKE_CURRENT_SOURCE_DIR}/../openssl/install/${TARGET_ARCH}/lib")
-   include_directories (
-      ${CMAKE_CURRENT_SOURCE_DIR}/../openssl/install/${TARGET_ARCH}/include
-   )
+   link_directories(
+      "${CMAKE_CURRENT_SOURCE_DIR}/../openssl/install/${TARGET_ARCH}/lib")
+   include_directories(
+      ${CMAKE_CURRENT_SOURCE_DIR}/../openssl/install/${TARGET_ARCH}/include)
 endif()
 if (macOS)
    message("openssl include")
@@ -141,3 +141,22 @@ install (FILES "${PROJECT_BINARY_DIR}/pkgconfig.pc"
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig
   RENAME "${PROJECT_NAME}.pc"
 )
+
+if (BUILD_TESTING)
+   message("${PROJECT_NAME}: BUILD_TESTS: ${BUILD_TESTS}")
+   #include(CTest)
+   #set (GCC_COVERAGE_COMPILE_FLAGS "-std=c++14")
+   #set (GCC_COVERAGE_LINK_FLAGS "-lFFJSON -lbase -llogger")
+   #include_directories (${CMAKE_CURRENT_SOURCE_DIR} "/usr/local/include/ferryfair")
+   #link_directories (${PROJECT_BINARY_DIR})
+   #set (CMAKE_CXX_FLAGS "${GCC_COVERAGE_COMPILE_FLAGS}")
+   #set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
+
+   add_executable(sizeInfo tests/sizeInfo.cpp)
+   target_link_libraries(sizeInfo PUBLIC ferrybase)
+   target_include_directories(sizeInfo PUBLIC
+      ${CMAKE_CURRENT_SOURCE_DIR}
+      ${CMAKE_INSTALL_FULL_INCLUDEDIR}/${Umbrella}
+   )
+   #add_test(test1 sizeInfo)
+endif()

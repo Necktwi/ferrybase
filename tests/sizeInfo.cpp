@@ -13,13 +13,11 @@
  */
 
 
-#include "logger.h"
+#include "FerryTimeStamp.h"
 #include <iostream>
 
 using namespace std;
 
-int ff_log_type = FFL_DEBUG | FFL_INFO;
-unsigned int ff_log_level = 1;
 int child_exit_status = 0;
 
 void test1() {
@@ -39,10 +37,12 @@ void test1() {
 
 void test2() {
 	std::cout << "sizeInfo test 2" << std::endl;
+   FerryTimeStamp ftStart(4,3), ftEnd(3,5);
+   std::cout << ftStart - ftEnd << std::endl;
 	std::cout << "%TEST_FAILED% time=0 testname=test2 (sizeInfo) message=error message sample" << std::endl;
 }
 
-int main(int argc, char** argv) {
+int main (int argc, char** argv) {
 	std::cout << "%SUITE_STARTING% sizeInfo" << std::endl;
 	std::cout << "%SUITE_STARTED%" << std::endl;
 

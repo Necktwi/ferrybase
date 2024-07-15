@@ -23,6 +23,12 @@ FerryTimeStamp::FerryTimeStamp() {
    ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
 }
 
+FerryTimeStamp::FerryTimeStamp(time_t sec, long nsec) {
+   tv_sec = sec;
+   tv_nsec = nsec;
+   ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
+}
+
 FerryTimeStamp::FerryTimeStamp(const string& sFTS) {
    assign(sFTS);
    ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
@@ -86,16 +92,20 @@ FerryTimeStamp FerryTimeStamp::operator+(FerryTimeStamp ftsAddand) {
 
 FerryTimeStamp FerryTimeStamp::operator-(FerryTimeStamp ftsSubtrahend) {
    FerryTimeStamp result;
-   result.tv_sec = tv_sec - ftsSubtrahend.tv_sec;
-   if (ftsSubtrahend.tv_nsec > tv_nsec) {
-       if (tv_sec > ftsSubtrahend.tv_sec) {
-          result.tv_sec++;
-       } else {
-          result.tv_sec--;
-       }
-       result.tv_nsec = ftsSubtrahend.tv_nsec - tv_nsec;
+   if (tv_sec >= ftsSubtrahend.tv_sec) {
+      result.tv_sec = tv_sec - ftsSubtrahend.tv_sec;
+      result.tv_nsec = tv_nsec - ftsSubtrahend.tv_nsec;
+      if (tv_nsec < ftsSubtrahend.tv_nsec) {
+         result.tv_nsec+=1000000000;
+         --result.tv_sec;
+      }
    } else {
-       result.tv_nsec = tv_nsec - ftsSubtrahend.tv_nsec;
+      result.tv_sec = ftsSubtrahend.tv_sec - tv_sec;      
+      result.tv_nsec = ftsSubtrahend.tv_nsec - tv_nsec;
+      if (ftsSubtrahend.tv_nsec < tv_nsec) {
+         result.tv_nsec+=1000000000;
+         --result.tv_sec;
+      }
    }
    return result;
 }
