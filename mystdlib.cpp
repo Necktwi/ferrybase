@@ -53,6 +53,31 @@
 #endif
 
 using namespace std;
+
+bool validUsername (std::string username) {
+   for (int i=0; i<username.length();++i) {
+      if (!((username[i]>=65 && username[i]<=90) ||
+            (username[i]>=97 && username[i]<=122) ||
+            (username[i]=='.'))) {
+         return false;
+      }
+   }
+   return true;
+}
+bool validPassword (std::string password) {
+   for (int i=0; i<password.length();++i) {
+      if (!((password[i]>=65 && password[i]<=90) ||
+            (password[i]>=97 && password[i]<=122) ||
+            (password[i]>=48 && password[i]<=57) ||
+            (password[i]=='.' || password[i]=='@' || password[i]=='#') ||
+            (password[i]=='$' || password[i]=='%'))) {
+         return false;
+      }
+   }
+   return true;   
+}
+
+
 #if defined(unix) || defined(__unix__) || defined(__unix)
 #ifndef __APPLE__
 std::map<pid_t, spawn*> processMap;

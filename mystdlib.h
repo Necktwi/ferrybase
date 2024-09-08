@@ -92,6 +92,7 @@ cfout_& operator<<(cfout_& strm, const Input_& var) {
 };
 
 std::string random_alphnuma_string (int size = 16);
-
+bool validUsername (std::string username);
+bool validPassword (std::string password);
 #endif /* MYSTDLIB_H */
 
