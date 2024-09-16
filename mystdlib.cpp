@@ -6,6 +6,8 @@
 #include <iostream>
 #include <fstream>
 #include <istream>
+#include <algorithm>
+#include <cctype>
 #include <fcntl.h>
 #include <string.h>
 #include <errno.h>
@@ -76,7 +78,22 @@ bool validPassword (std::string password) {
    }
    return true;   
 }
+bool validMD5 (std::string md5) {
+   if (md5.length()!=32)
+      return false;
+   for (int i=0; i<32;++i) {
+      if (!((md5[i]>=48 && md5[i]<=57) ||
+            (md5[i]>=97 && md5[i]<=105))) {
+         return false;
+      }
+   }
+   return true;
+}
 
+void strLower (std::string& data) {
+   std::transform(data.begin(), data.end(), data.begin(),
+                  [](unsigned char c){return std::tolower(c);});
+}
 
 #if defined(unix) || defined(__unix__) || defined(__unix)
 #ifndef __APPLE__
