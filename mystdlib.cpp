@@ -477,7 +477,7 @@ std::string getStdoutFromCommand(std::string cmd) {
         return result;
 }
 
-std::string get_command_line(pid_t pid) {
+std::string get_command_line (pid_t pid) {
 	FILE *f;
 	char file[256], cmdline[256] = {0};
 	sprintf(file, "/proc/%d/cmdline", pid);
@@ -501,7 +501,7 @@ std::string get_command_line(pid_t pid) {
 	}
 }
 
-int poke(std::string ip) {
+int poke (std::string ip) {
 	/*int mysocket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
 	struct sockaddr_in sip;
 	memset(&sip, '0', sizeof (sip));
@@ -531,7 +531,7 @@ int poke(std::string ip) {
 	}
 }
 
-int getIp() {
+int getIp () {
 	struct ifaddrs * ifAddrStruct = NULL;
 	struct ifaddrs * ifa = NULL;
 	void * tmpAddrPtr = NULL;
@@ -557,7 +557,7 @@ int getIp() {
 	return 0;
 }
 
-std::string GetPrimaryIp() {
+std::string GetPrimaryIp () {
 	char buffer[16];
 	int buflen = 16;
 	buffer[0] = '\0';
@@ -590,7 +590,7 @@ std::string GetPrimaryIp() {
 	return std::string(buffer);
 }
 
-std::string get_fd_contents(int fd) {
+std::string get_fd_contents (int fd) {
    std::string para;
 	char c[32];
    ssize_t len = read(fd, c, 32);
@@ -602,7 +602,7 @@ std::string get_fd_contents(int fd) {
 	return para;
 }
 
-char const * sperm(__mode_t mode) {
+char const* sperm (__mode_t mode) {
 	static char local_buff[16] = {0};
 	int i = 0;
 	// user permissions
@@ -636,5 +636,6 @@ char const * sperm(__mode_t mode) {
 	else local_buff[i] = '-';
 	return local_buff;
 }
-#endif /* __APPLE__ */
+
+#endif /*#ifndef __APPLE__*/
 #endif /*defined(unix) || defined(__unix__) || defined(__unix)*/

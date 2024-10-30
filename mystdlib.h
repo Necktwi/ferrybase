@@ -12,6 +12,7 @@
 #include <map>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 //#if !defined(__mode_t)
 #  if defined(__NEED_mode_t)
@@ -96,5 +97,13 @@ bool validUsername (std::string username);
 bool validPassword (std::string password);
 bool validMD5 (std::string md5);
 void strLower (std::string& data);
+
+template <typename T>
+std::string toPreciseStr (const T a_value, const int n) {
+    std::ostringstream out;
+    out.precision(n);
+    out << std::fixed << a_value;
+    return std::move(out).str();
+}
 #endif /* MYSTDLIB_H */
 

@@ -30,11 +30,12 @@ class splitstring : public string {
 	std::vector<splitstring> flds;
 public:
 
-	splitstring(const string& str) : string(str) {
+	splitstring (const string& str) : string(str) {
 	};
 
-	splitstring(const string& str, size_t pos, size_t len = npos) : string(str, pos, len) {
-	};
+	splitstring (const string& str, size_t pos, size_t len = npos) :
+      string (str, pos, len)
+   {};
 
 	splitstring(const char* s) : string(s) {
 	};
