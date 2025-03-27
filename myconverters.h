@@ -18,8 +18,8 @@ using namespace std;
 std::string itoa(int i, int size = 0);
 std::string implode(const std::string glue,
 		const std::vector<std::string> &pieces);
-std::vector<std::string> explode(const std::string delimiter,
-		const std::string &str);
+std::vector<std::string> explode(
+   const std::string &str, const std::string delimiter = " ");
 void explode(const std::string delimiter, const std::string &str,
 		std::vector<std::string>& shrapnel);
 float timeToSec(std::string timestring);

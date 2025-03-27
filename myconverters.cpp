@@ -97,7 +97,8 @@ vector<splitstring>& splitstring::split(char delim, char dum, int rep) {
     return flds;
 }
 
-std::vector<std::string> explode(const std::string delimiter, const std::string &str) {
+std::vector<std::string> explode(const std::string &str,
+                                 const std::string delimiter) {
     std::vector<std::string> arr;
     explode(delimiter, str, arr);
     return arr;
@@ -132,7 +133,7 @@ void explode(const std::string delimiter, const std::string &str,
 
 float timeToSec(std::string timestring) {
     float secs = 0;
-    std::vector<std::string> t = explode(":", timestring);
+    std::vector<std::string> t = explode(timestring, ":");
     secs = atoi(t[0].c_str())*60 * 60 + atoi(t[1].c_str())*60 + atof(t[2].c_str());
     return secs;
 }

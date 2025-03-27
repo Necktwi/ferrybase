@@ -56,7 +56,7 @@
 
 using namespace std;
 
-bool validUsername (std::string username) {
+bool validUsername (const std::string& username) {
    for (int i=0; i<username.length();++i) {
       if (!((username[i]>=65 && username[i]<=90) ||
             (username[i]>=97 && username[i]<=122) ||
@@ -64,9 +64,9 @@ bool validUsername (std::string username) {
          return false;
       }
    }
-   return true;
+   return (username.length() && username.length()<24);
 }
-bool validPassword (std::string password) {
+bool validPassword (const std::string& password) {
    for (int i=0; i<password.length();++i) {
       if (!((password[i]>=65 && password[i]<=90) ||
             (password[i]>=97 && password[i]<=122) ||
@@ -76,7 +76,17 @@ bool validPassword (std::string password) {
          return false;
       }
    }
-   return true;   
+   return (password.length() && password.length()<24);
+}
+bool validThingName (const std::string& thingName) {
+   for (int i=0; i<thingName.length();++i) {
+      if (!((thingName[i]>=65 && thingName[i]<=90) ||
+            (thingName[i]>=97 && thingName[i]<=122) ||
+            (thingName[i]==' '))) {
+         return false;
+      }
+   }
+   return (thingName.length() && thingName.length()<64);
 }
 bool validMD5 (std::string md5) {
    if (md5.length()!=32)
