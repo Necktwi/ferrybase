@@ -48,6 +48,15 @@ using namespace std;
 	return num;
  }*/
 
+unsigned int countSetBits (unsigned int n) {
+   unsigned int count = 0;
+   while (n) {
+      n &= (n - 1);
+      count++;
+   }
+   return count;
+}
+
 std::string itoa(int i, int size) {
     std::stringstream ss;
     std::string out;

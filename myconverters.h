@@ -82,6 +82,6 @@ unsigned char* base64_decode(const char *data,
                              size_t *output_length);
 void base64_cleanup();
 void build_decoding_table();
-
+unsigned int countSetBits (unsigned int n);
 #endif	/* MYCONVERTERS_H */
 
