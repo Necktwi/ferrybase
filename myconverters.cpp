@@ -136,7 +136,8 @@ void explode(const std::string delimiter, const std::string &str,
             i++;
         }
     }
-    shrapnel.push_back(str.substr(k, i - k));
+    if (i>k)
+       shrapnel.push_back(str.substr(k, i - k));
     return;
 }
 
