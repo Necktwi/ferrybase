@@ -2,6 +2,7 @@
 #include <string>
 #include <cctype>
 #include <algorithm>
+#include <string.h>
 
 // Helper function to check if a character is a vowel
 bool isVowel(char c) {
