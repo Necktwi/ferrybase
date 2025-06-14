@@ -9,7 +9,7 @@
 #define	MYCONVERTERS_H
 #include <string>
 #include <vector>
-
+#include <cstdint>
 //int atoi(const char* str);
 //float atof(const char* str);
 
@@ -82,6 +82,6 @@ unsigned char* base64_decode(const char *data,
                              size_t *output_length);
 void base64_cleanup();
 void build_decoding_table();
-unsigned int countSetBits (unsigned int n);
+int8_t countSetBits (unsigned int n);
 #endif	/* MYCONVERTERS_H */
 

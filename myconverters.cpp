@@ -49,7 +49,7 @@ using namespace std;
 	return num;
  }*/
 
-unsigned int countSetBits (unsigned int n) {
+int8_t countSetBits (unsigned int n) {
    unsigned int count = 0;
    while (n) {
       n &= (n - 1);
