@@ -60,7 +60,7 @@ bool validUsername (const std::string& username) {
    for (int i=0; i<username.length();++i) {
       if (!((username[i]>=65 && username[i]<=90) ||
             (username[i]>=97 && username[i]<=122) ||
-            (username[i]=='.'))) {
+            username[i]=='.' || username[i]=='_')) {
          return false;
       }
    }
@@ -77,16 +77,6 @@ bool validPassword (const std::string& password) {
       }
    }
    return (password.length() && password.length()<24);
-}
-bool validThingName (const std::string& thingName) {
-   for (int i=0; i<thingName.length();++i) {
-      if (!((thingName[i]>=65 && thingName[i]<=90) ||
-            (thingName[i]>=97 && thingName[i]<=122) ||
-            (thingName[i]==' '))) {
-         return false;
-      }
-   }
-   return (thingName.length() && thingName.length()<64);
 }
 bool validMD5 (std::string md5) {
    if (md5.length()!=32)

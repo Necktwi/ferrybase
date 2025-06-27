@@ -95,7 +95,6 @@ cfout_& operator<<(cfout_& strm, const Input_& var) {
 std::string random_alphnuma_string (int size = 16);
 bool validUsername (const std::string& username);
 bool validPassword (const std::string& password);
-bool validThingName (const std::string& thingName);
 bool validMD5 (std::string md5);
 void strLower (std::string& data);
 
