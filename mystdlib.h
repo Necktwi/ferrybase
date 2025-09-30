@@ -96,7 +96,6 @@ std::string random_alphnuma_string (int size = 16);
 bool validUsername (const std::string& username);
 bool validPassword (const std::string& password);
 bool validMD5 (std::string md5);
-void strLower (std::string& data);
 
 template <typename T>
 std::string toPreciseStr (const T a_value, const int n) {

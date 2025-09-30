@@ -90,11 +90,6 @@ bool validMD5 (std::string md5) {
    return true;
 }
 
-void strLower (std::string& data) {
-   std::transform(data.begin(), data.end(), data.begin(),
-                  [](unsigned char c){return std::tolower(c);});
-}
-
 #if defined(unix) || defined(__unix__) || defined(__unix)
 #ifndef __APPLE__
 std::map<pid_t, spawn*> processMap;

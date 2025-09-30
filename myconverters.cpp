@@ -7,6 +7,9 @@
 #include<iostream>
 #include<stdio.h>
 #include<stdint.h>
+#define cimg_use_jpeg
+#define cimg_display 0
+#include <CImg.h>
 
 using namespace std;
 
@@ -149,14 +152,12 @@ float timeToSec(std::string timestring) {
     return secs;
 }
 
-std::string tolower(std::string s) {
+void tolower(std::string& s) {
     char* buf;
     buf = (char*) s.c_str();
-    int i;
-    for (int i = 0; i < s.length(); i++) {
+    for (int i = 0; i < s.length(); ++i) {
         buf[i] = tolower(buf[i]);
     }
-    return std::string(buf);
 }
 
 void chr_cstrlit(unsigned char u, char *buffer, size_t buflen) {
@@ -309,4 +310,29 @@ void build_decoding_table() {
 
 void base64_cleanup() {
     free(decoding_table);
+}
+
+void reduceImg (const char* imgPath) {
+   char imgp[100];
+   int imgpl = strlen(imgPath);
+   strcpy(imgp,imgPath);
+   //strcpy(imgp+imgpl,".jpg");
+   printf("Opening %s\n", imgp);
+   cimg_library::CImg<unsigned char> img(imgp);
+   int width = img.width();
+   int height = img.height();
+   printf("%dx%d\n",width,height);
+   if (height<=227 || width<=170) {
+      strcpy(imgp+imgpl-4,".thumb.jpg");
+      img.save(imgp);
+      return;
+   }
+   float scale = 227.0f/height;
+   width*=scale;
+   
+   printf("%dx227\n",width);
+   auto rimg = img.get_resize(width,height);
+   strcpy(imgp+imgpl-4,".thumb.jpg");
+   rimg.save(imgp);
+   fflush(stdout);
 }
