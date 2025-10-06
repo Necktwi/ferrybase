@@ -152,11 +152,17 @@ float timeToSec(std::string timestring) {
     return secs;
 }
 
-void tolower(std::string& s) {
-    char* buf;
-    buf = (char*) s.c_str();
-    for (int i = 0; i < s.length(); ++i) {
-        buf[i] = tolower(buf[i]);
+void tolower (string& s) {
+   tolower(s.c_str());
+}
+void tolower (const char* s) {
+   char* buf = const_cast<char*>(s);
+   int i = 0;
+   char c = buf[i];
+   while (c!='\0') {
+        buf[i] = tolower(c);
+        ++i;
+        c=buf[i];
     }
 }
 

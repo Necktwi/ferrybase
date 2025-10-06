@@ -14,6 +14,7 @@
 //float atof(const char* str);
 
 using namespace std;
+typedef const char* ccp;
 
 std::string itoa(int i, int size = 0);
 std::string implode(const std::string glue,
@@ -23,7 +24,8 @@ std::vector<std::string> explode(
 void explode(const std::string delimiter, const std::string &str,
 		std::vector<std::string>& shrapnel);
 float timeToSec(std::string timestring);
-void tolower (std::string& s);
+void tolower (ccp s);
+void tolower (string& s);
 void str_cstrlit(const char *str, char *buffer, size_t buflen);
 
 class splitstring : public string {
