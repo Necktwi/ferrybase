@@ -14,7 +14,7 @@
 
 
 #include "FerryTimeStamp.h"
-#include <iostream>
+#include "myconverters.h"
 
 using namespace std;
 
@@ -34,15 +34,18 @@ void test1() {
 
 	std::cout << "size of pointer: " << sizeof (int *) << std::endl;
 }
-
+char* img;
 void test2() {
 	std::cout << "sizeInfo test 2" << std::endl;
    FerryTimeStamp ftStart(4,3), ftEnd(3,5);
    std::cout << ftStart - ftEnd << std::endl;
 	std::cout << "%TEST_FAILED% time=0 testname=test2 (sizeInfo) message=error message sample" << std::endl;
+   //reduceImg("/mnt/Ganges/workspace/WWW-development/upload/gowtham/0.0.jpg");
+   reduceImg(img);
 }
 
 int main (int argc, char** argv) {
+   img = argv[1];
 	std::cout << "%SUITE_STARTING% sizeInfo" << std::endl;
 	std::cout << "%SUITE_STARTED%" << std::endl;
 

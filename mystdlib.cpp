@@ -6,6 +6,8 @@
 #include <iostream>
 #include <fstream>
 #include <istream>
+#include <algorithm>
+#include <cctype>
 #include <fcntl.h>
 #include <string.h>
 #include <errno.h>
@@ -53,6 +55,41 @@
 #endif
 
 using namespace std;
+
+bool validUsername (const std::string& username) {
+   for (int i=0; i<username.length();++i) {
+      if (!((username[i]>=65 && username[i]<=90) ||
+            (username[i]>=97 && username[i]<=122) ||
+            username[i]=='.' || username[i]=='_')) {
+         return false;
+      }
+   }
+   return (username.length() && username.length()<24);
+}
+bool validPassword (const std::string& password) {
+   for (int i=0; i<password.length();++i) {
+      if (!((password[i]>=65 && password[i]<=90) ||
+            (password[i]>=97 && password[i]<=122) ||
+            (password[i]>=48 && password[i]<=57) ||
+            (password[i]=='.' || password[i]=='@' || password[i]=='#') ||
+            (password[i]=='$' || password[i]=='%'))) {
+         return false;
+      }
+   }
+   return (password.length() && password.length()<24);
+}
+bool validMD5 (std::string md5) {
+   if (md5.length()!=32)
+      return false;
+   for (int i=0; i<32;++i) {
+      if (!((md5[i]>=48 && md5[i]<=57) ||
+            (md5[i]>=97 && md5[i]<=105))) {
+         return false;
+      }
+   }
+   return true;
+}
+
 #if defined(unix) || defined(__unix__) || defined(__unix)
 #ifndef __APPLE__
 std::map<pid_t, spawn*> processMap;
@@ -435,7 +472,7 @@ std::string getStdoutFromCommand(std::string cmd) {
         return result;
 }
 
-std::string get_command_line(pid_t pid) {
+std::string get_command_line (pid_t pid) {
 	FILE *f;
 	char file[256], cmdline[256] = {0};
 	sprintf(file, "/proc/%d/cmdline", pid);
@@ -459,7 +496,7 @@ std::string get_command_line(pid_t pid) {
 	}
 }
 
-int poke(std::string ip) {
+int poke (std::string ip) {
 	/*int mysocket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
 	struct sockaddr_in sip;
 	memset(&sip, '0', sizeof (sip));
@@ -489,7 +526,7 @@ int poke(std::string ip) {
 	}
 }
 
-int getIp() {
+int getIp () {
 	struct ifaddrs * ifAddrStruct = NULL;
 	struct ifaddrs * ifa = NULL;
 	void * tmpAddrPtr = NULL;
@@ -515,7 +552,7 @@ int getIp() {
 	return 0;
 }
 
-std::string GetPrimaryIp() {
+std::string GetPrimaryIp () {
 	char buffer[16];
 	int buflen = 16;
 	buffer[0] = '\0';
@@ -548,7 +585,7 @@ std::string GetPrimaryIp() {
 	return std::string(buffer);
 }
 
-std::string get_fd_contents(int fd) {
+std::string get_fd_contents (int fd) {
    std::string para;
 	char c[32];
    ssize_t len = read(fd, c, 32);
@@ -560,7 +597,7 @@ std::string get_fd_contents(int fd) {
 	return para;
 }
 
-char const * sperm(__mode_t mode) {
+char const* sperm (__mode_t mode) {
 	static char local_buff[16] = {0};
 	int i = 0;
 	// user permissions
@@ -594,5 +631,6 @@ char const * sperm(__mode_t mode) {
 	else local_buff[i] = '-';
 	return local_buff;
 }
-#endif /* __APPLE__ */
+
+#endif /*#ifndef __APPLE__*/
 #endif /*defined(unix) || defined(__unix__) || defined(__unix)*/

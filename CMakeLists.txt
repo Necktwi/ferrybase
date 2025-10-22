@@ -107,7 +107,8 @@ if (${LINKAGE} MATCHES "STATIC")
       target_link_libraries(${PROJECT_NAME} ssl crypto)
   elseif (Windows)
   else ()
-      target_link_libraries(${PROJECT_NAME} xml2 pthread ssl crypto z rt)
+     target_link_libraries(${PROJECT_NAME} xml2 pthread ssl crypto z rt
+        icuuc icudata icui18n jpeg)
   endif ()
 else ()
   add_library(${PROJECT_NAME} SHARED ${SOURCES} ${HEADERS})
@@ -157,7 +158,7 @@ if (BUILD_TESTING)
    #set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
 
    add_executable(sizeInfo tests/sizeInfo.cpp)
-   target_link_libraries(sizeInfo PUBLIC ferrybase)
+   target_link_libraries(sizeInfo PUBLIC ferrybase jpeg)
    target_include_directories(sizeInfo PUBLIC
       ${CMAKE_CURRENT_SOURCE_DIR}
       ${CMAKE_INSTALL_FULL_INCLUDEDIR}/${Umbrella}

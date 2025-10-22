@@ -6,6 +6,10 @@
 #include<string.h>
 #include<iostream>
 #include<stdio.h>
+#include<stdint.h>
+#define cimg_use_jpeg
+#define cimg_display 0
+#include <CImg.h>
 
 using namespace std;
 
@@ -47,6 +51,15 @@ using namespace std;
 	}
 	return num;
  }*/
+
+int8_t countSetBits (unsigned int n) {
+   unsigned int count = 0;
+   while (n) {
+      n &= (n - 1);
+      count++;
+   }
+   return count;
+}
 
 std::string itoa(int i, int size) {
     std::stringstream ss;
@@ -97,7 +110,8 @@ vector<splitstring>& splitstring::split(char delim, char dum, int rep) {
     return flds;
 }
 
-std::vector<std::string> explode(const std::string delimiter, const std::string &str) {
+std::vector<std::string> explode(const std::string &str,
+                                 const std::string delimiter) {
     std::vector<std::string> arr;
     explode(delimiter, str, arr);
     return arr;
@@ -126,25 +140,30 @@ void explode(const std::string delimiter, const std::string &str,
             i++;
         }
     }
-    shrapnel.push_back(str.substr(k, i - k));
+    if (i>k)
+       shrapnel.push_back(str.substr(k, i - k));
     return;
 }
 
 float timeToSec(std::string timestring) {
     float secs = 0;
-    std::vector<std::string> t = explode(":", timestring);
+    std::vector<std::string> t = explode(timestring, ":");
     secs = atoi(t[0].c_str())*60 * 60 + atoi(t[1].c_str())*60 + atof(t[2].c_str());
     return secs;
 }
 
-std::string tolower(std::string s) {
-    char* buf;
-    buf = (char*) s.c_str();
-    int i;
-    for (int i = 0; i < s.length(); i++) {
-        buf[i] = tolower(buf[i]);
+void tolower (string& s) {
+   tolower(s.c_str());
+}
+void tolower (const char* s) {
+   char* buf = const_cast<char*>(s);
+   int i = 0;
+   char c = buf[i];
+   while (c!='\0') {
+        buf[i] = tolower(c);
+        ++i;
+        c=buf[i];
     }
-    return std::string(buf);
 }
 
 void chr_cstrlit(unsigned char u, char *buffer, size_t buflen) {
@@ -297,4 +316,29 @@ void build_decoding_table() {
 
 void base64_cleanup() {
     free(decoding_table);
+}
+
+void reduceImg (const char* imgPath) {
+   char imgp[100];
+   int imgpl = strlen(imgPath);
+   strcpy(imgp,imgPath);
+   //strcpy(imgp+imgpl,".jpg");
+   printf("Opening %s\n", imgp);
+   cimg_library::CImg<unsigned char> img(imgp);
+   int width = img.width();
+   int height = img.height();
+   printf("%dx%d\n",width,height);
+   if (height<=227 || width<=170) {
+      strcpy(imgp+imgpl-4,".thumb.jpg");
+      img.save(imgp);
+      return;
+   }
+   float scale = 227.0f/height;
+   width*=scale;
+   
+   printf("%dx227\n",width);
+   auto rimg = img.get_resize(width,height);
+   strcpy(imgp+imgpl-4,".thumb.jpg");
+   rimg.save(imgp);
+   fflush(stdout);
 }

@@ -9,32 +9,35 @@
 #define	MYCONVERTERS_H
 #include <string>
 #include <vector>
-
+#include <cstdint>
 //int atoi(const char* str);
 //float atof(const char* str);
 
 using namespace std;
+typedef const char* ccp;
 
 std::string itoa(int i, int size = 0);
 std::string implode(const std::string glue,
 		const std::vector<std::string> &pieces);
-std::vector<std::string> explode(const std::string delimiter,
-		const std::string &str);
+std::vector<std::string> explode(
+   const std::string &str, const std::string delimiter = " ");
 void explode(const std::string delimiter, const std::string &str,
 		std::vector<std::string>& shrapnel);
 float timeToSec(std::string timestring);
-std::string tolower(std::string s);
+void tolower (ccp s);
+void tolower (string& s);
 void str_cstrlit(const char *str, char *buffer, size_t buflen);
 
 class splitstring : public string {
 	std::vector<splitstring> flds;
 public:
 
-	splitstring(const string& str) : string(str) {
+	splitstring (const string& str) : string(str) {
 	};
 
-	splitstring(const string& str, size_t pos, size_t len = npos) : string(str, pos, len) {
-	};
+	splitstring (const string& str, size_t pos, size_t len = npos) :
+      string (str, pos, len)
+   {};
 
 	splitstring(const char* s) : string(s) {
 	};
@@ -81,6 +84,7 @@ unsigned char* base64_decode(const char *data,
                              size_t *output_length);
 void base64_cleanup();
 void build_decoding_table();
-
+int8_t countSetBits (unsigned int n);
+void reduceImg (const char* imgPath);
 #endif	/* MYCONVERTERS_H */
 

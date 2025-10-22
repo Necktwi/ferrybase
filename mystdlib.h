@@ -12,6 +12,7 @@
 #include <map>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 //#if !defined(__mode_t)
 #  if defined(__NEED_mode_t)
@@ -92,6 +93,16 @@ cfout_& operator<<(cfout_& strm, const Input_& var) {
 };
 
 std::string random_alphnuma_string (int size = 16);
+bool validUsername (const std::string& username);
+bool validPassword (const std::string& password);
+bool validMD5 (std::string md5);
 
+template <typename T>
+std::string toPreciseStr (const T a_value, const int n) {
+    std::ostringstream out;
+    out.precision(n);
+    out << std::fixed << a_value;
+    return std::move(out).str();
+}
 #endif /* MYSTDLIB_H */
 
