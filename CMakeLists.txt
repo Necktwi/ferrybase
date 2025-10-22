@@ -54,8 +54,12 @@ set (GCC_COVERAGE_COMPILE_FLAGS "-pthread")
 set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 MESSAGE( STATUS "CMAKE_CXX_COMPILER: " ${CMAKE_CXX_COMPILER} )
-set (GCC_COVERAGE_LINK_FLAGS 
-   "-fPIC -Wl,-unresolved-symbols=ignore-in-shared-libs")
+set (GCC_COVERAGE_LINK_FLAGS "-fPIC")
+if (NOT macOS)
+   set (GCC_COVERAGE_LINK_FLAGS 
+      "${GCC_COVERAGE_LINK_FLAGS} -Wl,-unresolved-symbols=ignore-in-shared-libs"
+   )
+endif ()
 if (DEFINED _DEBUG)
   set (GCC_COVERAGE_COMPILE_FLAGS "${GCC_COVERAGE_COMPILE_FLAGS} -g -O0")
   set (GCC_COVERAGE_LINK_FLAGS "${GCC_COVERAGE_LINK_FLAGS} -g -O0")
