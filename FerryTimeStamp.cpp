@@ -17,30 +17,30 @@
 #endif
 using namespace std;
 
-FerryTimeStamp::FerryTimeStamp() {
+FerryTimeStamp::FerryTimeStamp () {
    tv_sec = 0;
    tv_nsec = 0;
    ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
 }
 
-FerryTimeStamp::FerryTimeStamp(time_t sec, long nsec) {
+FerryTimeStamp::FerryTimeStamp (time_t sec, long nsec) {
    tv_sec = sec;
    tv_nsec = nsec;
    ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
 }
 
-FerryTimeStamp::FerryTimeStamp(const string& sFTS) {
+FerryTimeStamp::FerryTimeStamp (const string& sFTS) {
    assign(sFTS);
    ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
 }
 
-FerryTimeStamp& FerryTimeStamp::operator=(const string& sFTS) {
+FerryTimeStamp& FerryTimeStamp::operator= (const string& sFTS) {
    assign(sFTS);
    ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
    return *this;
 }
 
-FerryTimeStamp::~FerryTimeStamp() {
+FerryTimeStamp::~FerryTimeStamp () {
    std::list<time_t*>::iterator i;
    i = ferryTimesList.begin();
    while (i != ferryTimesList.end()) {
@@ -54,7 +54,7 @@ FerryTimeStamp::~FerryTimeStamp() {
 
 std::list<time_t*> FerryTimeStamp::ferryTimesList;
 
-timespec FerryTimeStamp::sub(timespec a, timespec b) {
+timespec FerryTimeStamp::sub (timespec a, timespec b) {
    timespec result = {0, 0};
    result.tv_sec = a.tv_sec - b.tv_sec;
    if (b.tv_nsec > a.tv_nsec) {
@@ -70,7 +70,7 @@ timespec FerryTimeStamp::sub(timespec a, timespec b) {
    return result;
 };
 
-timespec FerryTimeStamp::add(timespec a, timespec b) {
+timespec FerryTimeStamp::add (timespec a, timespec b) {
    timespec result = {0, 0};
    result.tv_sec = a.tv_sec + b.tv_sec;
    result.tv_nsec = (a.tv_nsec + b.tv_nsec) % 1000000000;
@@ -80,7 +80,7 @@ timespec FerryTimeStamp::add(timespec a, timespec b) {
    return result;
 }
 
-FerryTimeStamp FerryTimeStamp::operator+(FerryTimeStamp ftsAddand) {
+FerryTimeStamp FerryTimeStamp::operator+ (FerryTimeStamp ftsAddand) {
    FerryTimeStamp result;
    result.tv_sec = tv_sec + ftsAddand.tv_nsec;
    result.tv_nsec = (tv_nsec + ftsAddand.tv_nsec) % 1000000000;
@@ -90,7 +90,7 @@ FerryTimeStamp FerryTimeStamp::operator+(FerryTimeStamp ftsAddand) {
    return result;
 }
 
-FerryTimeStamp FerryTimeStamp::operator-(FerryTimeStamp ftsSubtrahend) {
+FerryTimeStamp FerryTimeStamp::operator- (FerryTimeStamp ftsSubtrahend) {
    FerryTimeStamp result;
    if (tv_sec >= ftsSubtrahend.tv_sec) {
       result.tv_sec = tv_sec - ftsSubtrahend.tv_sec;
@@ -110,7 +110,7 @@ FerryTimeStamp FerryTimeStamp::operator-(FerryTimeStamp ftsSubtrahend) {
    return result;
 }
 
-bool FerryTimeStamp::operator<(const FerryTimeStamp competer) {
+bool FerryTimeStamp::operator< (const FerryTimeStamp competer) {
    if (tv_sec < competer.tv_sec) {
        return true;
    } else if (tv_sec == competer.tv_sec) {
@@ -122,36 +122,40 @@ bool FerryTimeStamp::operator<(const FerryTimeStamp competer) {
    return false;
 }
 
-FerryTimeStamp& FerryTimeStamp::operator=(time_t t) {
+FerryTimeStamp& FerryTimeStamp::operator= (time_t t) {
    tv_sec = t;
    return *this;
 }
 
-FerryTimeStamp::operator time_t() {
+FerryTimeStamp::operator time_t () {
    return (time_t) tv_sec;
 }
 
-FerryTimeStamp::operator string() {
+FerryTimeStamp::operator string () {
    return std::to_string(tv_sec) + "." + std::to_string(tv_nsec);
 }
 
-void FerryTimeStamp::Update() {
+// FerryTimeStamp::operator bool () {
+//    return tv_sec==0 && tv_nsec==0;
+// }
+
+void FerryTimeStamp::update () {
    clock_gettime(CLOCK_REALTIME, this);
 }
 
-void FerryTimeStamp::Clear() {
+void FerryTimeStamp::clear () {
    tv_sec=0;
    tv_nsec=0;
 }
 
-void FerryTimeStamp::assign(const std::string& sTS) {
+void FerryTimeStamp::assign (const std::string& sTS) {
    size_t iPeriodNail = sTS.find('.');
    if (iPeriodNail == string::npos) return;
    tv_sec = stol(sTS.substr(0, iPeriodNail));
    tv_nsec = stol(sTS.substr(iPeriodNail + 1));
 }
 
-string FerryTimeStamp::GetTime() {
+string FerryTimeStamp::getTime () {
    struct tm ti;
    char tb[20];
    localtime_r(&tv_sec,&ti);
@@ -159,7 +163,7 @@ string FerryTimeStamp::GetTime() {
    return std::string(tb);
 }
 
-string FerryTimeStamp::GetUTime() {
+string FerryTimeStamp::getUTime () {
    char tb[20];
    char buf[23];
    struct tm ti;
@@ -169,19 +173,19 @@ string FerryTimeStamp::GetUTime() {
    return std::string(buf);
 }
 
-ostream& operator<<(ostream& out, const FerryTimeStamp& f) {
+ostream& operator<< (ostream& out, const FerryTimeStamp& f) {
    out << setfill('0') << setw(10) << f.tv_sec << '.' << setw(9) << f.tv_nsec;
    return out;
 }
 
 FerryTimeStamp::DateFormat& operator<< (
-   ostream& out, FerryTimeStamp::DateFormat& f
-) {
+   ostream& out, FerryTimeStamp::DateFormat& f) {
    f.pos = &out;
    return f;
 }
 
-ostream& operator<<(FerryTimeStamp::DateFormat& rDF, const FerryTimeStamp& f) {
+ostream& operator<< (
+   FerryTimeStamp::DateFormat& rDF, const FerryTimeStamp& f) {
    (*rDF.pos) << setfill('0') << setw(10) << f.tv_sec << '.' << left << setw(9)
       << f.tv_nsec;
    return (*rDF.pos);
@@ -192,32 +196,30 @@ ostream& operator<<(FerryTimeStamp::DateFormat& rDF, const FerryTimeStamp& f) {
 #define exp7         10000000i64    //1E+7    //C-file part
 #define exp9       1000000000i64    //1E+9
 #define w2ux 116444736000000000i64    //1.jan1601 to 1.jan1970
-void unix_time(struct timespec *spec)
-{
-  __int64 wintime; GetSystemTimeAsFileTime((FILETIME*)&wintime);
-  wintime -= w2ux;  spec->tv_sec = wintime / exp7;
-  spec->tv_nsec = wintime % exp7 * 100;
+void unix_time (struct timespec *spec) {
+   __int64 wintime; GetSystemTimeAsFileTime((FILETIME*)&wintime);
+   wintime -= w2ux;  spec->tv_sec = wintime / exp7;
+   spec->tv_nsec = wintime % exp7 * 100;
 }
-int clock_gettime(int, timespec *spec)
-{
-  static  struct timespec startspec; static double ticks2nano;
-  static __int64 startticks, tps = 0;   __int64 tmp, curticks;
-  QueryPerformanceFrequency((LARGE_INTEGER*)&tmp); //some strange system can
-  if (tps != tmp) {
+int clock_gettime (int, timespec *spec) {
+   static  struct timespec startspec; static double ticks2nano;
+   static __int64 startticks, tps = 0;   __int64 tmp, curticks;
+   QueryPerformanceFrequency((LARGE_INTEGER*)&tmp); //some strange system can
+   if (tps != tmp) {
       tps = tmp; //init ~~ONCE       //possibly change freq ?
       QueryPerformanceCounter((LARGE_INTEGER*)&startticks);
       unix_time(&startspec); ticks2nano = (double)exp9 / tps;
-  }
-  QueryPerformanceCounter((LARGE_INTEGER*)&curticks); curticks -= startticks;
-  spec->tv_sec = startspec.tv_sec + (curticks / tps);
-  spec->tv_nsec = startspec.tv_nsec + (double)(curticks % tps) * ticks2nano;
-  if (!(spec->tv_nsec < exp9)) { spec->tv_sec++; spec->tv_nsec -= exp9; }
-  return 0;
+   }
+   QueryPerformanceCounter((LARGE_INTEGER*)&curticks); curticks -= startticks;
+   spec->tv_sec = startspec.tv_sec + (curticks / tps);
+   spec->tv_nsec = startspec.tv_nsec + (double)(curticks % tps) * ticks2nano;
+   if (!(spec->tv_nsec < exp9)) { spec->tv_sec++; spec->tv_nsec -= exp9; }
+   return 0;
 }
 
-struct tm* localtime_r(const time_t *clock, struct tm *result) {
-  if (!clock || !result) return NULL;
-  memcpy(result, localtime(clock), sizeof(*result));
-  return result;
+struct tm* localtime_r (const time_t *clock, struct tm *result) {
+   if (!clock || !result) return NULL;
+   memcpy(result, localtime(clock), sizeof(*result));
+   return result;
 }
 #endif

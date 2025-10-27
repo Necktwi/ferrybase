@@ -13,6 +13,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cstdint>
+#include <string_view>
 
 //#if !defined(__mode_t)
 #  if defined(__NEED_mode_t)
@@ -29,6 +31,39 @@ typedef mode_t __mode_t;
 #include <unistd.h>
 #define GetCurrentDir getcwd
 #endif
+
+typedef const char* ccp;
+class fstr : public std::string {
+public:
+   // inherit all std::string constructors (C++11+)
+   using std::string::string;
+
+   // inherit assignment operators
+   using std::string::operator=;
+
+   // defaulted special members (behave like std::string's)
+   fstr() = default;
+   fstr(const fstr&) = default;
+   fstr(fstr&&) noexcept = default;
+   ~fstr() = default;
+
+   fstr(const std::string& s) : std::string(s) {}
+   fstr(std::string&& s) noexcept : std::string(std::move(s)) {}
+
+   operator ccp () const noexcept { return c_str(); }
+};
+
+namespace std {
+    template<>
+    struct hash<fstr> {
+        size_t operator()(fstr const& s) const noexcept {
+            // use string_view to avoid extra allocation/copy
+            return std::hash<std::string_view>{}(std::string_view(s.data(), s.size()));
+        }
+    };
+}
+
+constexpr uint64_t hash_str (std::string_view s);
 
 #if defined(__linux__)
 void initTermios(int echo);
@@ -51,6 +86,7 @@ std::string get_fd_contents(int fd);
 char const * sperm(__mode_t mode);
 
 extern int child_exit_status;
+
 
 class spawn {
 private:
