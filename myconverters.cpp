@@ -88,7 +88,7 @@ std::string implode(const std::string glue, const std::vector<std::string> &piec
     return a;
 }
 
-vector<splitstring>& splitstring::split(char delim, char dum, int rep) {
+vector<string>& splitstring::split(char delim, char dum, int rep) {
     if (!flds.empty()) flds.clear(); // empty vector if necessary
     string& work = *this;
     string buf = "";

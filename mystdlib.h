@@ -32,31 +32,10 @@ typedef mode_t __mode_t;
 #define GetCurrentDir getcwd
 #endif
 
-typedef const char* ccp;
-class fstr : public std::string {
-public:
-   // inherit all std::string constructors (C++11+)
-   using std::string::string;
-
-   // inherit assignment operators
-   using std::string::operator=;
-
-   // defaulted special members (behave like std::string's)
-   fstr() = default;
-   fstr(const fstr&) = default;
-   fstr(fstr&&) noexcept = default;
-   ~fstr() = default;
-
-   fstr(const std::string& s) : std::string(s) {}
-   fstr(std::string&& s) noexcept : std::string(std::move(s)) {}
-
-   operator ccp () const noexcept { return c_str(); }
-};
-
 namespace std {
     template<>
-    struct hash<fstr> {
-        size_t operator()(fstr const& s) const noexcept {
+    struct hash<string> {
+        size_t operator()(string const& s) const noexcept {
             // use string_view to avoid extra allocation/copy
             return std::hash<std::string_view>{}(std::string_view(s.data(), s.size()));
         }

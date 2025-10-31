@@ -26,33 +26,42 @@ FerryTimeStamp::FerryTimeStamp () {
 FerryTimeStamp::FerryTimeStamp (time_t sec, long nsec) {
    tv_sec = sec;
    tv_nsec = nsec;
+   ftLsMtx.lock();
    ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
+   ftLsMtx.unlock();
 }
 
 FerryTimeStamp::FerryTimeStamp (const string& sFTS) {
    assign(sFTS);
+   ftLsMtx.lock();
    ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
+   ftLsMtx.unlock();
 }
 
 FerryTimeStamp& FerryTimeStamp::operator= (const string& sFTS) {
    assign(sFTS);
+   ftLsMtx.lock();
    ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
+   ftLsMtx.unlock();
    return *this;
 }
 
 FerryTimeStamp::~FerryTimeStamp () {
    std::list<time_t*>::iterator i;
+   ftLsMtx.lock();
    i = ferryTimesList.begin();
    while (i != ferryTimesList.end()) {
       if (*i == static_cast<time_t*> (&tv_sec)) {
          i = ferryTimesList.erase(i);
          break;
       }
-      i++;
+      ++i;
    }
+   ftLsMtx.unlock();
 };
 
 std::list<time_t*> FerryTimeStamp::ferryTimesList;
+std::mutex FTS_::ftLsMtx;
 
 timespec FerryTimeStamp::sub (timespec a, timespec b) {
    timespec result = {0, 0};

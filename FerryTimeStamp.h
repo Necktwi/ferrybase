@@ -12,6 +12,7 @@
 #include <string>
 #include <list>
 #include <time.h>
+#include <mutex>
 
 /*Corrected on system time change*/
 struct FerryTimeStamp : public timespec {
@@ -30,6 +31,7 @@ struct FerryTimeStamp : public timespec {
    static timespec sub (timespec a, timespec b);
    static timespec add (timespec a, timespec b);
    static std::list<time_t*> ferryTimesList;
+   static std::mutex ftLsMtx;
    void update ();
    void clear ();
    operator std::string ();
