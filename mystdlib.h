@@ -32,17 +32,17 @@ typedef mode_t __mode_t;
 #define GetCurrentDir getcwd
 #endif
 
-namespace std {
-    template<>
-    struct hash<string> {
-        size_t operator()(string const& s) const noexcept {
-            // use string_view to avoid extra allocation/copy
-            return std::hash<std::string_view>{}(std::string_view(s.data(), s.size()));
-        }
-    };
-}
+// namespace std {
+//     template<>
+//     struct hash<string> {
+//         size_t operator()(string const& s) const noexcept {
+//             // use string_view to avoid extra allocation/copy
+//             return std::hash<std::string_view>{}(std::string_view(s.data(), s.size()));
+//         }
+//     };
+// }
 
-constexpr uint64_t hash_str (std::string_view s);
+// constexpr uint64_t hash_str (std::string_view s);
 
 #if defined(__linux__)
 void initTermios(int echo);
