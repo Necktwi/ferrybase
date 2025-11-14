@@ -1,4 +1,4 @@
-
+#ifdef MYCURL
 #include "myconverters.h"
 #include "ClientSocket.h"
 #include "SocketException.h"
@@ -253,3 +253,5 @@ string HTTPReq(string hostname, string requestPath, string port, string content,
 	string res2 = response.substr(si, l);
 	return res2;
 }*/
+
+#endif /*MYCURL*/
