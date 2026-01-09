@@ -25,18 +25,18 @@ struct FerryTimeStamp : public timespec {
    void assign (const std::string& sTS);
    operator time_t ();
    //operator bool (); // causing ambiguity with <, donno y
-   bool operator< (const FerryTimeStamp competer);
-   FerryTimeStamp operator+ (FerryTimeStamp ftsAddand);
-   FerryTimeStamp operator- (FerryTimeStamp ftsSubtrahend);
-   static timespec sub (timespec a, timespec b);
-   static timespec add (timespec a, timespec b);
+   bool operator< (const FerryTimeStamp& competer) const;
+   FerryTimeStamp operator+ (const FerryTimeStamp& ftsAddand);
+   FerryTimeStamp operator- (const FerryTimeStamp& ftsSubtrahend);
+   static timespec sub (const timespec a, const timespec b);
+   static timespec add (const timespec a, const timespec b);
    static std::list<time_t*> ferryTimesList;
    static std::mutex ftLsMtx;
    void update ();
    void clear ();
-   operator std::string ();
-   std::string getTime ();
-   std::string getUTime ();
+   operator std::string () const;
+   std::string getTime () const;
+   std::string getUTime () const;
    struct DateFormat{
       std::ostream* pos=NULL;
    };

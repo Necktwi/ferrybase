@@ -63,7 +63,7 @@ FerryTimeStamp::~FerryTimeStamp () {
 std::list<time_t*> FerryTimeStamp::ferryTimesList;
 std::mutex FTS_::ftLsMtx;
 
-timespec FerryTimeStamp::sub (timespec a, timespec b) {
+timespec FerryTimeStamp::sub (const timespec a, const timespec b) {
    timespec result = {0, 0};
    result.tv_sec = a.tv_sec - b.tv_sec;
    if (b.tv_nsec > a.tv_nsec) {
@@ -79,7 +79,7 @@ timespec FerryTimeStamp::sub (timespec a, timespec b) {
    return result;
 };
 
-timespec FerryTimeStamp::add (timespec a, timespec b) {
+timespec FerryTimeStamp::add (const timespec a, const timespec b) {
    timespec result = {0, 0};
    result.tv_sec = a.tv_sec + b.tv_sec;
    result.tv_nsec = (a.tv_nsec + b.tv_nsec) % 1000000000;
@@ -89,7 +89,7 @@ timespec FerryTimeStamp::add (timespec a, timespec b) {
    return result;
 }
 
-FerryTimeStamp FerryTimeStamp::operator+ (FerryTimeStamp ftsAddand) {
+FerryTimeStamp FerryTimeStamp::operator+ (const FerryTimeStamp& ftsAddand) {
    FerryTimeStamp result;
    result.tv_sec = tv_sec + ftsAddand.tv_nsec;
    result.tv_nsec = (tv_nsec + ftsAddand.tv_nsec) % 1000000000;
@@ -99,7 +99,8 @@ FerryTimeStamp FerryTimeStamp::operator+ (FerryTimeStamp ftsAddand) {
    return result;
 }
 
-FerryTimeStamp FerryTimeStamp::operator- (FerryTimeStamp ftsSubtrahend) {
+FerryTimeStamp FerryTimeStamp::operator- (
+   const FerryTimeStamp& ftsSubtrahend) {
    FerryTimeStamp result;
    if (tv_sec >= ftsSubtrahend.tv_sec) {
       result.tv_sec = tv_sec - ftsSubtrahend.tv_sec;
@@ -119,7 +120,7 @@ FerryTimeStamp FerryTimeStamp::operator- (FerryTimeStamp ftsSubtrahend) {
    return result;
 }
 
-bool FerryTimeStamp::operator< (const FerryTimeStamp competer) {
+bool FerryTimeStamp::operator< (const FerryTimeStamp& competer) const {
    if (tv_sec < competer.tv_sec) {
        return true;
    } else if (tv_sec == competer.tv_sec) {
@@ -140,7 +141,7 @@ FerryTimeStamp::operator time_t () {
    return (time_t) tv_sec;
 }
 
-FerryTimeStamp::operator string () {
+FerryTimeStamp::operator string () const {
    return std::to_string(tv_sec) + "." + std::to_string(tv_nsec);
 }
 
@@ -164,7 +165,7 @@ void FerryTimeStamp::assign (const std::string& sTS) {
    tv_nsec = stol(sTS.substr(iPeriodNail + 1));
 }
 
-string FerryTimeStamp::getTime () {
+string FerryTimeStamp::getTime () const {
    struct tm ti;
    char tb[20];
    localtime_r(&tv_sec,&ti);
@@ -172,7 +173,7 @@ string FerryTimeStamp::getTime () {
    return std::string(tb);
 }
 
-string FerryTimeStamp::getUTime () {
+string FerryTimeStamp::getUTime () const {
    char tb[20];
    char buf[23];
    struct tm ti;
