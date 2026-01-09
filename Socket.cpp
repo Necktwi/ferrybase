@@ -1,6 +1,6 @@
 
 // Implementation of the Socket class.
-
+#ifdef SOCKET
 #include "Socket.h"
 #include <string.h>
 #include <string>
@@ -378,3 +378,4 @@ int Socket::getPort(int fd) {
 #endif 
   return 0;
 }
+#endif //socket

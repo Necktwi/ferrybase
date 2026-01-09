@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+#include "mystdlib.h"
 //int atoi(const char* str);
 //float atof(const char* str);
 
@@ -28,30 +29,41 @@ void tolower (ccp s);
 void tolower (string& s);
 void str_cstrlit(const char *str, char *buffer, size_t buflen);
 
-class splitstring : public string {
-	std::vector<splitstring> flds;
+class splitstring : public std::string {
+	std::vector<std::string> flds;
 public:
 
-	splitstring (const string& str) : string(str) {
-	};
+	// splitstring (const string& str) : fstr(str) {
+	// };
 
-	splitstring (const string& str, size_t pos, size_t len = npos) :
-      string (str, pos, len)
-   {};
+	// splitstring (const string& str, size_t pos, size_t len = npos) :
+   //    fstr(str, pos, len)
+   // {};
 
-	splitstring(const char* s) : string(s) {
-	};
+	// splitstring(const char* s) : fstr(s) {
+	// };
 
-	splitstring(const char* s, size_t n) : string(s, n) {
-	};
+	// splitstring(const char* s, size_t n) : fstr(s, n) {
+	// };
 
-	splitstring(size_t n, char c) : string(n, c) {
-	};
+	// splitstring(size_t n, char c) : fstr(n, c) {
+	// };
 
-	/** split: receives a char delimiter; returns a vector of strings
+   // inherit all std::string constructors (C++11+)
+   using std::string::string;
+
+   // inherit assignment operators
+   using std::string::operator=;
+
+   splitstring() = default;
+   splitstring(const splitstring&) = default;
+   splitstring(splitstring&&) noexcept = default;
+   ~splitstring() = default;
+
+   /** split: receives a char delimiter; returns a vector of strings
 	 * By default ignores repeated delimiters, unless argument rep == 1.
 	 **/
-	std::vector<splitstring>& split(char delim, char dum, int rep = 1);
+	std::vector<std::string>& split(char delim, char dum, int rep = 1);
 };
 
 #ifdef __CYGWIN__

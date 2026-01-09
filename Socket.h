@@ -1,5 +1,5 @@
 // Definition of the Socket class
-
+#ifdef SOCKET
 #ifndef SOCKET_H
 #define SOCKET_H
 
@@ -68,3 +68,4 @@ protected:
 };
 
 #endif
+#endif //socket

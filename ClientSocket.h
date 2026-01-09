@@ -1,5 +1,5 @@
 // Definition of the ClientSocket class
-
+#ifdef SOCKET
 #ifndef CLIENTSOCKET_H
 #define CLIENTSOCKET_H
 
@@ -58,4 +58,5 @@ private:
 #endif
 };
 
+#endif
 #endif

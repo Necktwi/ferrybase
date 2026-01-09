@@ -1,5 +1,5 @@
 // Implementation of the ClientSocket class
-
+#ifdef SOCKET
 #include "ClientSocket.h"
 #include "SocketException.h"
 #ifndef __APPLE__
@@ -134,3 +134,4 @@ void ClientSocket::disconnect() {
 	}
 #endif
 }
+#endif //socket

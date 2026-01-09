@@ -13,6 +13,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cstdint>
+#include <string_view>
 
 //#if !defined(__mode_t)
 #  if defined(__NEED_mode_t)
@@ -29,6 +31,18 @@ typedef mode_t __mode_t;
 #include <unistd.h>
 #define GetCurrentDir getcwd
 #endif
+
+// namespace std {
+//     template<>
+//     struct hash<string> {
+//         size_t operator()(string const& s) const noexcept {
+//             // use string_view to avoid extra allocation/copy
+//             return std::hash<std::string_view>{}(std::string_view(s.data(), s.size()));
+//         }
+//     };
+// }
+
+// constexpr uint64_t hash_str (std::string_view s);
 
 #if defined(__linux__)
 void initTermios(int echo);
@@ -51,6 +65,7 @@ std::string get_fd_contents(int fd);
 char const * sperm(__mode_t mode);
 
 extern int child_exit_status;
+
 
 class spawn {
 private:

@@ -1,5 +1,5 @@
 // Definition of the ServerSocket class
-
+#ifdef SOCKET
 #ifndef SERVERSOCKET_H
 #define SERVERSOCKET_H
 #if defined(unix) || defined(__unix__) || defined(__unix) || defined(__APPLE__)
@@ -110,3 +110,4 @@ private:
 
 #endif
 #endif
+#endif //SOCKET
