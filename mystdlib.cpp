@@ -90,10 +90,6 @@ bool validMD5 (std::string md5) {
    return true;
 }
 
-#if defined(unix) || defined(__unix__) || defined(__unix)
-#ifndef __APPLE__
-std::map<pid_t, spawn*> processMap;
-
 const char alphanum[] =
    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const int alphanum_length = sizeof(alphanum)-1;
@@ -104,6 +100,17 @@ string random_alphnuma_string (int size) {
       rand_str += alphanum[rand() % alphanum_length];
     return rand_str;
 }
+
+constexpr uint64_t hash_str (std::string_view s) {
+    uint64_t h = 1469598103934665603ULL;  // FNV-1a 64-bit
+    for (char c : s)
+        h = (h ^ c) * 1099511628211ULL;
+    return h;
+}
+
+#if defined(unix) || defined(__unix__) || defined(__unix)
+#ifndef __APPLE__
+std::map<pid_t, spawn*> processMap;
 
 static struct termios old, mnew;
 

@@ -51,15 +51,19 @@ configure_file(
    "${PROJECT_BINARY_DIR}/pkgconfig.pc"
 )
 set (GCC_COVERAGE_COMPILE_FLAGS "-pthread")
-set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 MESSAGE( STATUS "CMAKE_CXX_COMPILER: " ${CMAKE_CXX_COMPILER} )
 set (GCC_COVERAGE_LINK_FLAGS "-fPIC")
 if (NOT macOS)
+   set (CMAKE_CXX_STANDARD 23)
    set (GCC_COVERAGE_LINK_FLAGS 
       "${GCC_COVERAGE_LINK_FLAGS} -Wl,-unresolved-symbols=ignore-in-shared-libs"
    )
 endif ()
+if (macOS)
+   set (GCC_COVERAGE_COMPILE_FLAGS "-std=c++23 -stdlib=libc++ ${GCC_COVERAGE_COMPILE_FLAGS}")
+endif()   
+
 if (DEFINED _DEBUG)
   set (GCC_COVERAGE_COMPILE_FLAGS "${GCC_COVERAGE_COMPILE_FLAGS} -g -O0")
   set (GCC_COVERAGE_LINK_FLAGS "${GCC_COVERAGE_LINK_FLAGS} -g -O0")
@@ -81,17 +85,24 @@ include_directories(${PROJECT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_INSTALL_FULL_INCLUDEDIR}/${Umbrella} /usr/include/libxml2
 )
+if(macOS)
+#   include_directories(/usr/local/include)
+   include_directories(/opt/local/include)
+#   link_directories(/usr/local/lib)
+   link_directories(/opt/local/lib)
+endif()
+
 if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../openssl/install/${TARGET_ARCH}")
    link_directories(
       "${CMAKE_CURRENT_SOURCE_DIR}/../openssl/install/${TARGET_ARCH}/lib")
    include_directories(
       ${CMAKE_CURRENT_SOURCE_DIR}/../openssl/install/${TARGET_ARCH}/include)
 endif()
-if (macOS)
-   message("openssl include")
-   include_directories(/usr/local/opt/openssl/include)
-   link_directories(/usr/local/opt/openssl/lib)
-endif ()
+# if (macOS)
+#    message("openssl include")
+#    include_directories(/usr/local/opt/openssl/include)
+#    link_directories(/usr/local/opt/openssl/lib)
+# endif ()
 
 if (${LINKAGE} MATCHES "STATIC")
   add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
@@ -117,18 +128,12 @@ else ()
     VERSION ${VERSION_MAJOR}.${VERSION_MINOR}
     SOVERSION ${VERSION_MAJOR}
   )
-   if (macOS)
-      message("openssl include")
-      include_directories(/usr/local/opt/openssl/include)
-      link_directories(/usr/local/opt/openssl/lib)
-   endif ()
-   if (macOS)
-      target_link_libraries(${PROJECT_NAME} ssl crypto)
-   elseif (Windows)
+  if (macOS)
+     target_link_libraries(${PROJECT_NAME} ssl crypto jpeg)
+  elseif (Windows)
   else (macOS)
-    target_link_libraries(${PROJECT_NAME} xml2 pthread ssl crypto z rt)
-  endif ()
-  
+     target_link_libraries(${PROJECT_NAME} xml2 pthread ssl crypto z rt)
+  endif () 
 endif ()
 install (TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install (FILES ${HEADERS}
