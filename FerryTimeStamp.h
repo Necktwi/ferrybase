@@ -10,7 +10,7 @@
 #define FerryTimeStamp_h
 #include <cstdlib>
 #include <string>
-#include <list>
+#include <set>
 #include <time.h>
 #include <mutex>
 
@@ -30,7 +30,7 @@ struct FerryTimeStamp : public timespec {
    FerryTimeStamp operator- (const FerryTimeStamp& ftsSubtrahend);
    static timespec sub (const timespec a, const timespec b);
    static timespec add (const timespec a, const timespec b);
-   static std::list<time_t*> ferryTimesList;
+   static std::set<time_t*> ferryTimeSet;
    static std::mutex ftLsMtx;
    void update ();
    void clear ();

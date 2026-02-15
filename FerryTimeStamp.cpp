@@ -20,47 +20,43 @@ using namespace std;
 FerryTimeStamp::FerryTimeStamp () {
    tv_sec = 0;
    tv_nsec = 0;
-   ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
+   // ftLsMtx.lock();
+   // ferryTimeSet.insert(static_cast<time_t*> (&tv_sec));
+   // ftLsMtx.unlock();
 }
 
 FerryTimeStamp::FerryTimeStamp (time_t sec, long nsec) {
    tv_sec = sec;
    tv_nsec = nsec;
-   ftLsMtx.lock();
-   ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
-   ftLsMtx.unlock();
+   // ftLsMtx.lock();
+   // ferryTimeSet.insert(static_cast<time_t*> (&tv_sec));
+   // ftLsMtx.unlock();
 }
 
 FerryTimeStamp::FerryTimeStamp (const string& sFTS) {
    assign(sFTS);
-   ftLsMtx.lock();
-   ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
-   ftLsMtx.unlock();
+   // ftLsMtx.lock();
+   // ferryTimeSet.insert(static_cast<time_t*> (&tv_sec));
+   // ftLsMtx.unlock();
 }
 
 FerryTimeStamp& FerryTimeStamp::operator= (const string& sFTS) {
    assign(sFTS);
-   ftLsMtx.lock();
-   ferryTimesList.push_back(static_cast<time_t*> (&tv_sec));
-   ftLsMtx.unlock();
+   // ftLsMtx.lock();
+   // ferryTimeSet.insert(static_cast<time_t*> (&tv_sec));
+   // ftLsMtx.unlock();
    return *this;
 }
 
 FerryTimeStamp::~FerryTimeStamp () {
-   std::list<time_t*>::iterator i;
-   ftLsMtx.lock();
-   i = ferryTimesList.begin();
-   while (i != ferryTimesList.end()) {
-      if (*i == static_cast<time_t*> (&tv_sec)) {
-         i = ferryTimesList.erase(i);
-         break;
-      }
-      ++i;
-   }
-   ftLsMtx.unlock();
+   // ftLsMtx.lock();
+   // set<time_t*>::iterator i= ferryTimeSet.find(static_cast<time_t*>(&tv_sec));
+	// if (i!=ferryTimeSet.end())
+	// 	ferryTimeSet.erase(i);
+   // ftLsMtx.unlock();
 };
 
-std::list<time_t*> FerryTimeStamp::ferryTimesList;
+std::set<time_t*> FerryTimeStamp::ferryTimeSet;
 std::mutex FTS_::ftLsMtx;
 
 timespec FerryTimeStamp::sub (const timespec a, const timespec b) {
@@ -91,7 +87,7 @@ timespec FerryTimeStamp::add (const timespec a, const timespec b) {
 
 FerryTimeStamp FerryTimeStamp::operator+ (const FerryTimeStamp& ftsAddand) {
    FerryTimeStamp result;
-   result.tv_sec = tv_sec + ftsAddand.tv_nsec;
+   result.tv_sec = tv_sec + ftsAddand.tv_sec;
    result.tv_nsec = (tv_nsec + ftsAddand.tv_nsec) % 1000000000;
    if (result.tv_nsec < tv_nsec || result.tv_nsec < ftsAddand.tv_nsec) {
        result.tv_sec++;
@@ -175,7 +171,7 @@ string FerryTimeStamp::getTime () const {
 
 string FerryTimeStamp::getUTime () const {
    char tb[20];
-   char buf[23];
+   char buf[30];
    struct tm ti;
    localtime_r(&tv_sec, &ti);
    strftime(tb, 20, "%d%b%H:%M:%S", &ti);
