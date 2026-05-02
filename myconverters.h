@@ -16,6 +16,7 @@
 
 using namespace std;
 typedef const char* ccp;
+static ccp NullCcp= "";
 
 std::string itoa(int i, int size = 0);
 std::string implode(const std::string glue,
