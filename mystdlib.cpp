@@ -57,14 +57,14 @@
 using namespace std;
 
 bool validUsername (const std::string& username) {
-   for (int i=0; i<username.length();++i) {
+   for (int i=0; i<username.length(); ++i) {
       if (!((username[i]>=65 && username[i]<=90) ||
             (username[i]>=97 && username[i]<=122) ||
             username[i]=='.' || username[i]=='_')) {
          return false;
       }
    }
-   return (username.length() && username.length()<24);
+   return (username.length() && username.length()<MAX_UN_LENGTH);
 }
 bool validPassword (const std::string& password) {
    for (int i=0; i<password.length();++i) {

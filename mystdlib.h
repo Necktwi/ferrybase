@@ -22,6 +22,7 @@ typedef mode_t __mode_t;
 #  endif
 //#endif
 
+#define MAX_UN_LENGTH 48
 #define NELEMS(x)  (sizeof(x) / sizeof(x[0]))
 
 #if defined(_WIN32) || defined(_WIN64)

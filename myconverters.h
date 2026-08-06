@@ -26,8 +26,8 @@ std::vector<std::string> explode(
 void explode(const std::string delimiter, const std::string &str,
 		std::vector<std::string>& shrapnel);
 float timeToSec(std::string timestring);
-void tolower (ccp s);
-void tolower (string& s);
+int tolower (ccp s);
+int tolower (string& s);
 void str_cstrlit(const char *str, char *buffer, size_t buflen);
 
 class splitstring : public std::string {
@@ -97,6 +97,9 @@ unsigned char* base64_decode(const char *data,
                              size_t *output_length);
 void base64_cleanup();
 void build_decoding_table();
+
+int decodeURIComponent (string& str);
+
 int8_t countSetBits (unsigned int n);
 void reduceImg (const char* imgPath);
 #endif	/* MYCONVERTERS_H */
