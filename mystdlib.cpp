@@ -115,49 +115,49 @@ std::map<pid_t, spawn*> processMap;
 static struct termios old, mnew;
 
 /* Initialize new terminal i/o settings */
-void initTermios(int echo) {
+void initTermios (int echo) {
 	tcgetattr(0, &old); /* grab old terminal i/o settings */
-	mnew = old; /* make new settings same as old settings */
-	mnew.c_lflag &= ~ICANON; /* disable buffered i/o */
-	mnew.c_lflag &= echo ? ECHO : ~ECHO; /* set echo mode */
+	mnew= old; /* make new settings same as old settings */
+	mnew.c_lflag&= ~ICANON; /* disable buffered i/o */
+	mnew.c_lflag&= echo ? ECHO : ~ECHO; /* set echo mode */
 	tcsetattr(0, TCSANOW, &mnew); /* use these new terminal i/o settings now */
 }
 
 /* Restore old terminal i/o settings */
-void resetTermios(void) {
+void resetTermios (void) {
 	tcsetattr(0, TCSANOW, &old);
 }
 
 /* Read 1 character - echo defines echo mode */
-char getch_(int echo) {
+char getch_ (int echo) {
 	char ch;
 	initTermios(echo);
-	ch = getchar();
+	ch= getchar();
 	resetTermios();
 	return ch;
 }
 
 /* Read 1 character without echo */
-char getch(void) {
+char getch (void) {
 	return getch_(0);
 }
 
 /* Read 1 character with echo */
-char getche(void) {
+char getche (void) {
 	return getch_(1);
 }
 
 bool spawn::processCleaned;
 
-void spawn::defaultOnStopHandler(spawn* process) {
+void spawn::defaultOnStopHandler (spawn* process) {
 	//delete process;
 }
 
-spawn::spawn() {
+spawn::spawn () {
 
 }
 
-spawn::spawn(std::string command, bool daemon, void (*onStopHandler)(spawn*), 
+spawn::spawn (std::string command, bool daemon, void (*onStopHandler)(spawn*), 
    bool freeChild, bool block
 ) {
 	sigset_t chldmask;
@@ -169,26 +169,26 @@ spawn::spawn(std::string command, bool daemon, void (*onStopHandler)(spawn*),
 	pipe(this->cpstdinp);
 	pipe(this->cpstdoutp);
 	pipe(this->cpstderrp);
-	std::vector<std::string> cmdv = explode(" ", command);
+	std::vector<std::string> cmdv= explode(" ", command);
 	char * args[cmdv.size() + 1];
-	int i = 0;
-	int a = 0;
-	bool validcmd = true;
+	int i= 0;
+	int a= 0;
+	bool validcmd= true;
 	std::string arg;
-	for (i = 0; i < cmdv.size(); i++) {
-		arg = std::string(cmdv[i]);
+	for (i= 0; i < cmdv.size(); i++) {
+		arg= std::string(cmdv[i]);
 		if (cmdv[i][0] == '"') {
-			arg = arg.substr(1);
+			arg= arg.substr(1);
 			i++;
 			while (i < cmdv.size() && cmdv[i][cmdv[i].length() - 1] != '"') {
-				arg += " " + cmdv[i];
+				arg+= " " + cmdv[i];
 				i++;
 			}
 			if (i < cmdv.size() && cmdv[i][cmdv[i].length() - 1] == '"') {
-				arg += " " + cmdv[i];
-				arg = arg.substr(0, arg.length() - 1);
+				arg+= " " + cmdv[i];
+				arg= arg.substr(0, arg.length() - 1);
 			} else {
-				validcmd = false;
+				validcmd= false;
 				break;
 			}
 		} else if (cmdv[i][0] == '\'') {
@@ -196,13 +196,13 @@ spawn::spawn(std::string command, bool daemon, void (*onStopHandler)(spawn*),
 			i++;
 			while (i < cmdv.size() && cmdv[i][cmdv[i].length() - 1] != '\'') {
 				arg += " " + cmdv[i];
-				i++;
+				++i;
 			}
 			if (i < cmdv.size() && cmdv[i][cmdv[i].length() - 1] == '\'') {
-				arg += " " + cmdv[i];
-				arg = arg.substr(0, arg.length() - 1);
+				arg+= " " + cmdv[i];
+				arg= arg.substr(0, arg.length() - 1);
 			} else {
-				validcmd = false;
+				validcmd= false;
 				break;
 			}
 		} else if (arg[arg.length() - 1] == '\\') {

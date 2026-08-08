@@ -24,7 +24,9 @@ std::string implode(const std::string glue,
 std::vector<std::string> explode(
    const std::string &str, const std::string delimiter = " ");
 void explode(const std::string delimiter, const std::string &str,
-		std::vector<std::string>& shrapnel);
+				 std::vector<std::string>& shrapnel);
+std::vector<std::string> explodeByNum (const std::string& str);
+
 float timeToSec(std::string timestring);
 int tolower (ccp s);
 int tolower (string& s);

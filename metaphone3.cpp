@@ -111,13 +111,25 @@ std::string Metaphone3Encoder::u32VectorToString(const std::vector<UChar32>& u32
 
 // --- Main Encode Method ---
 std::pair<std::string, std::string> Metaphone3Encoder::encode (
-   const std::string& inputStr
+    const std::string& inputStr
 ) {
-   if (inputStr.empty()) {
-      return {"", ""};
-   }
+    if (inputStr.empty()) {
+       return {"", ""};
+    }
 
-   resetState(); // Clear internal state for new input
+    // Return numeric strings unchanged
+    bool isNumeric = true;
+    for (char c : inputStr) {
+       if (!std::isdigit(static_cast<unsigned char>(c))) {
+          isNumeric = false;
+          break;
+       }
+    }
+    if (isNumeric) {
+       return {inputStr, inputStr};
+    }
+
+    resetState(); // Clear internal state for new input
 
    if (MaxLength <= 0) {
       MaxLength = DefaultMaxLength; // Use default if invalid provided

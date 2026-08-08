@@ -145,6 +145,30 @@ void explode(const std::string delimiter, const std::string &str,
 	return;
 }
 
+std::vector<std::string> explodeByNum (const std::string& str) {
+	std::vector<std::string> result;
+	size_t start= 0;
+	bool inNum= false;
+
+	for (size_t i= 0; i < str.length(); ++i) {
+		bool isNum= std::isdigit(str[i]);
+
+		if (isNum != inNum) {
+			if (i > start) {
+				result.push_back(str.substr(start, i - start));
+			}
+			start= i;
+			inNum= isNum;
+		}
+	}
+
+	if (start < str.length()) {
+		result.push_back(str.substr(start));
+	}
+
+	return result;
+}
+
 float timeToSec(std::string timestring) {
 	float secs = 0;
 	std::vector<std::string> t = explode(timestring, ":");
