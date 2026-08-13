@@ -3,8 +3,8 @@
 
 #include <string>
 #include <vector>
-#include <utility> // For std::pair
-#include <unicode/uchar.h> // ICU for UChar32 and Unicode functions
+#include <utility>
+#include <cstdint>
 
 class Metaphone3Encoder {
 public:
@@ -21,44 +21,44 @@ public:
 
 private:
     // Internal state (reset per Encode call)
-    std::vector<UChar32> in;
+    std::vector<uint8_t> in;
     int idx = 0;
     int lastIdx = 0;
-    std::vector<UChar32> primBuf;
-    std::vector<UChar32> secondBuf;
+    std::vector<uint8_t> primBuf;
+    std::vector<uint8_t> secondBuf;
     bool flagAlInversion = false;
     static const int DefaultMaxLength = 8;
-    static const UChar32 REPLACEMENT_CHAR = 0xFFFD; // Unicode Replacement Character
+    static const uint8_t REPLACEMENT_CHAR = 0x00;
 
     // Internal helper methods corresponding to Go funcs
     void resetState();
-    void primeBuf(std::vector<UChar32>& buf, int ensureCap);
-    std::string u32VectorToString(const std::vector<UChar32>& u32vec);
-    std::vector<UChar32> stringToU32Vector(const std::string& utf8Str);
+    void primeBuf(std::vector<uint8_t>& buf, int ensureCap);
+    std::string u32VectorToString(const std::vector<uint8_t>& u32vec);
+    std::vector<uint8_t> stringToU32Vector(const std::string& utf8Str);
 
-    void metaphAdd(UChar32 primary);
-    void metaphAddAlt(UChar32 primary, UChar32 secondary);
-    void metaphAddStr(const std::vector<UChar32>& primary, const std::vector<UChar32>& secondary);
-    void metaphAddExactApprox(const std::vector<UChar32>& exact, const std::vector<UChar32>& main);
-    void metaphAddExactApproxAlt(const std::vector<UChar32>& exact, const std::vector<UChar32>& altExact,
-                                 const std::vector<UChar32>& main, const std::vector<UChar32>& alt);
+    void metaphAdd(uint8_t primary);
+    void metaphAddAlt(uint8_t primary, uint8_t secondary);
+    void metaphAddStr(const std::vector<uint8_t>& primary, const std::vector<uint8_t>& secondary);
+    void metaphAddExactApprox(const std::vector<uint8_t>& exact, const std::vector<uint8_t>& main);
+    void metaphAddExactApproxAlt(const std::vector<uint8_t>& exact, const std::vector<uint8_t>& altExact,
+                                 const std::vector<uint8_t>& main, const std::vector<uint8_t>& alt);
 
 
-    bool isVowel(UChar32 c);
+    bool isVowel(uint8_t c);
     bool isVowelAt(int offset);
-    bool charAt(int offset, UChar32 c);
-    bool charNextIs(UChar32 c);
+    bool charAt(int offset, uint8_t c);
+    bool charNextIs(uint8_t c);
     bool frontVowel(int offset);
 
-    bool stringAt(int offset, const std::vector<std::vector<UChar32>>& vals);
-    bool stringAtStart(int offset, const std::vector<std::vector<UChar32>>& vals);
-    bool stringAtEnd(int offset, const std::vector<std::vector<UChar32>>& vals);
-    bool stringStart(const std::vector<std::vector<UChar32>>& vals);
-    bool stringEnd(const std::vector<std::vector<UChar32>>& vals);
-    bool stringExact(const std::vector<std::vector<UChar32>>& vals);
-    bool stringContains(const std::vector<UChar32>& val);
+    bool stringAt(int offset, const std::vector<std::vector<uint8_t>>& vals);
+    bool stringAtStart(int offset, const std::vector<std::vector<uint8_t>>& vals);
+    bool stringAtEnd(int offset, const std::vector<std::vector<uint8_t>>& vals);
+    bool stringStart(const std::vector<std::vector<uint8_t>>& vals);
+    bool stringEnd(const std::vector<std::vector<uint8_t>>& vals);
+    bool stringExact(const std::vector<std::vector<uint8_t>>& vals);
+    bool stringContains(const std::vector<uint8_t>& val);
 
-    bool rootOrInflections(const std::vector<UChar32>& root);
+    bool rootOrInflections(const std::vector<uint8_t>& root);
     bool isSlavoGermanic();
 
     int skipVowels(int currentIdx);
@@ -262,14 +262,14 @@ private:
     bool encodeESuffix(int at);
     bool encodeEPronouncedExceptions();
 
-    // Helper to convert string literals to vector<UChar32> for comparisons
-    static std::vector<UChar32> L(const char* s);
-    static std::vector<std::vector<UChar32>> LL(const std::vector<const char*>& v);
+    // Helper to convert string literals to vector<uint8_t> for comparisons
+    static std::vector<uint8_t> L(const char* s);
+    static std::vector<std::vector<uint8_t>> LL(const std::vector<const char*>& v);
 };
 
 
 // Helper function (can be outside class or static)
-bool areEqual(const std::vector<UChar32>& v1, const std::vector<UChar32>& v2);
+bool areEqual(const std::vector<uint8_t>& v1, const std::vector<uint8_t>& v2);
 
 
 #endif // METAPHONE3_H

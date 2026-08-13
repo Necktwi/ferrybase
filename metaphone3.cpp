@@ -4,41 +4,27 @@
 #include <string>
 #include <cstring>
 #include <algorithm>
-#include <iostream> // For debug output
-#include <unicode/ustring.h> // ICU u_strToUTF32, u_strFromUTF32
-#include <unicode/uchar.h>   // ICU u_toupper, u_charType, etc.
-#include <unicode/unistr.h>
-
-// --- Static Constants ---
-// Defined again for use within .cpp if needed directly, otherwise use class members
-// const int Metaphone3Encoder::DefaultMaxLength;
-// const UChar32 Metaphone3Encoder::REPLACEMENT_CHAR;
+#include <iostream>
+#include <cstdint>
 
 // --- Debug Flag ---
-static bool debug = false; // Corresponds to Go's debug var
+static bool debug = false;
 
-// --- Helper to create UChar32 vectors from C-style strings ---
-std::vector<UChar32> Metaphone3Encoder::L(const char* s) {
-   std::vector<UChar32> vec;
+// --- Helper to create uint8_t vectors from C-style strings ---
+std::vector<uint8_t> Metaphone3Encoder::L(const char* s) {
+   std::vector<uint8_t> vec;
    if (!s) return vec;
 
-   icu::UnicodeString ustr(s, -1, nullptr);
-   if (ustr.isBogus()) {
-      if (debug) std::cerr << "ICU Error (L): Failed to create UnicodeString from UTF-8 char*" << std::endl;
-      return vec;
-   }
-
-   vec.reserve(ustr.length());
-   UChar32 c;
-   // Added parentheses around comparison for -Wsign-compare
-   for (int32_t i = 0; (c = ustr.char32At(i)) != 0xFFFFFFFF && (i < static_cast<int32_t>(ustr.length())); i += U16_LENGTH(c)) {
-      vec.push_back(c);
+   vec.reserve(strlen(s));
+   for (; *s; ++s) {
+      vec.push_back(static_cast<uint8_t>(*s));
    }
    return vec;
 }
-// Helper to create a vector of UChar32 vectors from char* vector
-std::vector<std::vector<UChar32>> Metaphone3Encoder::LL(const std::vector<const char*>& v) {
-   std::vector<std::vector<UChar32>> result;
+
+// Helper to create a vector of uint8_t vectors from char* vector
+std::vector<std::vector<uint8_t>> Metaphone3Encoder::LL(const std::vector<const char*>& v) {
+   std::vector<std::vector<uint8_t>> result;
    result.reserve(v.size());
    for (const char* s : v) {
       result.push_back(L(s));
@@ -50,6 +36,11 @@ std::vector<std::vector<UChar32>> Metaphone3Encoder::LL(const std::vector<const 
    return result;
 }
 
+// --- ASCII Uppercase ---
+static uint8_t asciiUpper(uint8_t c) {
+   if (c >= 'a' && c <= 'z') return static_cast<uint8_t>(c - 'a' + 'A');
+   return c;
+}
 
 // --- Constructor ---
 Metaphone3Encoder::Metaphone3Encoder(bool encodeVowels, bool encodeExact, int maxLength)
@@ -66,105 +57,69 @@ void Metaphone3Encoder::resetState() {
 }
 
 // --- Buffer Priming ---
-void Metaphone3Encoder::primeBuf(std::vector<UChar32>& buf, int ensureCap) {
+void Metaphone3Encoder::primeBuf(std::vector<uint8_t>& buf, int ensureCap) {
    if (ensureCap > static_cast<int>(buf.capacity())) {
       buf.reserve(ensureCap);
    }
-   buf.clear(); // Reset length to 0
-}
-
-// --- String/Vector Conversions ---
-std::vector<UChar32> Metaphone3Encoder::stringToU32Vector(const std::string& utf8Str) {
-   std::vector<UChar32> u32vec;
-
-   icu::UnicodeString ustr = icu::UnicodeString::fromUTF8(icu::StringPiece(utf8Str.data(), utf8Str.length()));
-   if (ustr.isBogus()) {
-      if (debug) std::cerr << "ICU Error (stringToU32Vector): Failed to create UnicodeString from UTF-8 std::string" << std::endl;
-      return u32vec;
-   }
-
-   u32vec.reserve(ustr.length());
-   UChar32 c;
-   // Added parentheses around comparison for -Wsign-compare
-   for (int32_t i = 0; (c = ustr.char32At(i)) != 0xFFFFFFFF && (i < static_cast<int32_t>(ustr.length())); i += U16_LENGTH(c)) {
-      u32vec.push_back(u_toupper(c));
-   }
-
-   return u32vec;
-}
-
-std::string Metaphone3Encoder::u32VectorToString(const std::vector<UChar32>& u32vec) {
-   std::string utf8Str;
-
-   // Create UnicodeString from UTF-32 (UChar32) vector
-   icu::UnicodeString ustr = icu::UnicodeString::fromUTF32(u32vec.data(), static_cast<int32_t>(u32vec.size()));
-    if (ustr.isBogus()) {
-       if (debug) std::cerr << "ICU Error (u32VectorToString): Failed to create UnicodeString from UTF-32" << std::endl;
-       return utf8Str;
-   }
-
-   // Convert UnicodeString back to UTF-8 std::string
-   ustr.toUTF8String(utf8Str);
-
-   return utf8Str;
+   buf.clear();
 }
 
 // --- Main Encode Method ---
-std::pair<std::string, std::string> Metaphone3Encoder::encode (
-    const std::string& inputStr
-) {
-    if (inputStr.empty()) {
-       return {"", ""};
-    }
-
-    // Return numeric strings unchanged
-    bool isNumeric = true;
-    for (char c : inputStr) {
-       if (!std::isdigit(static_cast<unsigned char>(c))) {
-          isNumeric = false;
-          break;
-       }
-    }
-    if (isNumeric) {
-       return {inputStr, inputStr};
-    }
-
-    resetState(); // Clear internal state for new input
-
-   if (MaxLength <= 0) {
-      MaxLength = DefaultMaxLength; // Use default if invalid provided
-   }
-
-   in =stringToU32Vector(inputStr);
-   if (in.empty() && !inputStr.empty()) {
-      // Handle potential ICU error during conversion if needed
-      if (debug) std::cerr << "Warning: Input string could not be converted to UChar32 vector." << std::endl;
+std::pair<std::string, std::string> Metaphone3Encoder::encode(const std::string& inputStr) {
+   if (inputStr.empty()) {
       return {"", ""};
    }
+
+   // Return numeric strings unchanged
+   bool isNumeric = true;
+   for (char c : inputStr) {
+      if (!std::isdigit(static_cast<unsigned char>(c))) {
+         isNumeric = false;
+         break;
+      }
+   }
+   if (isNumeric) {
+      return {inputStr, inputStr};
+   }
+
+   resetState();
+
+   if (MaxLength <= 0) {
+      MaxLength = DefaultMaxLength;
+   }
+
+   // Convert input: uppercase ASCII letters, skip non-ASCII
+   in.reserve(inputStr.size());
+   for (unsigned char c : inputStr) {
+      if (c < 0x80) {
+         in.push_back(asciiUpper(c));
+      }
+      // Skip bytes >= 0x80 (non-ASCII)
+   }
+
+   if (in.empty()) {
+      return {"", ""};
+   }
+
    lastIdx = static_cast<int>(in.size()) - 1;
 
-   primeBuf(primBuf, MaxLength + 4); // Prime with some extra capacity
+   primeBuf(primBuf, MaxLength + 4);
    primeBuf(secondBuf, MaxLength + 4);
 
-
    for (idx = 0; idx < static_cast<int>(in.size()); ++idx) {
-      // Check if buffers are full enough (using >= for compatibility with ref impl)
+      // Check if buffers are full enough
       if (primBuf.size() >= static_cast<size_t>(MaxLength) && secondBuf.size() >= static_cast<size_t>(MaxLength)) {
          break;
       }
 
-      UChar32 c = in[idx];
+      uint8_t c = in[idx];
 
       if (debug) {
-         std::cout << "Processing U+" << std::hex << c << std::dec << " ('" << u32VectorToString({c}) << "')" << std::endl;
+         std::cout << "Processing: " << std::endl;
       }
-
 
       switch (c) {
          case 'B': encodeB(); break;
-         case 0x00DF: // ß (Sharp S)
-         case 0x00C7: // Ç (C Cedilla)
-            metaphAdd('S'); break;
          case 'C': encodeC(); break;
          case 'D': encodeD(); break;
          case 'F': encodeF(); break;
@@ -175,21 +130,14 @@ std::pair<std::string, std::string> Metaphone3Encoder::encode (
          case 'L': encodeL(); break;
          case 'M': encodeM(); break;
          case 'N': encodeN(); break;
-         case 0x00D1: // Ñ (N Tilde)
-            metaphAdd('N'); break;
          case 'P': encodeP(); break;
          case 'Q': encodeQ(); break;
          case 'R': encodeR(); break;
          case 'S': encodeS(); break;
          case 'T': encodeT(); break;
-         case 0x00D0: // Ð (ETH)
-         case 0x00DE: // Þ (THORN)
-            metaphAdd('0'); break; // Map to TH sound
          case 'V': encodeV(); break;
          case 'W': encodeW(); break;
          case 'X': encodeX(); break;
-         case 0xC28A: metaphAdd('X'); break; // From Go code
-         case 0xC28E: metaphAdd('S'); break; // From Go code
          case 'Z': encodeZ(); break;
          default:
             if (isVowel(c)) {
@@ -207,8 +155,8 @@ std::pair<std::string, std::string> Metaphone3Encoder::encode (
       secondBuf.resize(MaxLength);
    }
 
-   std::string primStr = u32VectorToString(primBuf);
-   std::string secondStr = u32VectorToString(secondBuf);
+   std::string primStr(primBuf.begin(), primBuf.end());
+   std::string secondStr(secondBuf.begin(), secondBuf.end());
 
    if (primStr == secondStr) {
       return {primStr, ""};
@@ -220,64 +168,55 @@ std::pair<std::string, std::string> Metaphone3Encoder::encode (
 
 // --- Utility Functions ---
 
-bool areEqual(const std::vector<UChar32>& v1, const std::vector<UChar32>& v2) {
-   return v1 == v2; // std::vector comparison works
+bool areEqual(const std::vector<uint8_t>& v1, const std::vector<uint8_t>& v2) {
+   return v1 == v2;
 }
 
-
-void Metaphone3Encoder::metaphAdd(UChar32 primary) {
+void Metaphone3Encoder::metaphAdd(uint8_t primary) {
    metaphAddAlt(primary, primary);
 }
 
-void Metaphone3Encoder::metaphAddAlt(UChar32 primary, UChar32 secondary) {
-   // Check primary buffer length before adding
+void Metaphone3Encoder::metaphAddAlt(uint8_t primary, uint8_t secondary) {
    if (primBuf.size() < static_cast<size_t>(MaxLength)) {
       if (primary != REPLACEMENT_CHAR) {
-         // Don't dupe added 'A's
          if (!(primary == 'A' && !primBuf.empty() && primBuf.back() == 'A')) {
-            if (debug) std::cout << "  Append Prim: U+" << std::hex << primary << std::dec << " at index " << idx << std::endl;
+            if (debug) std::cout << "  Append Prim: " << primary << " at index " << idx << std::endl;
             primBuf.push_back(primary);
          }
       }
    }
 
-   // Check secondary buffer length before adding
    if (secondBuf.size() < static_cast<size_t>(MaxLength)) {
       if (secondary != REPLACEMENT_CHAR) {
-         // Don't dupe added 'A's
          if (!(secondary == 'A' && !secondBuf.empty() && secondBuf.back() == 'A')) {
-            if (debug) std::cout << "  Append Alt: U+" << std::hex << secondary << std::dec << " at index " << idx << std::endl;
+            if (debug) std::cout << "  Append Alt: " << secondary << " at index " << idx << std::endl;
             secondBuf.push_back(secondary);
          }
       }
    }
 }
 
-void Metaphone3Encoder::metaphAddStr(const std::vector<UChar32>& primary, const std::vector<UChar32>& secondary) {
+void Metaphone3Encoder::metaphAddStr(const std::vector<uint8_t>& primary, const std::vector<uint8_t>& secondary) {
    if (!primary.empty()) {
-      // Avoid duping 'A' only if the first char of primary is 'A'
       bool skipPrimA = (primary[0] == 'A' && !primBuf.empty() && primBuf.back() == 'A');
       size_t startIdx = skipPrimA ? 1 : 0;
-      if (debug && startIdx < primary.size()) std::cout << "  Append Prim Str: " << u32VectorToString(std::vector<UChar32>(primary.begin() + startIdx, primary.end())) << " at index " << idx << std::endl;
 
-      for(size_t i = startIdx; i < primary.size() && primBuf.size() < static_cast<size_t>(MaxLength); ++i) {
+      for (size_t i = startIdx; i < primary.size() && primBuf.size() < static_cast<size_t>(MaxLength); ++i) {
          primBuf.push_back(primary[i]);
       }
    }
 
    if (!secondary.empty()) {
-      // Avoid duping 'A' only if the first char of secondary is 'A'
       bool skipSecA = (secondary[0] == 'A' && !secondBuf.empty() && secondBuf.back() == 'A');
       size_t startIdx = skipSecA ? 1 : 0;
-      if (debug && startIdx < secondary.size()) std::cout << "  Append Alt Str: " << u32VectorToString(std::vector<UChar32>(secondary.begin() + startIdx, secondary.end())) << " at index " << idx << std::endl;
 
-      for(size_t i = startIdx; i < secondary.size() && secondBuf.size() < static_cast<size_t>(MaxLength); ++i) {
+      for (size_t i = startIdx; i < secondary.size() && secondBuf.size() < static_cast<size_t>(MaxLength); ++i) {
          secondBuf.push_back(secondary[i]);
       }
    }
 }
 
-void Metaphone3Encoder::metaphAddExactApprox(const std::vector<UChar32>& exact, const std::vector<UChar32>& main) {
+void Metaphone3Encoder::metaphAddExactApprox(const std::vector<uint8_t>& exact, const std::vector<uint8_t>& main) {
    if (EncodeExact) {
       metaphAddStr(exact, exact);
    } else {
@@ -285,8 +224,8 @@ void Metaphone3Encoder::metaphAddExactApprox(const std::vector<UChar32>& exact, 
    }
 }
 
-void Metaphone3Encoder::metaphAddExactApproxAlt(const std::vector<UChar32>& exact, const std::vector<UChar32>& altExact,
-                                                const std::vector<UChar32>& main, const std::vector<UChar32>& alt) {
+void Metaphone3Encoder::metaphAddExactApproxAlt(const std::vector<uint8_t>& exact, const std::vector<uint8_t>& altExact,
+                                                const std::vector<uint8_t>& main, const std::vector<uint8_t>& alt) {
    if (EncodeExact) {
       metaphAddStr(exact, altExact);
    } else {
@@ -294,28 +233,8 @@ void Metaphone3Encoder::metaphAddExactApproxAlt(const std::vector<UChar32>& exac
    }
 }
 
-bool Metaphone3Encoder::isVowel(UChar32 c) {
-   // Basic Latin vowels
-   if (c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U' || c == 'Y') {
-      return true;
-   }
-   // Latin-1 Supplement vowels (add more as needed from original Go code)
-   if ((c >= 0xC0 && c <= 0xC6) || // A Grave..AE
-       (c >= 0xC8 && c <= 0xCB) || // E Grave..E Diaeresis
-       (c >= 0xCC && c <= 0xCF) || // I Grave..I Diaeresis
-       (c >= 0xD2 && c <= 0xD6) || // O Grave..O Diaeresis
-       (c == 0xD8) ||              // O Slash
-       (c >= 0xD9 && c <= 0xDC) || // U Grave..U Diaeresis
-       (c == 0xDD) ||              // Y Acute
-       (c == 0x00)) // Consider null check? Go doesn't explicitly check.
-   {
-      // Need to be more precise based on Go code's explicit list if necessary
-      return true; // Simplified for brevity, expand using Go code's exact list
-   }
-   // Add specific checks from Go code like \uC29F, \uC28C if needed
-   if (c == 0xC29F || c == 0xC28C) return true; // From Go code
-
-   return false;
+bool Metaphone3Encoder::isVowel(uint8_t c) {
+   return c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U' || c == 'Y';
 }
 
 bool Metaphone3Encoder::isVowelAt(int offset) {
@@ -326,7 +245,7 @@ bool Metaphone3Encoder::isVowelAt(int offset) {
    return isVowel(in[targetIdx]);
 }
 
-bool Metaphone3Encoder::charAt(int offset, UChar32 c) {
+bool Metaphone3Encoder::charAt(int offset, uint8_t c) {
    int targetIdx = idx + offset;
    if (targetIdx < 0 || targetIdx >= static_cast<int>(in.size())) {
       return false;
@@ -334,7 +253,7 @@ bool Metaphone3Encoder::charAt(int offset, UChar32 c) {
    return in[targetIdx] == c;
 }
 
-bool Metaphone3Encoder::charNextIs(UChar32 c) {
+bool Metaphone3Encoder::charNextIs(uint8_t c) {
    return charAt(1, c);
 }
 
@@ -344,17 +263,16 @@ bool Metaphone3Encoder::frontVowel(int offset) {
 
 // --- String Matching Helpers ---
 
-// The vals vector MUST be pre-sorted by length, shortest first.
-bool Metaphone3Encoder::stringAt(int offset, const std::vector<std::vector<UChar32>>& vals) {
+bool Metaphone3Encoder::stringAt(int offset, const std::vector<std::vector<uint8_t>>& vals) {
    int start = idx + offset;
 
    if (vals.empty() || start < 0 || start >= static_cast<int>(in.size()) || start + static_cast<int>(vals[0].size()) > static_cast<int>(in.size())) {
-      return false; // Basic bounds check using the shortest string in vals
+      return false;
    }
 
    for (const auto& v : vals) {
       if (start + static_cast<int>(v.size()) > static_cast<int>(in.size())) {
-         return false; // Since vals is sorted by length, no longer strings can match
+         return false;
       }
 
       bool match = true;
@@ -371,31 +289,29 @@ bool Metaphone3Encoder::stringAt(int offset, const std::vector<std::vector<UChar
    return false;
 }
 
-bool Metaphone3Encoder::stringAtStart(int offset, const std::vector<std::vector<UChar32>>& vals) {
+bool Metaphone3Encoder::stringAtStart(int offset, const std::vector<std::vector<uint8_t>>& vals) {
    if (offset != -idx) {
       return false;
    }
    return stringAt(offset, vals);
 }
 
-// The vals vector MUST be pre-sorted by length, shortest first.
-bool Metaphone3Encoder::stringAtEnd(int offset, const std::vector<std::vector<UChar32>>& vals) {
+bool Metaphone3Encoder::stringAtEnd(int offset, const std::vector<std::vector<uint8_t>>& vals) {
    int start = idx + offset;
 
    if (vals.empty() || start < 0 || start >= static_cast<int>(in.size()) || start + static_cast<int>(vals[0].size()) > static_cast<int>(in.size())) {
-      return false; // Basic bounds check
+      return false;
    }
 
    for (const auto& v : vals) {
       int currentEnd = start + static_cast<int>(v.size());
       if (currentEnd > static_cast<int>(in.size())) {
-         return false; // Too long, and vals is sorted by length
+         return false;
       }
       if (currentEnd < static_cast<int>(in.size())) {
-         continue; // Doesn't reach the end
+         continue;
       }
 
-      // Now currentEnd == in.size()
       bool match = true;
       for (size_t i = 0; i < v.size(); ++i) {
          if (in[start + i] != v[i]) {
@@ -410,23 +326,21 @@ bool Metaphone3Encoder::stringAtEnd(int offset, const std::vector<std::vector<UC
    return false;
 }
 
-bool Metaphone3Encoder::stringStart(const std::vector<std::vector<UChar32>>& vals) {
-   return stringAt(-idx, vals); // Check from beginning of the string
+bool Metaphone3Encoder::stringStart(const std::vector<std::vector<uint8_t>>& vals) {
+   return stringAt(-idx, vals);
 }
 
-// The vals vector MUST be pre-sorted by length, shortest first.
-bool Metaphone3Encoder::stringEnd(const std::vector<std::vector<UChar32>>& vals) {
+bool Metaphone3Encoder::stringEnd(const std::vector<std::vector<uint8_t>>& vals) {
    if (vals.empty()) return false;
 
    for (const auto& v : vals) {
       int start = static_cast<int>(in.size()) - static_cast<int>(v.size());
       if (start < 0) {
-         continue; // Value is longer than input string
+         continue;
       }
       if (static_cast<int>(in.size()) < static_cast<int>(v.size())) {
-         return false; // Input shorter than shortest val, impossible match
+         return false;
       }
-
 
       bool match = true;
       for (size_t i = 0; i < v.size(); ++i) {
@@ -442,12 +356,12 @@ bool Metaphone3Encoder::stringEnd(const std::vector<std::vector<UChar32>>& vals)
    return false;
 }
 
-bool Metaphone3Encoder::stringExact(const std::vector<std::vector<UChar32>>& vals) {
+bool Metaphone3Encoder::stringExact(const std::vector<std::vector<uint8_t>>& vals) {
    if (vals.empty()) return false;
 
    for (const auto& v : vals) {
       if (v.size() != in.size()) {
-         continue; // Length mismatch
+         continue;
       }
       if (areEqual(in, v)) {
          return true;
@@ -456,7 +370,7 @@ bool Metaphone3Encoder::stringExact(const std::vector<std::vector<UChar32>>& val
    return false;
 }
 
-bool Metaphone3Encoder::stringContains(const std::vector<UChar32>& val) {
+bool Metaphone3Encoder::stringContains(const std::vector<uint8_t>& val) {
    if (val.empty() || val.size() > in.size()) {
       return false;
    }
@@ -477,8 +391,7 @@ bool Metaphone3Encoder::stringContains(const std::vector<UChar32>& val) {
    return false;
 }
 
-
-bool Metaphone3Encoder::rootOrInflections(const std::vector<UChar32>& root) {
+bool Metaphone3Encoder::rootOrInflections(const std::vector<uint8_t>& root) {
    if (root.empty()) return false;
 
    int lenDiff = static_cast<int>(in.size()) - static_cast<int>(root.size());
@@ -493,86 +406,39 @@ bool Metaphone3Encoder::rootOrInflections(const std::vector<UChar32>& root) {
       }
    }
 
-   // Now check from the last character of the root onwards
-   std::vector<UChar32> suffix(in.begin() + lastRootIdx, in.end());
+   std::vector<uint8_t> suffix(in.begin() + lastRootIdx, in.end());
 
-   if (suffix.empty()) return false; // Should not happen if lenDiff >= 0
+   if (suffix.empty()) return false;
 
-   // Check if the start of the suffix matches the last char of the root
-   if (suffix[0] == root[lastRootIdx]) {
-      if (lenDiff == 0) return true; // Exact match
-      if (lenDiff == 1 && suffix.size() > 1 && suffix[1] == 'S') return true; // +S plural
-   }
-
-   // Handle cases where root ends in 'E'
-   if (root[lastRootIdx] == 'E') {
-      // Check ED (suffix would start with 'E' then 'D')
-      if (lenDiff == 1 && suffix.size() > 1 && suffix[0] == 'E' && suffix[1] == 'D') return true;
-      // Consider the original 'E' as part of the difference now for other suffixes
-      lenDiff++;
-      // Adjust suffix view *if* the root 'E' wasn't matched (only for non-ED cases)
-      if (!(lenDiff == 1 && suffix.size() > 1 && suffix[0] == 'E' && suffix[1] == 'D')) {
-         // Need careful adjustment here. If root was "ACHE", input "ACHING",
-         // suffix starts at 'E'. We compare "ING" against "EING". This logic needs review.
-         // Let's restart suffix logic slightly differently based on Go code:
-      }
-
-   } else {
-      // Root does not end in 'E'
-      if (suffix[0] != root[lastRootIdx]) return false; // Must match last root char
-
-      // Check +ES, +ED
-      if (lenDiff == 2 && suffix.size() > 2 && suffix[1] == 'E' && (suffix[2] == 'S' || suffix[2] == 'D')) return true;
-
-      // Chop off the matched last root character from suffix view for further checks
-      if(suffix.size() > 1) {
-         suffix = std::vector<UChar32>(suffix.begin() + 1, suffix.end());
-      } else {
-         suffix.clear(); // No more suffix left
-      }
-   }
-   // This re-implementation needs more careful checking against Go logic
-   // For now, return false for complex suffix checks after 'E' handling.
-   // Simplified: Check common suffixes directly on the *adjusted* suffix part
-
-   // --- Revisit this section for accuracy ---
-   // Let's try matching the full suffix patterns after potentially removing the last root char
-   std::vector<UChar32> current_suffix(in.begin() + lastRootIdx, in.end()); // Suffix starting from last root char pos
+   std::vector<uint8_t> current_suffix(in.begin() + lastRootIdx, in.end());
 
    bool root_ends_e = (root[lastRootIdx] == 'E');
-   std::vector<UChar32> base_suffix; // Suffix relative to the root *base* (root without final E if applicable)
+   std::vector<uint8_t> base_suffix;
 
    if (root_ends_e) {
-      base_suffix = current_suffix; // Use suffix as is if root ends in E
+      base_suffix = current_suffix;
    } else {
-      // If root doesn't end in E, the first char of current_suffix must match last root char
-      if(current_suffix.empty() || current_suffix[0] != root[lastRootIdx]) return false;
-      // Base suffix starts after the matched last root character
-      if(current_suffix.size() > 1) {
-         base_suffix = std::vector<UChar32>(current_suffix.begin() + 1, current_suffix.end());
+      if (current_suffix.empty() || current_suffix[0] != root[lastRootIdx]) return false;
+      if (current_suffix.size() > 1) {
+         base_suffix = std::vector<uint8_t>(current_suffix.begin() + 1, current_suffix.end());
       }
-      // If exact match (lenDiff == 0), base_suffix will be empty here, handled earlier.
    }
 
-   // Check suffixes relative to the base
-   if (base_suffix.empty()) return true; // Already matched root (or root+S)
-   if (areEqual(base_suffix, L("S")) && !root_ends_e) return true; // Handles non-'E' root + S (e.g. CATS)
-   if (areEqual(base_suffix, L("ES")) && !root_ends_e) return true; // Handles non-'E' root + ES (e.g. BUSHES)
-   if (areEqual(base_suffix, L("ED")) && !root_ends_e) return true; // Handles non-'E' root + ED (e.g. WASHED)
-   if (areEqual(base_suffix, L("D")) && root_ends_e) return true; // Handles 'E' root + D (e.g. BAKED)
-   if (areEqual(base_suffix, L("ING"))) return true; // Handles +ING (e.g. ACHING, WASHING)
-   if (areEqual(base_suffix, L("INGLY"))) return true; // Handles +INGLY
-   if (areEqual(base_suffix, L("Y"))) return true; // Handles +Y (e.g. STICKY - but root needs adjust?) - Check Go logic again for 'Y'
+   if (base_suffix.empty()) return true;
+   if (areEqual(base_suffix, L("S")) && !root_ends_e) return true;
+   if (areEqual(base_suffix, L("ES")) && !root_ends_e) return true;
+   if (areEqual(base_suffix, L("ED")) && !root_ends_e) return true;
+   if (areEqual(base_suffix, L("D")) && root_ends_e) return true;
+   if (areEqual(base_suffix, L("ING"))) return true;
+   if (areEqual(base_suffix, L("INGLY"))) return true;
+   if (areEqual(base_suffix, L("Y"))) return true;
 
-   return false; // Default if no inflection matches
+   return false;
 }
-
 
 bool Metaphone3Encoder::isSlavoGermanic() {
-   // Assuming L("SCH"), L("SW"), etc. helpers are available or implemented
    return stringStart(LL({"SCH", "SW"})) || (!in.empty() && (in[0] == 'J' || in[0] == 'W'));
 }
-
 
 int Metaphone3Encoder::skipVowels(int currentIdx) {
    if (currentIdx < 0) return 0;
@@ -580,14 +446,13 @@ int Metaphone3Encoder::skipVowels(int currentIdx) {
 
    int nextIdx = currentIdx;
    while (nextIdx < static_cast<int>(in.size())) {
-      UChar32 c = in[nextIdx];
-      int currentOffset = nextIdx - idx; // Offset from the *original* idx for stringAt checks
+      uint8_t c = in[nextIdx];
+      int currentOffset = nextIdx - idx;
 
       if (!isVowel(c) && c != 'W') {
-         break; // Not a vowel or 'W', stop skipping
+         break;
       }
 
-      // Check for exceptions where we should stop skipping (from Go logic)
       if (stringAt(currentOffset, LL({"WICZ", "WITZ", "WIAK"})) ||
           stringAt(currentOffset - 1, LL({"EWSKI", "EWSKY", "OWSKI", "OWSKY"})) ||
           stringAtEnd(currentOffset, LL({"WICKI", "WACKI"})))
@@ -595,53 +460,32 @@ int Metaphone3Encoder::skipVowels(int currentIdx) {
          break;
       }
 
+      nextIdx++;
 
-      nextIdx++; // Move to the next character
-
-      // Special WH handling from Go logic
       int checkWhIdx = nextIdx - 1;
       if (checkWhIdx >= 0 && in[checkWhIdx] == 'W') {
          if (nextIdx < static_cast<int>(in.size()) && in[nextIdx] == 'H') {
-            // If WH found, check if it's NOT followed by certain sequences
             if (!stringAt(nextIdx - idx + 1, LL({"HOP", "HIDE", "HARD", "HEAD", "HAWK", "HERD", "HOOK", "HAND", "HOLE",
                         "HEART", "HOUSE", "HOUND", "HAMMER"})))
             {
-               nextIdx++; // Skip the H as well
+               nextIdx++;
             }
          }
       }
    }
 
-
-   // The loop increments nextIdx one past the last vowel/W.
-   // The Go code returns `e.idx + off - 1`, which is the index of the last vowel/W skipped.
-   // So we return `nextIdx - 1`.
    int resultIdx = nextIdx - 1;
 
-   // Go panics if off < 1. Ensure we don't move backward.
-   if (resultIdx < currentIdx -1 ) { // Should only happen if currentIdx was already the end
-      // This case likely means we didn't skip anything or only skipped one char.
-      // Let's ensure we return at least the original index.
-      return std::max(currentIdx -1, idx); // Return original index or the one before start if nothing skipped. Needs careful check.
-      // Go logic returns `e.idx + off - 1`. If off is 1 (skipped 1 char), returns e.idx.
-      // If off is 0 (skipped 0 chars), would panic.
-      // Let's return nextIdx - 1, ensuring it's >= idx.
+   if (resultIdx < currentIdx - 1) {
       return std::max(idx, nextIdx - 1);
-
    }
 
-   return nextIdx - 1; // Index of the last char skipped
+   return nextIdx - 1;
 }
-
 
 void Metaphone3Encoder::advanceCounter(int noEncodeVowel, int encodeVowel) {
    idx += (EncodeVowels ? encodeVowel : noEncodeVowel);
 }
-
-
-// --- Encoding Function Implementations (Partial) ---
-// Implementing all functions is very long. Here are a few examples:
-
 void Metaphone3Encoder::encodeB() {
    if (encodeSilentB()) {
       return;
@@ -865,7 +709,7 @@ bool Metaphone3Encoder::encodeChToX() {
 bool Metaphone3Encoder::encodeEnglishChToK() {
    // 'ache', 'echo', alternate spelling of 'michael'
    if ((idx == 1 && rootOrInflections(L("ACHE"))) || //
-       ((idx > 3 && stringAt(-1, LL({"ACHE"})) && rootOrInflections(std::vector<UChar32>(in.begin() + idx -1, in.end()))) && // Check rootOrInflections on relevant part
+       ((idx > 3 && stringAt(-1, LL({"ACHE"})) && rootOrInflections(std::vector<uint8_t>(in.begin() + idx -1, in.end()))) && // Check rootOrInflections on relevant part
         stringStart(LL({"EAR", "HEAD", "BACK", "HEART", "BELLY", "TOOTH"}))) || //
        stringAt(-1, LL({"ECHO"})) || //
        stringAt(-2, LL({"MICHEAL"})) || //
@@ -1703,7 +1547,7 @@ bool Metaphone3Encoder::initialGSoft() {
                   "YNAECOL", "YNECOLO", "ENTHNER", "ERAGHTY",
                   "INGERICH", "EOGHEGAN"}))) || //
       (isVowelAt(1) && //
-       (stringAt(1, LL({"EE ", "EEW"})) || // Need space handling - Assuming space is allowed UChar32
+       (stringAt(1, LL({"EE ", "EEW"})) || // Need space handling - Assuming space is allowed uint8_t
         (stringAt(1, LL({"IGI", "IRA", "IBE", "AOL", "IDE", "IGL"})) && //
          !stringAt(1, LL({"IDEON"}))) || //
         stringAt(1, LL({"ILES", "INGI", "ISEL", "IBBER", "IBBET", "IBLET", "IBRAN", "IGOLO", "IRARD", "IGANT", //
