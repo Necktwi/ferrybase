@@ -77,13 +77,13 @@ std::string itoa(int i, int size) {
 	return out;
 }
 
-std::string implode(const std::string glue, const std::vector<std::string> &pieces) {
+string implode(const string glue, const vector<string>& pieces) {
 	std::string a;
-	int leng = pieces.size();
-	for (int i = 0; i < leng; i++) {
-		a += pieces[i];
+	int leng= pieces.size();
+	for (int i= 0; i < leng; ++i) {
+		a+= pieces[i];
 		if (i < (leng - 1))
-			a += glue;
+			a+= glue;
 	}
 	return a;
 }
@@ -166,6 +166,19 @@ std::vector<std::string> explodeByNum (const std::string& str) {
 		result.push_back(str.substr(start));
 	}
 
+	return result;
+}
+std::vector<std::string> explodeByCase (const std::string& str) {
+	std::vector<std::string> result;
+	size_t start= 0, i= 1;
+	for (; i < str.length(); ++i) {
+		bool isCap= std::isupper(str[i]);
+		if (isCap) {
+			result.push_back(str.substr(start,i-start));
+			start= i;
+		}
+	}
+	result.push_back(str.substr(start,i-start));
 	return result;
 }
 

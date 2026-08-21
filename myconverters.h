@@ -26,6 +26,7 @@ std::vector<std::string> explode(
 void explode(const std::string delimiter, const std::string &str,
 				 std::vector<std::string>& shrapnel);
 std::vector<std::string> explodeByNum (const std::string& str);
+std::vector<std::string> explodeByCase (const std::string& str);
 
 float timeToSec(std::string timestring);
 int tolower (ccp s);

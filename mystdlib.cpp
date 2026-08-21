@@ -60,7 +60,7 @@ bool validUsername (const std::string& username) {
    for (int i=0; i<username.length(); ++i) {
       if (!((username[i]>=65 && username[i]<=90) ||
             (username[i]>=97 && username[i]<=122) ||
-            username[i]=='.' || username[i]=='_')) {
+            (username[i]>=48 && username[i]<=57))) {
          return false;
       }
    }
