@@ -73,9 +73,9 @@ set (CMAKE_EXE_LINKER_FLAGS
    "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
 if(macOS OR Windows)
    set(SOURCES FerryTimeStamp.cpp myconverters.cpp mystdlib.cpp
-      ServerSocket.cpp Socket.cpp)
+      ServerSocket.cpp Socket.cpp metaphone3.cpp)
    set(HEADERS FerryTimeStamp.h myconverters.h mystdlib.h ServerSocket.h
-      Socket.h SocketException.h)
+      Socket.h SocketException.h metaphone3.h)
 else(macOS OR Windows)
    file(GLOB HEADERS [a-zA-Z0-9_]*.h)
    file(GLOB SOURCES [a-zA-Z0-9_]*.cpp)
