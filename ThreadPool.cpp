@@ -1,6 +1,8 @@
 #include "ThreadPool.h"
 #include <stdio.h>
 
+thread_local int tid= 0;
+
 ThreadPool::ThreadPool (size_t n) {
 	start(n);
 };
