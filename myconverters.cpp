@@ -1,4 +1,5 @@
 #include "myconverters.h"
+#include "StrPool.h"
 #include<string>
 #include<sstream>
 #include<vector>
@@ -88,6 +89,17 @@ string implode(const string glue, const vector<string>& pieces) {
 	return a;
 }
 
+ccp implode(ccp glue, const std::vector<ccp>& pieces) {
+	std::string a;
+	int leng= pieces.size();
+	for (int i= 0; i < leng; ++i) {
+		a+= pieces[i];
+		if (i < (leng - 1))
+			a+= glue;
+	}
+	return ccpFromPool(a.c_str());
+}
+
 vector<string>& splitstring::split(char delim, char dum, int rep) {
 	if (!flds.empty()) flds.clear(); // empty vector if necessary
 	string& work = *this;
@@ -145,6 +157,22 @@ void explode(const std::string delimiter, const std::string &str,
 	return;
 }
 
+std::vector<ccp> explode(ccp str, ccp delimiter) {
+	std::vector<std::string> arr= explode(std::string(str),
+		std::string(delimiter));
+	std::vector<ccp> shrapnel;
+	for (auto& s : arr)
+		shrapnel.push_back(ccpFromPool(s.c_str()));
+	return shrapnel;
+}
+
+void explode(ccp delimiter, ccp str, std::vector<ccp>& shrapnel) {
+	std::vector<std::string> arr;
+	explode(std::string(delimiter), std::string(str), arr);
+	for (auto& s : arr)
+		shrapnel.push_back(ccpFromPool(s.c_str()));
+}
+
 std::vector<std::string> explodeByNum (const std::string& str) {
 	std::vector<std::string> result;
 	size_t start= 0;
@@ -179,6 +207,21 @@ std::vector<std::string> explodeByCase (const std::string& str) {
 		}
 	}
 	result.push_back(str.substr(start,i-start));
+	return result;
+}
+
+std::vector<ccp> explodeByNum (ccp str) {
+	std::vector<std::string> arr= explodeByNum(std::string(str));
+	std::vector<ccp> result;
+	for (auto& s : arr)
+		result.push_back(ccpFromPool(s.c_str()));
+	return result;
+}
+std::vector<ccp> explodeByCase (ccp str) {
+	std::vector<std::string> arr= explodeByCase(std::string(str));
+	std::vector<ccp> result;
+	for (auto& s : arr)
+		result.push_back(ccpFromPool(s.c_str()));
 	return result;
 }
 

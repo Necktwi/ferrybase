@@ -25,8 +25,13 @@ std::vector<std::string> explode(
    const std::string &str, const std::string delimiter = " ");
 void explode(const std::string delimiter, const std::string &str,
 				 std::vector<std::string>& shrapnel);
+ccp implode(ccp glue, const std::vector<ccp> &pieces);
+std::vector<ccp> explode(ccp str, ccp delimiter = " ");
+void explode(ccp delimiter, ccp str, std::vector<ccp>& shrapnel);
 std::vector<std::string> explodeByNum (const std::string& str);
 std::vector<std::string> explodeByCase (const std::string& str);
+std::vector<ccp> explodeByNum (ccp str);
+std::vector<ccp> explodeByCase (ccp str);
 
 float timeToSec(std::string timestring);
 int tolower (ccp s);
